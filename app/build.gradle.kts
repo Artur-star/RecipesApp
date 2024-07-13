@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.knyazev.engishwordsapp"
+    namespace = "com.knyazev.recipesapp"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.knyazev.engishwordsapp"
+        applicationId = "com.knyazev.recipesapp"
         minSdk = 28
         targetSdk = 34
         versionCode = 1

@@ -1,4 +1,4 @@
-package com.knyazev.engishwordsapp
+package com.knyazev.recipesapp
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
