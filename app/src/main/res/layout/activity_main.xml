@@ -5,15 +5,40 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F4FAFF"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
+        android:weightSum="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/StyleTitle14"
+            android:layout_weight="1"
+            android:background="@drawable/shape_button_rounded_blue"
+            android:text="Категории" />
+
+        <Button
+            style="@style/StyleTitle14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_button_rounded_red"
+            android:text="Избранное"
+            app:icon="@drawable/ic_heart"
+            app:iconGravity="end"
+            app:iconPadding = "0dp"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
