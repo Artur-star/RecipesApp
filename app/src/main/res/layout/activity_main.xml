@@ -5,40 +5,45 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4FAFF"
-    tools:context=".MainActivity">
+    android:background="@color/main_layout"
+    tools:context=".MainActivity"
+    android:paddingStart="@dimen/main_padding"
+    android:paddingEnd="@dimen/main_padding"
+    android:paddingBottom="@dimen/half_main_padding"
+    android:paddingTop="@dimen/half_main_padding">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="4dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:weightSum="2"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
+            android:id="@+id/button"
+            style="@style/StyleTitle14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/StyleTitle14"
             android:layout_weight="1"
             android:background="@drawable/shape_button_rounded_blue"
-            android:text="Категории" />
+            android:text="@string/category"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
+            android:id="@+id/button2"
             style="@style/StyleTitle14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_weight="1"
             android:background="@drawable/shape_button_rounded_red"
-            android:text="Избранное"
-            app:icon="@drawable/ic_heart"
-            app:iconGravity="end"
-            app:iconPadding = "0dp"/>
+            android:drawableEnd="@drawable/ic_heart"
+            android:text="@string/favourites"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
