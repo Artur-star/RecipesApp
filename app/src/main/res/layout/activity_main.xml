@@ -5,17 +5,15 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_layout"
+    android:background="@color/main_layout_color"
     tools:context=".MainActivity"
     android:paddingStart="@dimen/main_padding"
     android:paddingEnd="@dimen/main_padding"
-    android:paddingBottom="@dimen/half_main_padding"
-    android:paddingTop="@dimen/half_main_padding">
+    android:paddingBottom="@dimen/main_space_half_8">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:weightSum="2"
@@ -24,25 +22,24 @@
 
         <Button
             android:id="@+id/button"
-            style="@style/StyleTitle14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/StyleNavButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/shape_button_rounded_blue"
-            android:text="@string/category"
+            android:text="@string/title_category"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/button2"
-            style="@style/StyleTitle14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            style="@style/StyleNavButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/between_buttons"
             android:layout_weight="1"
-            android:background="@drawable/shape_button_rounded_red"
-            android:drawableEnd="@drawable/ic_heart"
             android:text="@string/favourites"
+            app:icon="@drawable/ic_heart"
+            app:iconGravity="end"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </LinearLayout>
