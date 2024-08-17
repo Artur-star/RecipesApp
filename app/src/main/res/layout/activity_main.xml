@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_layout_color"
-    tools:context=".MainActivity"
-    android:paddingStart="@dimen/main_padding"
-    android:paddingEnd="@dimen/main_padding"
-    android:paddingBottom="@dimen/main_space_half_8">
+    android:paddingStart="@dimen/padding_16"
+    android:paddingEnd="@dimen/padding_16"
+    android:paddingBottom="@dimen/main_space_half_8"
+    tools:context=".MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/binCategories"
             style="@style/StyleNavButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -31,11 +31,11 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/binFavourites"
             style="@style/StyleNavButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/between_buttons"
+            android:layout_marginStart="@dimen/between_buttons_4"
             android:layout_weight="1"
             android:text="@string/favourites"
             app:icon="@drawable/ic_heart"
