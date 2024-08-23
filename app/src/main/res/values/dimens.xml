@@ -4,6 +4,7 @@
     <dimen name="main_space_half_8">8dp</dimen>
     <dimen name="margin_10">10dp</dimen>
     <dimen name="padding_16">16dp</dimen>
+    <dimen name="to_start_navigation_buttons_0">0dp</dimen>
 
     <dimen name="font_size_14">14sp</dimen>
 </resources>
