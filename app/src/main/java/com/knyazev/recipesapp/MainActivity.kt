@@ -2,6 +2,7 @@ package com.knyazev.recipesapp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.knyazev.recipesapp.databinding.ActivityMainBinding
@@ -18,22 +19,25 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        if (savedInstanceState == null) {
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                add<FavoritesFragment>(R.id.mainContainer)
+                addToBackStack(null)
+            }
+        }
         binding.binFavourites.setOnClickListener {
-            if (savedInstanceState == null) {
-                supportFragmentManager.commit {
-                    setReorderingAllowed(true)
-                    replace<FavoritesFragment>(R.id.mainContainer)
-                    addToBackStack(null)
-                }
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                replace<FavoritesFragment>(R.id.mainContainer)
+                addToBackStack(null)
             }
         }
         binding.binCategories.setOnClickListener {
-            if (savedInstanceState == null) {
-                supportFragmentManager.commit {
-                    setReorderingAllowed(true)
-                    replace<CategoriesListFragment>(R.id.mainContainer)
-                    addToBackStack(null)
-                }
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                replace<CategoriesListFragment>(R.id.mainContainer)
+                addToBackStack(null)
             }
         }
     }

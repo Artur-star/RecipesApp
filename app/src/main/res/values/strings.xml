@@ -2,5 +2,4 @@
     <string name="app_name">RecipesApp</string>
     <string name="title_category">Категории</string>
     <string name="favourites">Избранное</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
