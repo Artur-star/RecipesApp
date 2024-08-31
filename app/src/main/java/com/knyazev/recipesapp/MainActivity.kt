@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
                 add<FavoritesFragment>(R.id.mainContainer)
-                addToBackStack(null)
             }
         }
         binding.binFavourites.setOnClickListener {
