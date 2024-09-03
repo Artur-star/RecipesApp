@@ -5,6 +5,13 @@
     <dimen name="margin_10">10dp</dimen>
     <dimen name="padding_16">16dp</dimen>
     <dimen name="to_start_navigation_buttons_0">0dp</dimen>
+    <dimen name="height_header_224">224dp</dimen>
+    <dimen name="width_header_name_149">149dp</dimen>
+    <dimen name="height_header_name_44">44dp</dimen>
+    <dimen name="margin_header_name_16">16dp</dimen>
 
-    <dimen name="font_size_14">14sp</dimen>
+    <dimen name="corners_header_name_8">8dp</dimen>
+
+    <dimen name="text_font_size_14">14sp</dimen>
+    <dimen name="text_header_name_20">20sp</dimen>
 </resources>
