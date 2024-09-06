@@ -16,7 +16,8 @@
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_icon_in_item_130"
-            android:background="@drawable/icon_burger"
+            android:src="@drawable/icon_burger"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
