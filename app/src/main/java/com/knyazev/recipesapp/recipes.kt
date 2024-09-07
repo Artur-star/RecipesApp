@@ -3,7 +3,7 @@ package com.knyazev.recipesapp
 import com.knyazev.recipesapp.entities.Category
 
 object STUB {
-    val categories: List<Category> = listOf(
+    private val categories: List<Category> = listOf(
         Category(
             id = 0,
             title = "Бургеры",
