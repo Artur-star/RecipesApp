@@ -3,7 +3,6 @@ package com.knyazev.recipesapp
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -15,8 +14,7 @@ import com.knyazev.recipesapp.entities.Category
 class CategoriesListAdapter(private val dataSet: List<Category>) :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private var binding = ItemCategoryBinding.bind(view)
+    class ViewHolder(binding: ItemCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
 
         val titleTextView: TextView = binding.titleTextView
         val imageView: ImageView = binding.imageView
@@ -25,7 +23,7 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.item_category, parent, false)
+        val view: ItemCategoryBinding = ItemCategoryBinding.inflate(inflater, parent, false)
         return ViewHolder(view)
     }
 
@@ -38,6 +36,7 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
 
         viewHolder.titleTextView.text = category.title
         viewHolder.descriptionTextView.text = category.description
+        viewHolder.imageView.contentDescription = category.title
 
         val drawable = try {
             Drawable.createFromStream(
