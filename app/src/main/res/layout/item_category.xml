@@ -6,6 +6,8 @@
     android:layout_height="@dimen/height_item_220"
     android:layout_margin="@dimen/between_items_half_8"
     android:clickable="true"
+    android:focusable="true"
+    android:foreground="?selectableItemBackground"
     app:cardCornerRadius="@dimen/corners_8">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,28 +22,30 @@
             android:src="@drawable/icon_burger"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/titleTextView"
             style="@style/StyleVioletTitle14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/between_items_half_8"
             android:layout_marginTop="@dimen/between_items_half_8"
-            android:text="Бургеры"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            tools:text="Бургеры" />
 
         <TextView
+            android:id="@+id/descriptionTextView"
             style="@style/StyleContent12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/between_items_half_8"
-            android:text="Рецепты всех популярных видов бургеров"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+            tools:text="Рецепты всех популярных видов бургеров" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
