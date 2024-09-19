@@ -10,9 +10,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.knyazev.recipesapp.databinding.ItemCategoryBinding
 import com.knyazev.recipesapp.entities.Category
 
-
 class CategoriesListAdapter(private val dataSet: List<Category>) :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
+
+    private var itemClickListener: OnItemClickListener? = null
+
+    interface OnItemClickListener {
+        fun onItemClick()
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        itemClickListener = listener
+    }
 
     class ViewHolder(binding: ItemCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -48,6 +57,8 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
             null
         }
         viewHolder.imageView.setImageDrawable(drawable)
+
+        viewHolder.itemView.setOnClickListener { itemClickListener?.onItemClick() }
 
     }
 }
