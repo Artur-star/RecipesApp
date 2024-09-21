@@ -5,13 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.knyazev.recipesapp.databinding.FragmentListCategoriesBinding
 
 class CategoriesListFragment : Fragment() {
     private var _binding: FragmentListCategoriesBinding? = null
     private val binding
         get() = _binding
-            ?: throw IllegalArgumentException("Binding for ActivityMainBinding must not be null")
+            ?: throw IllegalArgumentException("Binding for FragmentListCategoriesBinding must not be null")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,10 +44,9 @@ class CategoriesListFragment : Fragment() {
     }
 
     fun openRecipesByCategoryId() {
-        parentFragmentManager
-            .beginTransaction()
-            .replace(R.id.mainContainer, RecipesListFragment.newInstance())
-            .addToBackStack(null)
-            .commit()
+        parentFragmentManager.commit {
+            replace<RecipesListFragment>(R.id.mainContainer)
+                .addToBackStack(null)
+        }
     }
 }

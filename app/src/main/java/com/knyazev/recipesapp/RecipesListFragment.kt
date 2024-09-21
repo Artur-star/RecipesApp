@@ -5,15 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.knyazev.recipesapp.databinding.FragmentRecipesListBinding
 
 class RecipesListFragment : Fragment() {
+    private var _binding: FragmentRecipesListBinding? = null
+    private val binding
+        get() = _binding
+            ?: throw IllegalArgumentException("Binding for FragmentRecipesListBinding must not be null")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recipes_list, container, false)
+        _binding = FragmentRecipesListBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     companion object {

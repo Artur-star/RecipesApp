@@ -24,12 +24,13 @@
 
         <TextView
             style="@style/StyleTitle20"
-            android:layout_width="@dimen/width_header_name_149"
-            android:layout_height="@dimen/height_header_name_44"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_header_name_16"
             android:layout_marginBottom="@dimen/margin_header_name_16"
             android:background="@drawable/shape_rounded_variants"
             android:gravity="center"
+            android:padding="@dimen/padding_header_name_10"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="Burger" />
