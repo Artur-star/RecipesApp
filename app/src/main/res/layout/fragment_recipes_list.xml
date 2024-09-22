@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/main_layout"
     android:orientation="vertical"
-    tools:context=".CategoriesListFragment">
+    tools:context=".RecipesListFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,10 +17,10 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/image_of_categories"
             android:scaleType="centerCrop"
-            android:src="@drawable/bcg_categories"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/icon_burger" />
 
         <TextView
             style="@style/StyleTitle20"
@@ -31,19 +31,8 @@
             android:background="@drawable/shape_rounded_variants"
             android:gravity="center"
             android:padding="@dimen/padding_header_name_10"
-            android:text="@string/title_category"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Burger" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvCategories"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/between_items_half_8"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
-        tools:itemCount="6"
-        tools:listitem="@layout/item_category" />
-
 </LinearLayout>

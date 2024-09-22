@@ -5,10 +5,8 @@
     <dimen name="margin_10">10dp</dimen>
     <dimen name="to_start_navigation_buttons_0">0dp</dimen>
     <dimen name="height_header_224">224dp</dimen>
-    <dimen name="width_header_name_149">149dp</dimen>
-    <dimen name="height_header_name_44">44dp</dimen>
+    <dimen name="padding_header_name_10">10dp</dimen>
     <dimen name="margin_header_name_16">16dp</dimen>
-    <dimen name="height_item_220">220dp</dimen>
     <dimen name="height_icon_in_item_130">130dp</dimen>
 
     <dimen name="corners_8">8dp</dimen>
