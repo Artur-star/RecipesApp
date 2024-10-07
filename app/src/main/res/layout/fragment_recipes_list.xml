@@ -3,18 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/main_layout"
     android:orientation="vertical"
-    tools:context=".RecipesListFragment">
+    tools:context=".fragments.RecipesListFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_header_224">
+        android:layout_height="match_parent">
 
         <ImageView
+            android:id="@+id/imageView2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/height_header_224"
             android:contentDescription="@string/image_of_categories"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
@@ -23,6 +24,7 @@
             tools:src="@drawable/icon_burger" />
 
         <TextView
+            android:id="@+id/tvHeaderRecipe"
             style="@style/StyleTitle20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,8 +33,22 @@
             android:background="@drawable/shape_rounded_variants"
             android:gravity="center"
             android:padding="@dimen/padding_header_name_10"
-            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+            app:layout_constraintStart_toStartOf="@+id/imageView2"
+            tools:text="Burgers" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRecipes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/between_items_half_8"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="Burger" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView2"
+            app:spanCount="1"
+            tools:itemCount="4"
+            tools:listitem="@layout/item_recipe" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

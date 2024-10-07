@@ -8,6 +8,7 @@
     <dimen name="padding_header_name_10">10dp</dimen>
     <dimen name="margin_header_name_16">16dp</dimen>
     <dimen name="height_icon_in_item_130">130dp</dimen>
+    <dimen name="height_icon_in_item_100">100dp</dimen>
 
     <dimen name="corners_8">8dp</dimen>
 
