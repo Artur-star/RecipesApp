@@ -20,7 +20,6 @@ class RecipesListAdapter(private val dataSet: List<Recipe>) :
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
-        Log.d("!!!", "setOnItemClickListener in RecipesListAdapter")
         itemClickListener = listener
     }
 
@@ -30,19 +29,16 @@ class RecipesListAdapter(private val dataSet: List<Recipe>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        Log.d("!!!", "onCreateViewHolder in RecipesListAdapter")
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = ItemRecipeBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        Log.d("!!!", "getItemCount in RecipesListAdapter")
         return dataSet.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Log.d("!!!", "onBindViewHolder in RecipesListAdapter")
         val recipe: Recipe = dataSet[position]
         holder.textView.text = recipe.title
         val drawable = try {

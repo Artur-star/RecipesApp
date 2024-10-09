@@ -1,7 +1,6 @@
 package com.knyazev.recipesapp.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,13 +18,11 @@ class FavoritesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d("!!!", "onCreateView in FavoritesFragment")
         _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onDestroyView() {
-        Log.d("!!!", "onDestroyView in FavoritesFragment")
         super.onDestroyView()
         _binding = null
 

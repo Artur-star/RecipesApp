@@ -1,7 +1,6 @@
 package com.knyazev.recipesapp.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,25 +26,21 @@ class CategoriesListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d("!!!", "onCreateView in CategoriesListFragment")
         _binding = FragmentListCategoriesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("!!!", "onViewCreated in CategoriesListFragment")
         super.onViewCreated(view, savedInstanceState)
         initRecycler()
     }
 
     override fun onDestroyView() {
-        Log.d("!!!", "onDestroyView in CategoriesListFragment")
         super.onDestroyView()
         _binding = null
     }
 
     private fun initRecycler() {
-        Log.d("!!!", "initRecycler in CategoriesListFragment")
         val listAdapter = CategoriesListAdapter(STUB.getCategories())
         binding.rvCategories.adapter = listAdapter
         listAdapter.setOnItemClickListener(object : CategoriesListAdapter.OnItemClickListener {
@@ -56,7 +51,6 @@ class CategoriesListFragment : Fragment() {
     }
 
     fun openRecipesByCategoryId(categoryId: Int) {
-        Log.d("!!!", "openRecipesByCategoryId in CategoriesListFragment")
         val category = STUB.getCategories()[categoryId]
         val categoryName = category.title
         val categoryImageUrl = category.imageUrl

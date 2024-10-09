@@ -1,5 +1,6 @@
 package com.knyazev.recipesapp.fragments
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -32,35 +33,36 @@ class RecipesListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d("!!!", "onCreateView in RecipesListFragment")
         _binding = FragmentRecipesListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("!!!", "onViewCreated in RecipesListFragment")
         super.onViewCreated(view, savedInstanceState)
         categoryId = requireArguments().getInt(ARG_CATEGORY_ID)
         categoryName = requireArguments().getString(ARG_CATEGORY_NAME)
+
         categoryImageUrl = requireArguments().getString(ARG_CATEGORY_IMAGE_URL)
+        val drawable = try {
+            Drawable.createFromStream(
+                view.context.assets.open(categoryImageUrl!!),
+                null
+            )
+        } catch (e: NullPointerException) {
+            Log.d("logTag", "Image not found $categoryImageUrl")
+            null
+        }
+        binding.imageView2.setImageDrawable(drawable)
+        binding.tvHeaderRecipe.text = categoryName
         initRecycler()
     }
 
     private fun initRecycler() {
-        Log.d("!!!", "initRecycler in RecipesListFragment")
         val listAdapter = RecipesListAdapter(STUB.getRecipesByCategoryId(categoryId))
         binding.rvRecipes.adapter = listAdapter
-
-//        listAdapter.setOnItemClickListener(object : RecipesListAdapter.OnItemClickListener {
-//            override fun onItemClick(recipeId: Int) {
-//                Log.d("!!!", "initRecycler in onItemClick in RecipesListFragment" + recipeId + STUB.getRecipesByCategoryId(categoryId))
-//                openRecipeByRecipeId(STUB.getRecipesByCategoryId(categoryId)[recipeId].id)
-//            }
-//        })
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        Log.d("!!!", "openRecipeByRecipeId in RecipesListFragment")
         binding.rvRecipes[recipeId].setOnClickListener {
             parentFragmentManager.commit {
                 setReorderingAllowed(true)
