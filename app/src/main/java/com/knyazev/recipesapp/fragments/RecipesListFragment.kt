@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
@@ -60,14 +59,17 @@ class RecipesListFragment : Fragment() {
     private fun initRecycler() {
         val listAdapter = RecipesListAdapter(STUB.getRecipesByCategoryId(categoryId))
         binding.rvRecipes.adapter = listAdapter
+        listAdapter.setOnItemClickListener(object : RecipesListAdapter.OnItemClickListener {
+            override fun onItemClick(recipeId: Int) {
+                openRecipeByRecipeId(recipeId)
+            }
+        })
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        binding.rvRecipes[recipeId].setOnClickListener {
-            parentFragmentManager.commit {
-                setReorderingAllowed(true)
-                replace<RecipesListFragment>(R.id.mainContainer)
-            }
+        parentFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace<RecipeFragment>(R.id.mainContainer)
         }
     }
 }
