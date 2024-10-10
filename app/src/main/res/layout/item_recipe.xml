@@ -18,7 +18,7 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/height_icon_in_item_130"
+            android:layout_height="@dimen/height_icon_in_item_100"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,22 +31,11 @@
             style="@style/StyleVioletTitle14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/between_items_half_8"
-            android:paddingTop="@dimen/between_items_half_8"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
-            tools:text="Бургеры" />
-
-        <TextView
-            android:id="@+id/descriptionTextView"
-            style="@style/StyleContent12"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:padding="@dimen/between_items_half_8"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titleTextView"
-            tools:text="Рецепты всех популярных видов бургеров" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            tools:text="Cheeseburger" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

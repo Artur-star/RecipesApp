@@ -53,6 +53,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout="@layout/fragment_list_categories" />
+        tools:layout="@layout/fragment_list_categories"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
