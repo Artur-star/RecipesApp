@@ -1,4 +1,4 @@
-package com.knyazev.recipesapp
+package com.knyazev.recipesapp.adapters
 
 import android.graphics.drawable.Drawable
 import android.util.Log
@@ -24,7 +24,6 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
     }
 
     class ViewHolder(binding: ItemCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
-
         val titleTextView: TextView = binding.titleTextView
         val imageView: ImageView = binding.imageView
         val descriptionTextView: TextView = binding.descriptionTextView
@@ -42,7 +41,6 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val category = dataSet[position]
-
         viewHolder.titleTextView.text = category.title
         viewHolder.descriptionTextView.text = category.description
         viewHolder.imageView.contentDescription = category.title

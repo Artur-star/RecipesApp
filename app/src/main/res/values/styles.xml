@@ -30,8 +30,8 @@
 
     <style name="StyleNavButton" parent="Widget.Material3.Button">
         <item name="android:textAppearance">@style/StyleWhiteTitle14</item>
-        <item name="android:paddingVertical">@dimen/margin_10</item>
-        <item name="android:paddingHorizontal">@dimen/margin_10</item>
+        <item name="android:paddingVertical">@dimen/padding_header_and_button_name_10</item>
+        <item name="android:paddingHorizontal">@dimen/padding_header_and_button_name_10</item>
         <item name="cornerRadius">@dimen/between_items_half_8</item>
     </style>
 </resources>
