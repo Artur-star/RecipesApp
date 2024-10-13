@@ -30,6 +30,7 @@
             android:layout_marginBottom="@dimen/margin_header_name_16"
             android:background="@drawable/shape_rounded_variants"
             android:gravity="center"
+            android:maxWidth="@dimen/max_width_250"
             android:padding="@dimen/padding_header_and_button_name_10"
             android:text="@string/title_category"
             app:layout_constraintBottom_toBottomOf="parent"

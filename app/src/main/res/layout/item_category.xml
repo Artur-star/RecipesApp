@@ -40,7 +40,7 @@
 
         <TextView
             android:id="@+id/descriptionTextView"
-            style="@style/StyleContent12"
+            style="@style/StyleContentInCategories12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/between_items_half_8"
