@@ -56,21 +56,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/between_items_half_8"
+            android:layout_margin="@dimen/main_space_8"
             android:orientation="vertical">
 
             <TextView
                 style="@style/StyleSections20"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/between_items_half_8"
-                android:text="@string/ingredients" />
+                android:layout_margin="@dimen/main_space_8"
+                android:text="@string/title_ingredients" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvIngredients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/between_items_half_8"
+                android:layout_margin="@dimen/main_space_8"
                 android:background="@drawable/shape_rounded_variants"
                 android:backgroundTint="@color/white"
                 android:padding="@dimen/between_buttons_4"
@@ -81,14 +81,14 @@
                 style="@style/StyleSections20"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/between_items_half_8"
-                android:text="@string/cooking_method" />
+                android:layout_margin="@dimen/main_space_8"
+                android:text="@string/title_cooking_method" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvMethod"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/between_items_half_8"
+                android:layout_margin="@dimen/main_space_8"
                 android:background="@drawable/shape_rounded_variants"
                 android:backgroundTint="@color/white"
                 android:padding="@dimen/between_buttons_4"

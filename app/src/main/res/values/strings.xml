@@ -5,6 +5,6 @@
     <string name="image_of_categories">Image of categories</string>
     <string name="image_of_recipe">Image of recipe</string>
     <string name="icon_heart">Icon heart</string>
-    <string name="ingredients">Ingredients</string>
-    <string name="cooking_method">Cooking method</string>
+    <string name="title_ingredients">Ingredients</string>
+    <string name="title_cooking_method">Cooking method</string>
 </resources>

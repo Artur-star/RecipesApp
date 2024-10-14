@@ -5,6 +5,6 @@
     <string name="image_of_categories">Картинка с категориями</string>
     <string name="image_of_recipe">Картинка с рецептом</string>
     <string name="icon_heart">Иконка сердца</string>
-    <string name="ingredients">Ингредиенты</string>
-    <string name="cooking_method">Способ приготовления</string>
+    <string name="title_ingredients">Ингредиенты</string>
+    <string name="title_cooking_method">Способ приготовления</string>
 </resources>

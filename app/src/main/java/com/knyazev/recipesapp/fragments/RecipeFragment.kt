@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.knyazev.recipesapp.ARG_RECIPE
+import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.adapters.IngredientsAdapter
 import com.knyazev.recipesapp.adapters.MethodAdapter
 import com.knyazev.recipesapp.databinding.FragmentRecipeBinding
@@ -56,6 +57,10 @@ class RecipeFragment : Fragment() {
     private fun initRecycler() {
         val divider =
             MaterialDividerItemDecoration(requireContext(), MaterialDividerItemDecoration.VERTICAL)
+        divider.isLastItemDecorated = false
+        divider.setDividerColorResource(requireContext(), R.color.divider)
+        divider.setDividerInsetStartResource(requireContext(), R.dimen.main_space_8)
+        divider.setDividerInsetEndResource(requireContext(), R.dimen.main_space_8)
         val ingredientAdapter = IngredientsAdapter(recipe?.ingredients ?: emptyList())
         val methodAdapter = MethodAdapter(recipe?.method ?: emptyList())
 

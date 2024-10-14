@@ -1,5 +1,6 @@
 package com.knyazev.recipesapp.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -22,8 +23,9 @@ class MethodAdapter(private val dataSet: List<String>) :
         return dataSet.size
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val methodPoint = dataSet[position]
-        holder.methodPoint.text = methodPoint
+        holder.methodPoint.text = "${position + 1}. $methodPoint"
     }
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/between_items_half_8">
+    android:padding="@dimen/main_space_8">
 
     <TextView
         android:id="@+id/nameIngredient"
@@ -34,7 +34,7 @@
         style="@style/StyleContentInIngredients14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxWidth="@dimen/max_width_100"
+        android:maxWidth="@dimen/height_and_width_100"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

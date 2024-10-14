@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="between_buttons_4">4dp</dimen>
-    <dimen name="between_items_half_8">8dp</dimen>
+    <dimen name="main_space_8">8dp</dimen>
     <dimen name="to_start_navigation_buttons_0">0dp</dimen>
     <dimen name="height_header_224">224dp</dimen>
     <dimen name="padding_header_and_button_name_10">10dp</dimen>S
     <dimen name="margin_header_name_16">16dp</dimen>
     <dimen name="height_icon_in_item_130">130dp</dimen>
-    <dimen name="height_icon_in_item_100">100dp</dimen>
+    <dimen name="height_and_width_100">100dp</dimen>
     <dimen name="margin_top_big_heart_21">21dp</dimen>
     <dimen name="margin_end_big_heart_18.5">18.5dp</dimen>
     <dimen name="margin_horizontal_quantity_3">3dp</dimen>
     <dimen name="max_width_250">250dp</dimen>
     <dimen name="max_width_200">200dp</dimen>
     <dimen name="max_width_50">50dp</dimen>
-    <dimen name="max_width_100">100dp</dimen>
-
-    <dimen name="corners_8">8dp</dimen>
 
     <dimen name="text_font_size_12">12sp</dimen>
     <dimen name="text_font_size_14">14sp</dimen>
