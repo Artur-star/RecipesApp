@@ -1,5 +1,7 @@
 package com.knyazev.recipesapp.adapters
 
+import android.icu.text.DecimalFormat
+import android.icu.text.DecimalFormatSymbols
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,6 +11,9 @@ import com.knyazev.recipesapp.entities.Ingredient
 
 class IngredientsAdapter(private val dataSet: List<Ingredient>) :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
+
+    private var quantity: Int = 1
+
     class ViewHolder(binding: ItemIngredientsBinding) : RecyclerView.ViewHolder(binding.root) {
         val nameIngredient = binding.nameIngredient
         val countIngredient = binding.countIngredient
@@ -30,7 +35,19 @@ class IngredientsAdapter(private val dataSet: List<Ingredient>) :
         val ingredient: Ingredient = dataSet[position]
         Log.d("!!!", " IngredientsAdapter - onBindViewHolder ${ingredient.description}")
         holder.nameIngredient.text = ingredient.description
-        holder.countIngredient.text = ingredient.quantity
+
+        val symbols = DecimalFormatSymbols()
+        symbols.decimalSeparator = '.'
+        val countPortions: Double = ingredient.quantity.toDouble() * quantity
+        val countIngredientIntOrDouble =
+            if (countPortions % countPortions.toInt() == 0.0) countPortions.toInt().toString()
+            else DecimalFormat("0.0", symbols).format(countPortions)
+        holder.countIngredient.text = countIngredientIntOrDouble
+
         holder.unitOfMeasure.text = ingredient.unitOfMeasure
+    }
+
+    fun updateIngredients(progress: Int) {
+        quantity = progress
     }
 }

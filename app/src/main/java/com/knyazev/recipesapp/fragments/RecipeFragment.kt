@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.knyazev.recipesapp.ARG_RECIPE
@@ -68,6 +69,20 @@ class RecipeFragment : Fragment() {
         binding.rvMethod.adapter = methodAdapter
         binding.rvMethod.addItemDecoration(divider)
         binding.rvIngredients.addItemDecoration(divider)
+
+        binding.sbPortions.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                ingredientAdapter.updateIngredients(progress)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 
     override fun onDestroyView() {

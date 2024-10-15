@@ -7,4 +7,6 @@
     <string name="icon_heart">Icon heart</string>
     <string name="title_ingredients">Ingredients</string>
     <string name="title_cooking_method">Cooking method</string>
+    <string name="position_in_method" translatable="false">%1$d. %2$s</string>
+    <string name="subtitle_portions">Portions:</string>
 </resources>
