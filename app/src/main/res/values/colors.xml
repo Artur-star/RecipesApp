@@ -9,4 +9,6 @@
     <color name="text_header_name">#5F3678</color>
     <color name="text_sections_name">#422952</color>
     <color name="divider">#F5F5F5</color>
+    <color name="text_subtitle">#626466</color>
+
 </resources>

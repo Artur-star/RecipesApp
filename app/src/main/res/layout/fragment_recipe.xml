@@ -66,6 +66,44 @@
                 android:layout_margin="@dimen/main_space_8"
                 android:text="@string/title_ingredients" />
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/main_space_8">
+
+                <TextView
+                    android:id="@+id/portion"
+                    style="@style/StyleSubtitle16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/subtitle_portions"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/countPortions"
+                    style="@style/StyleSubtitle16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/between_subtitle_6"
+                    app:layout_constraintStart_toEndOf="@+id/portion"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="3" />
+
+                <SeekBar
+                    android:id="@+id/sbPortions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/between_subtitle_6"
+                    android:layout_marginBottom="@dimen/main_space_8"
+                    android:max="5"
+                    android:min="1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/portion" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvIngredients"
                 android:layout_width="match_parent"

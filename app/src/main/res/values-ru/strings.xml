@@ -7,4 +7,5 @@
     <string name="icon_heart">Иконка сердца</string>
     <string name="title_ingredients">Ингредиенты</string>
     <string name="title_cooking_method">Способ приготовления</string>
+    <string name="subtitle_portions">Порций:</string>
 </resources>

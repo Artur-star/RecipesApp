@@ -6,9 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.knyazev.recipesapp.databinding.ItemIngredientsBinding
 import com.knyazev.recipesapp.entities.Ingredient
+import java.math.BigDecimal
 
 class IngredientsAdapter(private val dataSet: List<Ingredient>) :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
+
+    private var quantity: Int = 1
+
     class ViewHolder(binding: ItemIngredientsBinding) : RecyclerView.ViewHolder(binding.root) {
         val nameIngredient = binding.nameIngredient
         val countIngredient = binding.countIngredient
@@ -30,7 +34,16 @@ class IngredientsAdapter(private val dataSet: List<Ingredient>) :
         val ingredient: Ingredient = dataSet[position]
         Log.d("!!!", " IngredientsAdapter - onBindViewHolder ${ingredient.description}")
         holder.nameIngredient.text = ingredient.description
-        holder.countIngredient.text = ingredient.quantity
+
+        val totalQuantity = BigDecimal(ingredient.quantity) * BigDecimal(quantity)
+        val formatCountIngr = totalQuantity.setScale(1).stripTrailingZeros().toPlainString()
+
+        holder.countIngredient.text = formatCountIngr
         holder.unitOfMeasure.text = ingredient.unitOfMeasure
+    }
+
+    fun updateIngredients(progress: Int) {
+        quantity = progress
+        notifyDataSetChanged()
     }
 }

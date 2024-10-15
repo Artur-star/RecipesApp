@@ -7,9 +7,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.knyazev.recipesapp.ARG_RECIPE
+import com.knyazev.recipesapp.MIN_PORTIONS
 import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.adapters.IngredientsAdapter
 import com.knyazev.recipesapp.adapters.MethodAdapter
@@ -50,6 +52,7 @@ class RecipeFragment : Fragment() {
             Log.d("logTag", "Image not found $recipeImageUrl")
             null
         }
+        binding.countPortions.text = MIN_PORTIONS
         binding.ivHeaderRecipe.setImageDrawable(drawable)
         binding.tvHeaderRecipe.text = recipe?.title
     }
@@ -68,6 +71,19 @@ class RecipeFragment : Fragment() {
         binding.rvMethod.adapter = methodAdapter
         binding.rvMethod.addItemDecoration(divider)
         binding.rvIngredients.addItemDecoration(divider)
+
+        binding.sbPortions.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                binding.countPortions.text = progress.toString()
+                ingredientAdapter.updateIngredients(progress)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+        })
     }
 
     override fun onDestroyView() {
