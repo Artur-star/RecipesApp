@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/between_items_half_8"
+    android:layout_margin="@dimen/main_space_8"
     android:background="@color/white"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?selectableItemBackground"
-    app:cardCornerRadius="@dimen/corners_8">
+    app:cardCornerRadius="@dimen/main_space_8">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/height_icon_in_item_100"
+            android:layout_height="@dimen/height_and_width_100"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +31,7 @@
             style="@style/StyleVioletTitle14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/between_items_half_8"
+            android:padding="@dimen/main_space_8"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView"

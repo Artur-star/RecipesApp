@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/between_items_half_8"
+    android:layout_margin="@dimen/main_space_8"
     android:background="@color/white"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?selectableItemBackground"
-    app:cardCornerRadius="@dimen/corners_8">
+    app:cardCornerRadius="@dimen/main_space_8">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -31,8 +31,8 @@
             style="@style/StyleVioletTitle14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/between_items_half_8"
-            android:paddingTop="@dimen/between_items_half_8"
+            android:paddingHorizontal="@dimen/main_space_8"
+            android:paddingTop="@dimen/main_space_8"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView"
@@ -40,10 +40,10 @@
 
         <TextView
             android:id="@+id/descriptionTextView"
-            style="@style/StyleContent12"
+            style="@style/StyleContentInCategories12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/between_items_half_8"
+            android:padding="@dimen/main_space_8"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleTextView"

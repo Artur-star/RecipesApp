@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_layout"
-    android:paddingBottom="@dimen/between_items_half_8"
+    android:paddingBottom="@dimen/main_space_8"
     tools:context=".MainActivity">
 
     <LinearLayout

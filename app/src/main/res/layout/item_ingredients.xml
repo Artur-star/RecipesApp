@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/main_space_8">
+
+    <TextView
+        android:id="@+id/nameIngredient"
+        style="@style/StyleContentInIngredients14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="@dimen/max_width_200"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Творог" />
+
+    <TextView
+        android:id="@+id/countIngredient"
+        style="@style/StyleContentInIngredients14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal_quantity_3"
+        android:maxWidth="@dimen/max_width_50"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/unitOfMeasure"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="350" />
+
+    <TextView
+        android:id="@+id/unitOfMeasure"
+        style="@style/StyleContentInIngredients14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="@dimen/height_and_width_100"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="г" />
+</androidx.constraintlayout.widget.ConstraintLayout>

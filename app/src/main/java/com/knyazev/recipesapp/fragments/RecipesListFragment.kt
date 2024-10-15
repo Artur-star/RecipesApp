@@ -53,8 +53,8 @@ class RecipesListFragment : Fragment() {
             Log.d("logTag", "Image not found $categoryImageUrl")
             null
         }
-        binding.imageView2.setImageDrawable(drawable)
-        binding.tvHeaderRecipe.text = categoryName
+        binding.ivHeaderRecipesList.setImageDrawable(drawable)
+        binding.tvHeaderRecipes.text = categoryName
         initRecycler()
     }
 

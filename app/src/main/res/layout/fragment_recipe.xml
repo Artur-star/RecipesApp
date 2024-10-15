@@ -1,12 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_layout"
     tools:context=".fragments.RecipeFragment">
 
-    <TextView
-        android:id="@+id/nameRecipe"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</FrameLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/ivHeaderRecipe"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_header_224"
+                android:contentDescription="@string/image_of_recipe"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/burger_cheeseburger" />
+
+            <ImageView
+                android:id="@+id/ivHeaderHeart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_top_big_heart_21"
+                android:layout_marginEnd="@dimen/margin_end_big_heart_18.5"
+                android:contentDescription="@string/icon_heart"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="@+id/ivHeaderRecipe"
+                app:layout_constraintTop_toTopOf="@+id/ivHeaderRecipe"
+                tools:src="@drawable/ic_big_heart" />
+
+            <TextView
+                android:id="@+id/tvHeaderRecipe"
+                style="@style/StyleTitle20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_header_name_16"
+                android:background="@drawable/shape_rounded_variants"
+                android:maxWidth="@dimen/max_width_250"
+                android:padding="@dimen/padding_header_and_button_name_10"
+                app:layout_constraintBottom_toBottomOf="@+id/ivHeaderRecipe"
+                app:layout_constraintStart_toStartOf="@+id/ivHeaderRecipe"
+                tools:text="cheeseburger" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/main_space_8"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/StyleSections20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/main_space_8"
+                android:text="@string/title_ingredients" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvIngredients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/main_space_8"
+                android:background="@drawable/shape_rounded_variants"
+                android:backgroundTint="@color/white"
+                android:padding="@dimen/between_buttons_4"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_ingredients" />
+
+            <TextView
+                style="@style/StyleSections20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/main_space_8"
+                android:text="@string/title_cooking_method" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMethod"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/main_space_8"
+                android:background="@drawable/shape_rounded_variants"
+                android:backgroundTint="@color/white"
+                android:padding="@dimen/between_buttons_4"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_method" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
