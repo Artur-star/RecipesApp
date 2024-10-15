@@ -1,13 +1,12 @@
 package com.knyazev.recipesapp.adapters
 
-import android.icu.text.DecimalFormat
-import android.icu.text.DecimalFormatSymbols
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.knyazev.recipesapp.databinding.ItemIngredientsBinding
 import com.knyazev.recipesapp.entities.Ingredient
+import java.math.BigDecimal
 
 class IngredientsAdapter(private val dataSet: List<Ingredient>) :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
@@ -36,18 +35,15 @@ class IngredientsAdapter(private val dataSet: List<Ingredient>) :
         Log.d("!!!", " IngredientsAdapter - onBindViewHolder ${ingredient.description}")
         holder.nameIngredient.text = ingredient.description
 
-        val symbols = DecimalFormatSymbols()
-        symbols.decimalSeparator = '.'
-        val countPortions: Double = ingredient.quantity.toDouble() * quantity
-        val countIngredientIntOrDouble =
-            if (countPortions % countPortions.toInt() == 0.0) countPortions.toInt().toString()
-            else DecimalFormat("0.0", symbols).format(countPortions)
-        holder.countIngredient.text = countIngredientIntOrDouble
+        val totalQuantity = BigDecimal(ingredient.quantity) * BigDecimal(quantity)
+        val formatCountIngr = totalQuantity.setScale(1).stripTrailingZeros().toPlainString()
 
+        holder.countIngredient.text = formatCountIngr
         holder.unitOfMeasure.text = ingredient.unitOfMeasure
     }
 
     fun updateIngredients(progress: Int) {
         quantity = progress
+        notifyDataSetChanged()
     }
 }
