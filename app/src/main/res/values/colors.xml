@@ -3,7 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="button_red">#E13E3E</color>
-    <color name="button_blue">#525DC0</color>
+    <color name="button_and_thumb">#525DC0</color>
     <color name="main_layout">#F4FAFF</color>
     <color name="text_content">#666666</color>
     <color name="text_header_name">#5F3678</color>
@@ -11,6 +11,5 @@
     <color name="divider">#F5F5F5</color>
     <color name="text_subtitle">#626466</color>
     <color name="seekbar_progress">#A1A9F9</color>
-    <color name="seekbar_thumb">#525DC0</color>
 
 </resources>
