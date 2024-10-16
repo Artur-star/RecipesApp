@@ -1,5 +1,6 @@
 package com.knyazev.recipesapp.fragments
 
+import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -7,7 +8,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.SeekBar
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.knyazev.recipesapp.ARG_RECIPE
@@ -21,6 +24,7 @@ import com.knyazev.recipesapp.entities.Recipe
 class RecipeFragment : Fragment() {
 
     private var recipe: Recipe? = null
+    private var flag = false
 
     private var _binding: FragmentRecipeBinding? = null
     private val binding
@@ -55,6 +59,31 @@ class RecipeFragment : Fragment() {
         binding.countPortions.text = MIN_PORTIONS
         binding.ivHeaderRecipe.setImageDrawable(drawable)
         binding.tvHeaderRecipe.text = recipe?.title
+        binding.ibHeaderHeart.setImageDrawable(
+            AppCompatResources.getDrawable(
+                requireContext(),
+                R.drawable.ic_big_heart
+            )
+        )
+        binding.ibHeaderHeart.setOnClickListener {
+            if (!flag) {
+                binding.ibHeaderHeart.setImageDrawable(
+                    AppCompatResources.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_big_red_heart
+                    )
+                )
+                flag = true
+            } else {
+                binding.ibHeaderHeart.setImageDrawable(
+                    AppCompatResources.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_big_heart
+                    )
+                )
+                flag = false
+            }
+        }
     }
 
     private fun initRecycler() {
