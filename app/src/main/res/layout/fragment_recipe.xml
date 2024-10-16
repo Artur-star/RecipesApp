@@ -89,19 +89,22 @@
                     app:layout_constraintStart_toEndOf="@+id/portion"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="3" />
-
-                <SeekBar
-                    android:id="@+id/sbPortions"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/between_subtitle_6"
-                    android:layout_marginBottom="@dimen/main_space_8"
-                    android:max="5"
-                    android:min="1"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/portion" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <SeekBar
+                android:id="@+id/sbPortions"
+                style="@style/StyleSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="5"
+                android:min="1"
+                android:paddingStart="@dimen/main_space_8"
+                android:paddingTop="@dimen/between_subtitle_6"
+                android:paddingEnd="@dimen/main_space_8"
+                android:paddingBottom="@dimen/main_space_8"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/portion" />
 
 
             <androidx.recyclerview.widget.RecyclerView

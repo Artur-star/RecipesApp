@@ -54,4 +54,9 @@
         <item name="android:paddingHorizontal">@dimen/padding_header_and_button_name_10</item>
         <item name="cornerRadius">@dimen/main_space_8</item>
     </style>
+
+    <style name="StyleSeekBar">
+        <item name="android:thumb">@drawable/shape_seekbar_thumb</item>
+        <item name="android:progressDrawable">@drawable/shape_seekbar_progress</item>
+    </style>
 </resources>

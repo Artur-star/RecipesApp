@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="to_start_navigation_buttons_0">0dp</dimen>
+    <dimen name="radius_seekBar_thumb_2">2dp</dimen>
     <dimen name="margin_horizontal_quantity_3">3dp</dimen>
     <dimen name="between_buttons_4">4dp</dimen>
     <dimen name="between_subtitle_6">6dp</dimen>
@@ -9,6 +10,7 @@
     <dimen name="margin_header_name_16">16dp</dimen>
     <dimen name="margin_end_big_heart_18.5">18.5dp</dimen>
     <dimen name="margin_top_big_heart_21">21dp</dimen>
+    <dimen name="height_thumb_30">30dp</dimen>
     <dimen name="max_width_50">50dp</dimen>
     <dimen name="height_and_width_100">100dp</dimen>
     <dimen name="height_icon_in_item_130">130dp</dimen>
