@@ -1,6 +1,7 @@
 package com.knyazev.recipesapp.fragments
 
-import android.content.res.Resources
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -8,13 +9,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.SeekBar
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.knyazev.recipesapp.ARG_RECIPE
 import com.knyazev.recipesapp.MIN_PORTIONS
+import com.knyazev.recipesapp.PREFS_KEY_FAVORITES_CATEGORY
+import com.knyazev.recipesapp.PREFS_NAME
 import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.adapters.IngredientsAdapter
 import com.knyazev.recipesapp.adapters.MethodAdapter
@@ -25,6 +27,8 @@ class RecipeFragment : Fragment() {
 
     private var recipe: Recipe? = null
     private var flag = false
+    val sharedPrefs: SharedPreferences = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    private val setFavorites = HashSet<String>();
 
     private var _binding: FragmentRecipeBinding? = null
     private val binding
@@ -73,7 +77,7 @@ class RecipeFragment : Fragment() {
                         R.drawable.ic_big_red_heart
                     )
                 )
-                flag = true
+                //saveFavorites(id)
             } else {
                 binding.ibHeaderHeart.setImageDrawable(
                     AppCompatResources.getDrawable(
@@ -81,8 +85,9 @@ class RecipeFragment : Fragment() {
                         R.drawable.ic_big_heart
                     )
                 )
-                flag = false
+                deleteFavorites()
             }
+            flag = !flag
         }
     }
 
@@ -113,6 +118,23 @@ class RecipeFragment : Fragment() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
             }
         })
+    }
+
+    private fun saveFavorites(recipeId: Set<String>) {
+        val edit = sharedPrefs.edit()
+        edit.putStringSet(PREFS_KEY_FAVORITES_CATEGORY, recipeId)
+        edit.apply()
+    }
+
+    private fun getFavorites(): MutableSet<String> {
+        val newHashSet: MutableSet<String> =
+            sharedPrefs.getStringSet(PREFS_KEY_FAVORITES_CATEGORY, mutableSetOf()) ?: mutableSetOf()
+        return newHashSet
+    }
+
+    private fun deleteFavorites() {
+        if(sharedPrefs.contains(PREFS_KEY_FAVORITES_CATEGORY))
+        sharedPrefs.edit().remove(PREFS_KEY_FAVORITES_CATEGORY).apply()
     }
 
     override fun onDestroyView() {
