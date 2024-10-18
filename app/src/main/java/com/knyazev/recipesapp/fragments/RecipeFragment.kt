@@ -1,6 +1,6 @@
 package com.knyazev.recipesapp.fragments
 
-import android.content.res.Resources
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -8,13 +8,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.SeekBar
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.knyazev.recipesapp.ARG_RECIPE
 import com.knyazev.recipesapp.MIN_PORTIONS
+import com.knyazev.recipesapp.PREFS_KEY_FAVORITES_CATEGORY
+import com.knyazev.recipesapp.PREFS_NAME
 import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.adapters.IngredientsAdapter
 import com.knyazev.recipesapp.adapters.MethodAdapter
@@ -59,31 +60,37 @@ class RecipeFragment : Fragment() {
         binding.countPortions.text = MIN_PORTIONS
         binding.ivHeaderRecipe.setImageDrawable(drawable)
         binding.tvHeaderRecipe.text = recipe?.title
-        binding.ibHeaderHeart.setImageDrawable(
-            AppCompatResources.getDrawable(
-                requireContext(),
-                R.drawable.ic_big_heart
-            )
-        )
+        flag = getFavorites().contains(recipe?.id.toString())
+        setIconHearth()
         binding.ibHeaderHeart.setOnClickListener {
-            if (!flag) {
-                binding.ibHeaderHeart.setImageDrawable(
-                    AppCompatResources.getDrawable(
-                        requireContext(),
-                        R.drawable.ic_big_red_heart
-                    )
-                )
-                flag = true
+            if (!setIconHearth()) {
+                getFavorites().add(recipe?.id.toString())
+                saveFavorites(getFavorites())
             } else {
-                binding.ibHeaderHeart.setImageDrawable(
-                    AppCompatResources.getDrawable(
-                        requireContext(),
-                        R.drawable.ic_big_heart
-                    )
-                )
-                flag = false
+                getFavorites().remove(recipe?.id.toString())
+                saveFavorites(getFavorites())
             }
         }
+    }
+
+    private fun setIconHearth(): Boolean {
+        if (flag) {
+            binding.ibHeaderHeart.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_big_red_heart
+                )
+            )
+        } else {
+            binding.ibHeaderHeart.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_big_heart
+                )
+            )
+        }
+        flag = !flag
+        return flag
     }
 
     private fun initRecycler() {
@@ -113,6 +120,20 @@ class RecipeFragment : Fragment() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
             }
         })
+    }
+
+    private fun saveFavorites(recipeId: Set<String>) {
+        val sharedPrefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val edit = sharedPrefs.edit()
+        edit.putStringSet(PREFS_KEY_FAVORITES_CATEGORY, recipeId)
+        edit.apply()
+    }
+
+    private fun getFavorites(): MutableSet<String> {
+        val sharedPrefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val newHashSet: MutableSet<String> =
+            sharedPrefs.getStringSet(PREFS_KEY_FAVORITES_CATEGORY, mutableSetOf()) ?: mutableSetOf()
+        return newHashSet
     }
 
     override fun onDestroyView() {
