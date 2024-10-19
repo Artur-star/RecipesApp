@@ -1,6 +1,7 @@
 package com.knyazev.recipesapp.fragments
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -25,8 +26,7 @@ import com.knyazev.recipesapp.entities.Recipe
 class RecipeFragment : Fragment() {
 
     private var recipe: Recipe? = null
-    private var setFavorites: MutableSet<String> = HashSet()
-
+    private lateinit var sharedPref: SharedPreferences
     private var _binding: FragmentRecipeBinding? = null
     private val binding
         get() = _binding
@@ -36,14 +36,13 @@ class RecipeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d("!!", "onCreateView " + setFavorites.joinToString())
         _binding = FragmentRecipeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("!!", "onViewCreated " + setFavorites.joinToString())
+        sharedPref = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java)
         } else requireArguments().getParcelable(ARG_RECIPE)
@@ -52,6 +51,8 @@ class RecipeFragment : Fragment() {
     }
 
     private fun initUI(view: View) {
+        val favorites = getFavorites()
+        Log.d("!!", "initUI set: " + favorites.joinToString())
         val recipeImageUrl = recipe?.imageUrl
         val drawable = try {
             Drawable.createFromStream(view.context.assets.open(recipeImageUrl!!), null)
@@ -70,8 +71,6 @@ class RecipeFragment : Fragment() {
                     R.drawable.ic_big_red_heart
                 )
             )
-            setFavorites.add(recipe?.id.toString())
-            saveFavorites(setFavorites)
         } else {
             binding.ibHeaderHeart.setImageDrawable(
                 AppCompatResources.getDrawable(
@@ -79,8 +78,6 @@ class RecipeFragment : Fragment() {
                     R.drawable.ic_big_heart
                 )
             )
-            setFavorites.remove(recipe?.id.toString())
-            saveFavorites(setFavorites)
         }
         binding.ibHeaderHeart.setOnClickListener {
             flag = !flag
@@ -91,8 +88,7 @@ class RecipeFragment : Fragment() {
                         R.drawable.ic_big_red_heart
                     )
                 )
-                setFavorites.add(recipe?.id.toString())
-                saveFavorites(setFavorites)
+                favorites.add(recipe?.id.toString())
             } else {
                 binding.ibHeaderHeart.setImageDrawable(
                     AppCompatResources.getDrawable(
@@ -100,9 +96,9 @@ class RecipeFragment : Fragment() {
                         R.drawable.ic_big_heart
                     )
                 )
-                setFavorites.remove(recipe?.id.toString())
-                saveFavorites(setFavorites)
+                favorites.remove(recipe?.id.toString())
             }
+            saveFavorites(favorites)
         }
     }
 
@@ -136,24 +132,18 @@ class RecipeFragment : Fragment() {
     }
 
     private fun saveFavorites(recipeId: Set<String>) {
-        val sharedPrefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val edit = sharedPrefs.edit()
-        edit.clear()
-        edit.putStringSet(PREFS_KEY_FAVORITES_CATEGORY, recipeId)
-        edit.apply()
-        Log.d("!!", "saveFavorites " + setFavorites.joinToString())
+        sharedPref.edit().putStringSet(PREFS_KEY_FAVORITES_CATEGORY, recipeId).apply()
+        Log.d("!!", "SAVE set: " + recipeId.joinToString())
     }
 
     private fun getFavorites(): MutableSet<String> {
-        val sharedPrefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        setFavorites =
-            sharedPrefs.getStringSet(PREFS_KEY_FAVORITES_CATEGORY, mutableSetOf()) ?: mutableSetOf()
-        Log.d("!!", "getFavorites " + setFavorites.joinToString())
-        return setFavorites
+        val favorites =
+            sharedPref.getStringSet(PREFS_KEY_FAVORITES_CATEGORY, mutableSetOf()) ?: mutableSetOf()
+        Log.d("!!", "GET set: " + favorites.joinToString())
+        return favorites
     }
 
     override fun onDestroyView() {
-        Log.d("!!", "onDestroyView " + setFavorites.joinToString())
         super.onDestroyView()
         _binding = null
     }
