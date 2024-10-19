@@ -36,7 +36,7 @@ class IngredientsAdapter(private val dataSet: List<Ingredient>) :
         holder.nameIngredient.text = ingredient.description
 
         val totalQuantity = BigDecimal(ingredient.quantity) * BigDecimal(quantity)
-        val formatCountIngr = totalQuantity.setScale(1).stripTrailingZeros().toPlainString()
+        val formatCountIngr = totalQuantity.setScale(3).stripTrailingZeros().toPlainString()
 
         holder.countIngredient.text = formatCountIngr
         holder.unitOfMeasure.text = ingredient.unitOfMeasure

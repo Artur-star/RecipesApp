@@ -12,10 +12,10 @@ import android.widget.SeekBar
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import com.google.android.material.divider.MaterialDividerItemDecoration
-import com.knyazev.recipesapp.ARG_RECIPE
-import com.knyazev.recipesapp.MIN_PORTIONS
-import com.knyazev.recipesapp.PREFS_KEY_FAVORITES_CATEGORY
-import com.knyazev.recipesapp.PREFS_NAME
+import com.knyazev.recipesapp.Constants.ARG_RECIPE
+import com.knyazev.recipesapp.Constants.MIN_PORTIONS
+import com.knyazev.recipesapp.Constants.PREFS_KEY_FAVORITES_CATEGORY
+import com.knyazev.recipesapp.Constants.PREFS_NAME
 import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.adapters.IngredientsAdapter
 import com.knyazev.recipesapp.adapters.MethodAdapter
@@ -25,7 +25,7 @@ import com.knyazev.recipesapp.entities.Recipe
 class RecipeFragment : Fragment() {
 
     private var recipe: Recipe? = null
-    private var flag = false
+    private var setFavorites: MutableSet<String> = HashSet()
 
     private var _binding: FragmentRecipeBinding? = null
     private val binding
@@ -36,12 +36,14 @@ class RecipeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.d("!!", "onCreateView " + setFavorites.joinToString())
         _binding = FragmentRecipeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("!!", "onViewCreated " + setFavorites.joinToString())
         recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java)
         } else requireArguments().getParcelable(ARG_RECIPE)
@@ -60,20 +62,7 @@ class RecipeFragment : Fragment() {
         binding.countPortions.text = MIN_PORTIONS
         binding.ivHeaderRecipe.setImageDrawable(drawable)
         binding.tvHeaderRecipe.text = recipe?.title
-        flag = getFavorites().contains(recipe?.id.toString())
-        setIconHearth()
-        binding.ibHeaderHeart.setOnClickListener {
-            if (!setIconHearth()) {
-                getFavorites().add(recipe?.id.toString())
-                saveFavorites(getFavorites())
-            } else {
-                getFavorites().remove(recipe?.id.toString())
-                saveFavorites(getFavorites())
-            }
-        }
-    }
-
-    private fun setIconHearth(): Boolean {
+        var flag = getFavorites().contains(recipe?.id.toString())
         if (flag) {
             binding.ibHeaderHeart.setImageDrawable(
                 AppCompatResources.getDrawable(
@@ -81,6 +70,8 @@ class RecipeFragment : Fragment() {
                     R.drawable.ic_big_red_heart
                 )
             )
+            setFavorites.add(recipe?.id.toString())
+            saveFavorites(setFavorites)
         } else {
             binding.ibHeaderHeart.setImageDrawable(
                 AppCompatResources.getDrawable(
@@ -88,9 +79,31 @@ class RecipeFragment : Fragment() {
                     R.drawable.ic_big_heart
                 )
             )
+            setFavorites.remove(recipe?.id.toString())
+            saveFavorites(setFavorites)
         }
-        flag = !flag
-        return flag
+        binding.ibHeaderHeart.setOnClickListener {
+            flag = !flag
+            if (flag) {
+                binding.ibHeaderHeart.setImageDrawable(
+                    AppCompatResources.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_big_red_heart
+                    )
+                )
+                setFavorites.add(recipe?.id.toString())
+                saveFavorites(setFavorites)
+            } else {
+                binding.ibHeaderHeart.setImageDrawable(
+                    AppCompatResources.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_big_heart
+                    )
+                )
+                setFavorites.remove(recipe?.id.toString())
+                saveFavorites(setFavorites)
+            }
+        }
     }
 
     private fun initRecycler() {
@@ -125,18 +138,22 @@ class RecipeFragment : Fragment() {
     private fun saveFavorites(recipeId: Set<String>) {
         val sharedPrefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val edit = sharedPrefs.edit()
+        edit.clear()
         edit.putStringSet(PREFS_KEY_FAVORITES_CATEGORY, recipeId)
         edit.apply()
+        Log.d("!!", "saveFavorites " + setFavorites.joinToString())
     }
 
     private fun getFavorites(): MutableSet<String> {
         val sharedPrefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val newHashSet: MutableSet<String> =
+        setFavorites =
             sharedPrefs.getStringSet(PREFS_KEY_FAVORITES_CATEGORY, mutableSetOf()) ?: mutableSetOf()
-        return newHashSet
+        Log.d("!!", "getFavorites " + setFavorites.joinToString())
+        return setFavorites
     }
 
     override fun onDestroyView() {
+        Log.d("!!", "onDestroyView " + setFavorites.joinToString())
         super.onDestroyView()
         _binding = null
     }
