@@ -26,7 +26,9 @@ import com.knyazev.recipesapp.entities.Recipe
 class RecipeFragment : Fragment() {
 
     private var recipe: Recipe? = null
-    private lateinit var sharedPref: SharedPreferences
+    private val sharedPref: SharedPreferences by lazy {
+        requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    }
     private var _binding: FragmentRecipeBinding? = null
     private val binding
         get() = _binding
@@ -42,7 +44,6 @@ class RecipeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sharedPref = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java)
         } else requireArguments().getParcelable(ARG_RECIPE)
@@ -52,7 +53,6 @@ class RecipeFragment : Fragment() {
 
     private fun initUI(view: View) {
         val favorites = getFavorites()
-        Log.d("!!", "initUI set: " + favorites.joinToString())
         val recipeImageUrl = recipe?.imageUrl
         val drawable = try {
             Drawable.createFromStream(view.context.assets.open(recipeImageUrl!!), null)
@@ -133,14 +133,12 @@ class RecipeFragment : Fragment() {
 
     private fun saveFavorites(recipeId: Set<String>) {
         sharedPref.edit().putStringSet(PREFS_KEY_FAVORITES_CATEGORY, recipeId).apply()
-        Log.d("!!", "SAVE set: " + recipeId.joinToString())
     }
 
     private fun getFavorites(): MutableSet<String> {
         val favorites =
             sharedPref.getStringSet(PREFS_KEY_FAVORITES_CATEGORY, mutableSetOf()) ?: mutableSetOf()
-        Log.d("!!", "GET set: " + favorites.joinToString())
-        return favorites
+        return HashSet(favorites)
     }
 
     override fun onDestroyView() {
