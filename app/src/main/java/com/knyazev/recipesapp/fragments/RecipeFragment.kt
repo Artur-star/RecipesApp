@@ -1,6 +1,7 @@
 package com.knyazev.recipesapp.fragments
 
-import android.content.res.Resources
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -8,13 +9,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.SeekBar
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import com.google.android.material.divider.MaterialDividerItemDecoration
-import com.knyazev.recipesapp.ARG_RECIPE
-import com.knyazev.recipesapp.MIN_PORTIONS
+import com.knyazev.recipesapp.Constants.ARG_RECIPE
+import com.knyazev.recipesapp.Constants.MIN_PORTIONS
+import com.knyazev.recipesapp.Constants.PREFS_KEY_FAVORITES_CATEGORY
+import com.knyazev.recipesapp.Constants.PREFS_NAME
 import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.adapters.IngredientsAdapter
 import com.knyazev.recipesapp.adapters.MethodAdapter
@@ -24,8 +26,9 @@ import com.knyazev.recipesapp.entities.Recipe
 class RecipeFragment : Fragment() {
 
     private var recipe: Recipe? = null
-    private var flag = false
-
+    private val sharedPref: SharedPreferences by lazy {
+        requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    }
     private var _binding: FragmentRecipeBinding? = null
     private val binding
         get() = _binding
@@ -49,6 +52,7 @@ class RecipeFragment : Fragment() {
     }
 
     private fun initUI(view: View) {
+        val favorites = getFavorites()
         val recipeImageUrl = recipe?.imageUrl
         val drawable = try {
             Drawable.createFromStream(view.context.assets.open(recipeImageUrl!!), null)
@@ -59,21 +63,32 @@ class RecipeFragment : Fragment() {
         binding.countPortions.text = MIN_PORTIONS
         binding.ivHeaderRecipe.setImageDrawable(drawable)
         binding.tvHeaderRecipe.text = recipe?.title
-        binding.ibHeaderHeart.setImageDrawable(
-            AppCompatResources.getDrawable(
-                requireContext(),
-                R.drawable.ic_big_heart
+        var flag = getFavorites().contains(recipe?.id.toString())
+        if (flag) {
+            binding.ibHeaderHeart.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_big_red_heart
+                )
             )
-        )
+        } else {
+            binding.ibHeaderHeart.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_big_heart
+                )
+            )
+        }
         binding.ibHeaderHeart.setOnClickListener {
-            if (!flag) {
+            flag = !flag
+            if (flag) {
                 binding.ibHeaderHeart.setImageDrawable(
                     AppCompatResources.getDrawable(
                         requireContext(),
                         R.drawable.ic_big_red_heart
                     )
                 )
-                flag = true
+                favorites.add(recipe?.id.toString())
             } else {
                 binding.ibHeaderHeart.setImageDrawable(
                     AppCompatResources.getDrawable(
@@ -81,8 +96,9 @@ class RecipeFragment : Fragment() {
                         R.drawable.ic_big_heart
                     )
                 )
-                flag = false
+                favorites.remove(recipe?.id.toString())
             }
+            saveFavorites(favorites)
         }
     }
 
@@ -113,6 +129,16 @@ class RecipeFragment : Fragment() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
             }
         })
+    }
+
+    private fun saveFavorites(recipeId: Set<String>) {
+        sharedPref.edit().putStringSet(PREFS_KEY_FAVORITES_CATEGORY, recipeId).apply()
+    }
+
+    private fun getFavorites(): MutableSet<String> {
+        val favorites =
+            sharedPref.getStringSet(PREFS_KEY_FAVORITES_CATEGORY, mutableSetOf()) ?: mutableSetOf()
+        return HashSet(favorites)
     }
 
     override fun onDestroyView() {
