@@ -24,7 +24,6 @@ import com.knyazev.recipesapp.databinding.FragmentRecipeBinding
 import com.knyazev.recipesapp.entities.Recipe
 
 class RecipeFragment : Fragment() {
-
     private var recipe: Recipe? = null
     private val sharedPref: SharedPreferences by lazy {
         requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -38,6 +37,7 @@ class RecipeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        sharedPref
         _binding = FragmentRecipeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -135,7 +135,8 @@ class RecipeFragment : Fragment() {
         sharedPref.edit().putStringSet(PREFS_KEY_FAVORITES_CATEGORY, recipeId).apply()
     }
 
-    private fun getFavorites(): MutableSet<String> {
+    fun getFavorites(): MutableSet<String> {
+        Log.d("!!", sharedPref.toString())
         val favorites =
             sharedPref.getStringSet(PREFS_KEY_FAVORITES_CATEGORY, mutableSetOf()) ?: mutableSetOf()
         return HashSet(favorites)

@@ -278,4 +278,12 @@ object STUB {
     fun getRecipeById(recipeId: Int): Recipe {
         return burgerRecipes[recipeId]
     }
+
+    fun getRecipesByIds(setRecipesId: Set<Int>): List<Recipe> {
+        val listRecipes = mutableListOf<Recipe>()
+        for (recipe in setRecipesId) {
+            listRecipes.add(getRecipeById(recipe))
+        }
+        return listRecipes
+    }
 }

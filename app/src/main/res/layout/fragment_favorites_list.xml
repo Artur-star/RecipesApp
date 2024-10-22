@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_layout"
+    android:orientation="vertical"
+    tools:context=".fragments.FavoritesListFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivHeaderFavorites"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_header_224"
+            android:contentDescription="@string/image_of_favorites"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bcg_favorites"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            style="@style/StyleTitle20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_header_name_16"
+            android:layout_marginBottom="@dimen/margin_header_name_16"
+            android:background="@drawable/shape_rounded_variants"
+            android:gravity="center"
+            android:maxWidth="@dimen/max_width_250"
+            android:padding="@dimen/padding_header_and_button_name_10"
+            android:text="@string/title_favorites"
+            app:layout_constraintBottom_toBottomOf="@+id/ivHeaderFavorites"
+            app:layout_constraintStart_toStartOf="@+id/ivHeaderFavorites" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvFavorites"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/main_space_8"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="4"
+        tools:listitem="@layout/item_recipe" />
+
+    <TextView
+        android:id="@+id/tvPlug"
+        style="@style/StyleRegular16"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_header_name_16"
+        android:gravity="center"
+        android:text="@string/empty_recycler_favorites"
+        android:visibility="gone" />
+</LinearLayout>

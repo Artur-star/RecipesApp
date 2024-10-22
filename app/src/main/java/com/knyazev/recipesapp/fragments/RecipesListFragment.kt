@@ -68,7 +68,7 @@ class RecipesListFragment : Fragment() {
         })
     }
 
-    private fun openRecipeByRecipeId(recipeId: Int) {
+    fun openRecipeByRecipeId(recipeId: Int) {
         val recipe = STUB.getRecipeById(recipeId)
         val bundle = bundleOf(
             ARG_RECIPE to recipe
