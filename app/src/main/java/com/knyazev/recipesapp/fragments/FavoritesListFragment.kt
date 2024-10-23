@@ -1,10 +1,19 @@
 package com.knyazev.recipesapp.fragments
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
+import com.knyazev.recipesapp.Constants.ARG_RECIPE
+import com.knyazev.recipesapp.Constants.PREFS_KEY_FAVORITES_CATEGORY
+import com.knyazev.recipesapp.Constants.PREFS_NAME
+import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.STUB
 import com.knyazev.recipesapp.adapters.RecipesListAdapter
 import com.knyazev.recipesapp.databinding.FragmentFavoritesListBinding
@@ -12,8 +21,9 @@ import com.knyazev.recipesapp.entities.Recipe
 
 class FavoritesListFragment : Fragment() {
 
-    private val recipeFragment = RecipeFragment()
-    private val recipesListFragment = RecipesListFragment()
+    private val sharedPref: SharedPreferences by lazy {
+        requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    }
     private var _binding: FragmentFavoritesListBinding? = null
     private val binding
         get() = _binding
@@ -34,7 +44,7 @@ class FavoritesListFragment : Fragment() {
 
     private fun initRecycler() {
         val setRecipes: List<Recipe> =
-            STUB.getRecipesByIds(recipeFragment.getFavorites().map { it.toInt() }.toSet())
+            STUB.getRecipesByIds(getFavorites().map { it.toInt() }.toSet())
         val adapter = RecipesListAdapter(setRecipes)
         binding.rvFavorites.adapter = adapter
         if (setRecipes.isEmpty()) {
@@ -45,10 +55,27 @@ class FavoritesListFragment : Fragment() {
             binding.rvFavorites.visibility = View.VISIBLE
             adapter.setOnItemClickListener(object : RecipesListAdapter.OnItemClickListener {
                 override fun onItemClick(recipeId: Int) {
-                    recipesListFragment.openRecipeByRecipeId(recipeId)
+                    openRecipeByRecipeId(recipeId)
                 }
             })
         }
+    }
+
+    private fun openRecipeByRecipeId(recipeId: Int) {
+        val recipe = STUB.getRecipeById(recipeId)
+        val bundle = bundleOf(
+            ARG_RECIPE to recipe
+        )
+        parentFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace<RecipeFragment>(R.id.mainContainer, args = bundle)
+        }
+    }
+
+    private fun getFavorites(): MutableSet<String> {
+        val favorites =
+            sharedPref.getStringSet(PREFS_KEY_FAVORITES_CATEGORY, mutableSetOf()) ?: mutableSetOf()
+        return HashSet(favorites)
     }
 
     override fun onDestroyView() {

@@ -135,8 +135,7 @@ class RecipeFragment : Fragment() {
         sharedPref.edit().putStringSet(PREFS_KEY_FAVORITES_CATEGORY, recipeId).apply()
     }
 
-    fun getFavorites(): MutableSet<String> {
-        Log.d("!!", sharedPref.toString())
+    private fun getFavorites(): MutableSet<String> {
         val favorites =
             sharedPref.getStringSet(PREFS_KEY_FAVORITES_CATEGORY, mutableSetOf()) ?: mutableSetOf()
         return HashSet(favorites)
