@@ -1,4 +1,4 @@
-package com.knyazev.recipesapp.entities
+package com.knyazev.recipesapp.data.entities
 
 data class Category(
     val id: Int,

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/main_layout"
     android:paddingBottom="@dimen/main_space_8"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout"

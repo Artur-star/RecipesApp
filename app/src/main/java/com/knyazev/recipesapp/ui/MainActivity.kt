@@ -1,13 +1,13 @@
-package com.knyazev.recipesapp
+package com.knyazev.recipesapp.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.databinding.ActivityMainBinding
-import com.knyazev.recipesapp.fragments.CategoriesListFragment
-import com.knyazev.recipesapp.fragments.FavoritesListFragment
+import com.knyazev.recipesapp.ui.resipes.favorites.FavoritesListFragment
 
 class MainActivity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package com.knyazev.recipesapp.fragments
+package com.knyazev.recipesapp.ui.resipes.favorites
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -14,10 +14,11 @@ import com.knyazev.recipesapp.Constants.ARG_RECIPE
 import com.knyazev.recipesapp.Constants.PREFS_KEY_FAVORITES_CATEGORY
 import com.knyazev.recipesapp.Constants.PREFS_NAME
 import com.knyazev.recipesapp.R
-import com.knyazev.recipesapp.STUB
-import com.knyazev.recipesapp.adapters.RecipesListAdapter
+import com.knyazev.recipesapp.model.STUB
 import com.knyazev.recipesapp.databinding.FragmentFavoritesListBinding
-import com.knyazev.recipesapp.entities.Recipe
+import com.knyazev.recipesapp.data.entities.Recipe
+import com.knyazev.recipesapp.ui.resipes.recipe.RecipeFragment
+import com.knyazev.recipesapp.ui.resipes.recipesList.RecipesListAdapter
 
 class FavoritesListFragment : Fragment() {
 

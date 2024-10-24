@@ -1,4 +1,4 @@
-package com.knyazev.recipesapp.adapters
+package com.knyazev.recipesapp.ui.resipes.recipesList
 
 import android.graphics.drawable.Drawable
 import android.util.Log
@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.knyazev.recipesapp.databinding.ItemRecipeBinding
-import com.knyazev.recipesapp.entities.Recipe
+import com.knyazev.recipesapp.data.entities.Recipe
 
 class RecipesListAdapter(private val dataSet: List<Recipe>) :
     RecyclerView.Adapter<RecipesListAdapter.ViewHolder>() {

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/main_layout"
     android:orientation="vertical"
-    tools:context=".fragments.FavoritesListFragment">
+    tools:context=".ui.resipes.favorites.FavoritesListFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

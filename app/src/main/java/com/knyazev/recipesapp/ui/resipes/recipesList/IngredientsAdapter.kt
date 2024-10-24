@@ -1,11 +1,11 @@
-package com.knyazev.recipesapp.adapters
+package com.knyazev.recipesapp.ui.resipes.recipesList
 
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.knyazev.recipesapp.databinding.ItemIngredientsBinding
-import com.knyazev.recipesapp.entities.Ingredient
+import com.knyazev.recipesapp.data.entities.Ingredient
 import java.math.BigDecimal
 
 class IngredientsAdapter(private val dataSet: List<Ingredient>) :
