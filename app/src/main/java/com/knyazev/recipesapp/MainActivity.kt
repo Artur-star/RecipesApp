@@ -7,7 +7,7 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.knyazev.recipesapp.databinding.ActivityMainBinding
 import com.knyazev.recipesapp.fragments.CategoriesListFragment
-import com.knyazev.recipesapp.fragments.FavoritesFragment
+import com.knyazev.recipesapp.fragments.FavoritesListFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         binding.binFavourites.setOnClickListener {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
-                replace<FavoritesFragment>(R.id.mainContainer)
+                replace<FavoritesListFragment>(R.id.mainContainer)
                 addToBackStack(null)
             }
         }
