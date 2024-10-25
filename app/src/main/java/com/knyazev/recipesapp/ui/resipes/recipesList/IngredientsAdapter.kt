@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.knyazev.recipesapp.databinding.ItemIngredientsBinding
-import com.knyazev.recipesapp.data.entities.Ingredient
+import com.knyazev.recipesapp.model.Ingredient
 import java.math.BigDecimal
 
 class IngredientsAdapter(private val dataSet: List<Ingredient>) :

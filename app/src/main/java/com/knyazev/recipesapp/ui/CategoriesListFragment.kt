@@ -12,7 +12,7 @@ import com.knyazev.recipesapp.Constants.ARG_CATEGORY_ID
 import com.knyazev.recipesapp.Constants.ARG_CATEGORY_IMAGE_URL
 import com.knyazev.recipesapp.Constants.ARG_CATEGORY_NAME
 import com.knyazev.recipesapp.R
-import com.knyazev.recipesapp.model.STUB
+import com.knyazev.recipesapp.data.STUB
 import com.knyazev.recipesapp.databinding.FragmentListCategoriesBinding
 import com.knyazev.recipesapp.ui.resipes.recipesList.RecipesListFragment
 

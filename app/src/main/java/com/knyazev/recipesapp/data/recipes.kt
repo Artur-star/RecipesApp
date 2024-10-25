@@ -1,8 +1,8 @@
-package com.knyazev.recipesapp.model
+package com.knyazev.recipesapp.data
 
-import com.knyazev.recipesapp.data.entities.Category
-import com.knyazev.recipesapp.data.entities.Ingredient
-import com.knyazev.recipesapp.data.entities.Recipe
+import com.knyazev.recipesapp.model.Category
+import com.knyazev.recipesapp.model.Ingredient
+import com.knyazev.recipesapp.model.Recipe
 
 object STUB {
     private val burgerRecipes = listOf(

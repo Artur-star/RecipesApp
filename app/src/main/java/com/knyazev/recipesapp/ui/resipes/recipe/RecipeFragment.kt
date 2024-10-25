@@ -19,7 +19,7 @@ import com.knyazev.recipesapp.Constants.PREFS_KEY_FAVORITES_CATEGORY
 import com.knyazev.recipesapp.Constants.PREFS_NAME
 import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.databinding.FragmentRecipeBinding
-import com.knyazev.recipesapp.data.entities.Recipe
+import com.knyazev.recipesapp.model.Recipe
 import com.knyazev.recipesapp.ui.resipes.recipesList.IngredientsAdapter
 import com.knyazev.recipesapp.ui.resipes.recipesList.MethodAdapter
 

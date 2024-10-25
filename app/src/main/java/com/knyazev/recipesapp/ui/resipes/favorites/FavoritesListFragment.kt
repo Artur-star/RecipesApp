@@ -14,9 +14,9 @@ import com.knyazev.recipesapp.Constants.ARG_RECIPE
 import com.knyazev.recipesapp.Constants.PREFS_KEY_FAVORITES_CATEGORY
 import com.knyazev.recipesapp.Constants.PREFS_NAME
 import com.knyazev.recipesapp.R
-import com.knyazev.recipesapp.model.STUB
+import com.knyazev.recipesapp.data.STUB
 import com.knyazev.recipesapp.databinding.FragmentFavoritesListBinding
-import com.knyazev.recipesapp.data.entities.Recipe
+import com.knyazev.recipesapp.model.Recipe
 import com.knyazev.recipesapp.ui.resipes.recipe.RecipeFragment
 import com.knyazev.recipesapp.ui.resipes.recipesList.RecipesListAdapter
 
