@@ -1,4 +1,4 @@
-package com.knyazev.recipesapp.adapters
+package com.knyazev.recipesapp.ui.resipes.recipesList
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

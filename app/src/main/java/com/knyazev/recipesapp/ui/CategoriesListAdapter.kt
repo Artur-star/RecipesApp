@@ -1,4 +1,4 @@
-package com.knyazev.recipesapp.adapters
+package com.knyazev.recipesapp.ui
 
 import android.graphics.drawable.Drawable
 import android.util.Log
@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.knyazev.recipesapp.databinding.ItemCategoryBinding
-import com.knyazev.recipesapp.entities.Category
+import com.knyazev.recipesapp.model.Category
 
 class CategoriesListAdapter(private val dataSet: List<Category>) :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {

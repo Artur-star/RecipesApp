@@ -1,4 +1,4 @@
-package com.knyazev.recipesapp.fragments
+package com.knyazev.recipesapp.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,9 +12,9 @@ import com.knyazev.recipesapp.Constants.ARG_CATEGORY_ID
 import com.knyazev.recipesapp.Constants.ARG_CATEGORY_IMAGE_URL
 import com.knyazev.recipesapp.Constants.ARG_CATEGORY_NAME
 import com.knyazev.recipesapp.R
-import com.knyazev.recipesapp.STUB
-import com.knyazev.recipesapp.adapters.CategoriesListAdapter
+import com.knyazev.recipesapp.data.STUB
 import com.knyazev.recipesapp.databinding.FragmentListCategoriesBinding
+import com.knyazev.recipesapp.ui.resipes.recipesList.RecipesListFragment
 
 class CategoriesListFragment : Fragment() {
     private var _binding: FragmentListCategoriesBinding? = null
