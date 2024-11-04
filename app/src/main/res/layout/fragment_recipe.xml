@@ -28,7 +28,7 @@
                 tools:src="@drawable/burger_cheeseburger" />
 
             <ImageButton
-                android:id="@+id/ibHeaderHeart"
+                android:id="@+id/isFavorite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_top_big_heart_21"
