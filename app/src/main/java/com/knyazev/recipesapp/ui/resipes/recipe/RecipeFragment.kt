@@ -25,7 +25,7 @@ import com.knyazev.recipesapp.ui.resipes.recipesList.IngredientsAdapter
 import com.knyazev.recipesapp.ui.resipes.recipesList.MethodAdapter
 
 class RecipeFragment : Fragment() {
-    private val viewModel:RecipeViewModel by viewModels()
+    private val viewModel: RecipeViewModel by viewModels()
     private var recipe: Recipe? = null
     private val sharedPref: SharedPreferences by lazy {
         requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -70,24 +70,24 @@ class RecipeFragment : Fragment() {
         binding.tvHeaderRecipe.text = recipe?.title
         var flag = getFavorites().contains(recipe?.id.toString())
         if (flag) {
-            binding.isFavorite.setImageDrawable(
+            binding.ibHeaderHeart.setImageDrawable(
                 AppCompatResources.getDrawable(
                     requireContext(),
                     R.drawable.ic_big_red_heart
                 )
             )
         } else {
-            binding.isFavorite.setImageDrawable(
+            binding.ibHeaderHeart.setImageDrawable(
                 AppCompatResources.getDrawable(
                     requireContext(),
                     R.drawable.ic_big_heart
                 )
             )
         }
-        binding.isFavorite.setOnClickListener {
+        binding.ibHeaderHeart.setOnClickListener {
             flag = !flag
             if (flag) {
-                binding.isFavorite.setImageDrawable(
+                binding.ibHeaderHeart.setImageDrawable(
                     AppCompatResources.getDrawable(
                         requireContext(),
                         R.drawable.ic_big_red_heart
@@ -95,7 +95,7 @@ class RecipeFragment : Fragment() {
                 )
                 favorites.add(recipe?.id.toString())
             } else {
-                binding.isFavorite.setImageDrawable(
+                binding.ibHeaderHeart.setImageDrawable(
                     AppCompatResources.getDrawable(
                         requireContext(),
                         R.drawable.ic_big_heart
