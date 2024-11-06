@@ -49,6 +49,7 @@ class RecipeFragment : Fragment() {
         recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java)
         } else requireArguments().getParcelable(ARG_RECIPE)
+        viewModel.loadRecipe(recipe!!.id)
         viewModel.recipeStateLD.observe(viewLifecycleOwner) {
             Log.i("!!!", it.isFavorite.toString())
         }
@@ -140,11 +141,7 @@ class RecipeFragment : Fragment() {
         sharedPref.edit().putStringSet(PREFS_KEY_FAVORITES_CATEGORY, recipeId).apply()
     }
 
-    private fun getFavorites(): MutableSet<String> {
-        val favorites =
-            sharedPref.getStringSet(PREFS_KEY_FAVORITES_CATEGORY, mutableSetOf()) ?: mutableSetOf()
-        return HashSet(favorites)
-    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

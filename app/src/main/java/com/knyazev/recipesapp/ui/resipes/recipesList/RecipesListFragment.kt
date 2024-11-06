@@ -71,7 +71,7 @@ class RecipesListFragment : Fragment() {
     private fun openRecipeByRecipeId(recipeId: Int) {
         val recipe = STUB.getRecipeById(recipeId)
         val bundle = bundleOf(
-            ARG_RECIPE to recipe
+            ARG_RECIPE to recipeId
         )
         parentFragmentManager.commit {
             setReorderingAllowed(true)
