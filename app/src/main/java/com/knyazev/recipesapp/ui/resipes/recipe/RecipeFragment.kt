@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.knyazev.recipesapp.Constants.ARG_RECIPE
 import com.knyazev.recipesapp.Constants.MIN_PORTIONS
@@ -24,6 +25,7 @@ import com.knyazev.recipesapp.ui.resipes.recipesList.IngredientsAdapter
 import com.knyazev.recipesapp.ui.resipes.recipesList.MethodAdapter
 
 class RecipeFragment : Fragment() {
+    private val viewModel: RecipeViewModel by viewModels()
     private var recipe: Recipe? = null
     private val sharedPref: SharedPreferences by lazy {
         requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -47,6 +49,9 @@ class RecipeFragment : Fragment() {
         recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java)
         } else requireArguments().getParcelable(ARG_RECIPE)
+        viewModel.recipeStateLD.observe(viewLifecycleOwner) {
+            Log.i("!!!", it.isFavorite.toString())
+        }
         initUI(view)
         initRecycler()
     }
