@@ -23,7 +23,6 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
 
     init {
         Log.i("!!!", "init in RecipeViewModel")
-        loadRecipe(_recipeStateLD.value.)
     }
 
     fun loadRecipe(recipeId: Int) {
@@ -34,7 +33,6 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
             isFavorite = getFavorites().contains(recipeId.toString()),
             countPortions = 1
         )
-        Log.i("!!!", "loadRecipe in RecipeViewModel ${RecipeState().recipe}, ${RecipeState().countPortions}, ${RecipeState().isFavorite}")
     }
 
     private fun getFavorites(): MutableSet<String> {
@@ -43,25 +41,24 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
                 .getStringSet(
                     PREFS_KEY_FAVORITES_CATEGORY, mutableSetOf()
                 ) ?: mutableSetOf()
-        Log.i("!!!", "getFavorites in RecipeViewModel ${favorites}")
         return HashSet(favorites)
     }
 
     fun onFavoritesClicked(recipeId: Int) {
         val favorite = getFavorites().contains(recipeId.toString())
-        Log.i("!!!", "onFavoritesClicked in RecipeViewModel ${favorite}")
-        if (favorite) getFavorites().add(recipeId.toString())
-        else getFavorites().remove(recipeId.toString())
-        saveFavorites(getFavorites())
-        _recipeStateLD.value?.copy(isFavorite = getFavorites().contains(recipeId.toString()))
-    }
+        val favorites = getFavorites()
 
+        if (favorite) favorites.remove(recipeId.toString())
+        else favorites.add(recipeId.toString())
+
+        saveFavorites(favorites)
+        _recipeStateLD.value?.copy(isFavorite = favorites.contains(recipeId.toString()))
+    }
 
     private fun saveFavorites(recipeId: Set<String>) {
         getApplication<Application>().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             .edit()
             .putStringSet(PREFS_KEY_FAVORITES_CATEGORY, recipeId)
             .apply()
-        Log.i("!!!", "saveFavorites in RecipeViewModel ${getApplication<Application>().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).all}")
     }
 }

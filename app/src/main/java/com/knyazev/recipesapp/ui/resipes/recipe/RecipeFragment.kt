@@ -1,7 +1,5 @@
 package com.knyazev.recipesapp.ui.resipes.recipe
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -16,7 +14,6 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.knyazev.recipesapp.Constants.ARG_RECIPE
 import com.knyazev.recipesapp.Constants.MIN_PORTIONS
-import com.knyazev.recipesapp.Constants.PREFS_NAME
 import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.databinding.FragmentRecipeBinding
 import com.knyazev.recipesapp.model.Recipe
@@ -45,7 +42,7 @@ class RecipeFragment : Fragment() {
         recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java)
         } else requireArguments().getParcelable(ARG_RECIPE)
-
+        viewModel.loadRecipe(recipeId = recipe?.id ?: 10)
         initUI(view)
         initRecycler()
     }
@@ -53,8 +50,8 @@ class RecipeFragment : Fragment() {
     private fun initUI(view: View) {
         viewModel.recipeStateLD.observe(viewLifecycleOwner) {
             flag = it.isFavorite
+            Log.i("!!!","initUI $flag")
             recipe = it.recipe
-            Log.i("!!!", it.isFavorite.toString())
         }
         val recipeImageUrl = recipe?.imageUrl
         val drawable = try {
