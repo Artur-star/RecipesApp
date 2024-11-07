@@ -1,12 +1,13 @@
 package com.knyazev.recipesapp.ui.resipes.recipe
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.knyazev.recipesapp.Constants.PREFS_KEY_FAVORITES_CATEGORY
+import com.knyazev.recipesapp.Constants.PREFS_NAME
 import com.knyazev.recipesapp.data.STUB
 import com.knyazev.recipesapp.model.Recipe
 
@@ -22,17 +23,45 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
 
     init {
         Log.i("!!!", "init in RecipeViewModel")
-        _recipeStateLD.value?.copy(isFavorite = true)
+        loadRecipe(_recipeStateLD.value.)
     }
 
     fun loadRecipe(recipeId: Int) {
         //TODO(): load from network
-        RecipeState(recipe = STUB.getRecipeById(recipeId))
+
+        RecipeState(
+            recipe = STUB.getRecipeById(recipeId),
+            isFavorite = getFavorites().contains(recipeId.toString()),
+            countPortions = 1
+        )
+        Log.i("!!!", "loadRecipe in RecipeViewModel ${RecipeState().recipe}, ${RecipeState().countPortions}, ${RecipeState().isFavorite}")
     }
 
     private fun getFavorites(): MutableSet<String> {
-        val favorites =
-            .getStringSet(PREFS_KEY_FAVORITES_CATEGORY, mutableSetOf()) ?: mutableSetOf()
+        val favorites: MutableSet<String> =
+            getApplication<Application>().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                .getStringSet(
+                    PREFS_KEY_FAVORITES_CATEGORY, mutableSetOf()
+                ) ?: mutableSetOf()
+        Log.i("!!!", "getFavorites in RecipeViewModel ${favorites}")
         return HashSet(favorites)
+    }
+
+    fun onFavoritesClicked(recipeId: Int) {
+        val favorite = getFavorites().contains(recipeId.toString())
+        Log.i("!!!", "onFavoritesClicked in RecipeViewModel ${favorite}")
+        if (favorite) getFavorites().add(recipeId.toString())
+        else getFavorites().remove(recipeId.toString())
+        saveFavorites(getFavorites())
+        _recipeStateLD.value?.copy(isFavorite = getFavorites().contains(recipeId.toString()))
+    }
+
+
+    private fun saveFavorites(recipeId: Set<String>) {
+        getApplication<Application>().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .edit()
+            .putStringSet(PREFS_KEY_FAVORITES_CATEGORY, recipeId)
+            .apply()
+        Log.i("!!!", "saveFavorites in RecipeViewModel ${getApplication<Application>().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).all}")
     }
 }
