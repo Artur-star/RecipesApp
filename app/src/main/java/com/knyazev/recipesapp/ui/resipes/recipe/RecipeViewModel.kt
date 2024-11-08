@@ -28,11 +28,14 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
     fun loadRecipe(recipeId: Int) {
         //TODO(): load from network
 
-        RecipeState(
-            recipe = STUB.getRecipeById(recipeId),
-            isFavorite = getFavorites().contains(recipeId.toString()),
-            countPortions = 1
-        )
+        val recipe = STUB.getRecipeById(recipeId)
+        val isFavorite = getFavorites().contains(recipeId.toString())
+        val recipeState: RecipeState =
+            _recipeStateLD.value?.copy(isFavorite = isFavorite, recipe = recipe) ?: RecipeState(
+                isFavorite = isFavorite,
+                recipe = recipe
+            )
+        _recipeStateLD.value = recipeState
     }
 
     private fun getFavorites(): MutableSet<String> {
@@ -52,7 +55,9 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         else favorites.add(recipeId.toString())
 
         saveFavorites(favorites)
-        _recipeStateLD.value?.copy(isFavorite = favorites.contains(recipeId.toString()))
+        val copy = _recipeStateLD.value?.copy(isFavorite = favorites.contains(recipeId.toString()))
+            ?: RecipeState(isFavorite = favorites.contains(recipeId.toString()))
+        _recipeStateLD.value = copy
     }
 
     private fun saveFavorites(recipeId: Set<String>) {

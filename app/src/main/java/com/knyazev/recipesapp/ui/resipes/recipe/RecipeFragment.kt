@@ -23,7 +23,6 @@ import com.knyazev.recipesapp.ui.resipes.recipesList.MethodAdapter
 class RecipeFragment : Fragment() {
     private val viewModel: RecipeViewModel by viewModels()
     private var recipe: Recipe? = null
-    var flag = false
     private var _binding: FragmentRecipeBinding? = null
     private val binding
         get() = _binding
@@ -49,38 +48,9 @@ class RecipeFragment : Fragment() {
 
     private fun initUI(view: View) {
         viewModel.recipeStateLD.observe(viewLifecycleOwner) {
-            flag = it.isFavorite
-            Log.i("!!!","initUI $flag")
-            recipe = it.recipe
-        }
-        val recipeImageUrl = recipe?.imageUrl
-        val drawable = try {
-            Drawable.createFromStream(view.context.assets.open(recipeImageUrl!!), null)
-        } catch (e: NullPointerException) {
-            Log.d("logTag", "Image not found $recipeImageUrl")
-            null
-        }
+            val flag = it.isFavorite
+            val recipe = it.recipe
 
-        binding.countPortions.text = MIN_PORTIONS
-        binding.ivHeaderRecipe.setImageDrawable(drawable)
-        binding.tvHeaderRecipe.text = recipe?.title
-        if (flag) {
-            binding.ibHeaderHeart.setImageDrawable(
-                AppCompatResources.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_big_red_heart
-                )
-            )
-        } else {
-            binding.ibHeaderHeart.setImageDrawable(
-                AppCompatResources.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_big_heart
-                )
-            )
-        }
-        binding.ibHeaderHeart.setOnClickListener {
-            flag = !flag
             if (flag) {
                 binding.ibHeaderHeart.setImageDrawable(
                     AppCompatResources.getDrawable(
@@ -96,6 +66,19 @@ class RecipeFragment : Fragment() {
                     )
                 )
             }
+            val recipeImageUrl = recipe?.imageUrl
+            val drawable = try {
+                Drawable.createFromStream(view.context.assets.open(recipeImageUrl!!), null)
+            } catch (e: NullPointerException) {
+                Log.d("logTag", "Image not found $recipeImageUrl")
+                null
+            }
+            binding.countPortions.text = MIN_PORTIONS
+            binding.ivHeaderRecipe.setImageDrawable(drawable)
+            binding.tvHeaderRecipe.text = recipe?.title
+        }
+
+        binding.ibHeaderHeart.setOnClickListener {
             viewModel.onFavoritesClicked(recipe?.id ?: 0)
         }
     }
@@ -128,7 +111,6 @@ class RecipeFragment : Fragment() {
             }
         })
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
