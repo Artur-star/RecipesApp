@@ -2,6 +2,7 @@ package com.knyazev.recipesapp.ui.resipes.recipe
 
 import android.app.Application
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -15,6 +16,7 @@ data class RecipeState(
     val isFavorite: Boolean = false,
     val countPortions: Int = 1,
     val recipe: Recipe? = null,
+    val recipeImage: Drawable? = null,
 )
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application) {
@@ -27,13 +29,27 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
 
     fun loadRecipe(recipeId: Int) {
         //TODO(): load from network
-
         val recipe = STUB.getRecipeById(recipeId)
         val isFavorite = getFavorites().contains(recipeId.toString())
+        val recipeImageUrl = recipe.imageUrl
+        val recipeImage = try {
+            Drawable.createFromStream(
+                getApplication<Application>().applicationContext.assets.open(recipeImageUrl), null
+            )
+        } catch (e: NullPointerException) {
+            Log.e("!!!", "Image not found $recipeImageUrl")
+            null
+        }
+
         val recipeState: RecipeState =
-            _recipeStateLD.value?.copy(isFavorite = isFavorite, recipe = recipe) ?: RecipeState(
+            _recipeStateLD.value?.copy(
                 isFavorite = isFavorite,
-                recipe = recipe
+                recipe = recipe,
+                recipeImage = recipeImage
+            ) ?: RecipeState(
+                isFavorite = isFavorite,
+                recipe = recipe,
+                recipeImage = recipeImage
             )
         _recipeStateLD.value = recipeState
     }

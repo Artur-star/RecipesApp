@@ -1,9 +1,7 @@
 package com.knyazev.recipesapp.ui.resipes.recipe
 
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,15 +40,12 @@ class RecipeFragment : Fragment() {
             requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java)
         } else requireArguments().getParcelable(ARG_RECIPE)
         viewModel.loadRecipe(recipeId = recipe?.id ?: 10)
-        initUI(view)
+        initUI()
         initRecycler()
     }
 
-    private fun initUI(view: View) {
-        viewModel.recipeStateLD.observe(viewLifecycleOwner) {
-            val flag = it.isFavorite
-            val recipe = it.recipe
-
+    private fun initUI() {
+        viewModel.recipeStateLD.observe(viewLifecycleOwner) { (flag, _, recipe, recipeImage) ->
             if (flag) {
                 binding.ibHeaderHeart.setImageDrawable(
                     AppCompatResources.getDrawable(
@@ -66,15 +61,8 @@ class RecipeFragment : Fragment() {
                     )
                 )
             }
-            val recipeImageUrl = recipe?.imageUrl
-            val drawable = try {
-                Drawable.createFromStream(view.context.assets.open(recipeImageUrl!!), null)
-            } catch (e: NullPointerException) {
-                Log.d("logTag", "Image not found $recipeImageUrl")
-                null
-            }
             binding.countPortions.text = MIN_PORTIONS
-            binding.ivHeaderRecipe.setImageDrawable(drawable)
+            binding.ivHeaderRecipe.setImageDrawable(recipeImage)
             binding.tvHeaderRecipe.text = recipe?.title
         }
 
