@@ -41,7 +41,6 @@ class RecipeFragment : Fragment() {
         } else requireArguments().getParcelable(ARG_RECIPE)
         viewModel.loadRecipe(recipeId = recipe?.id ?: 10)
         initUI()
-        initRecycler()
     }
 
     private fun initUI() {
@@ -103,10 +102,6 @@ class RecipeFragment : Fragment() {
 
         binding.rvMethod.addItemDecoration(divider)
         binding.rvIngredients.addItemDecoration(divider)
-    }
-
-    private fun initRecycler() {
-
     }
 
     override fun onDestroyView() {
