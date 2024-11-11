@@ -54,6 +54,12 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         _recipeStateLD.value = recipeState
     }
 
+    fun setCountPortions(count: Int) {
+        val recipeState =
+            _recipeStateLD.value?.copy(countPortions = count) ?: RecipeState(countPortions = count)
+        _recipeStateLD.value = recipeState
+    }
+
     private fun getFavorites(): MutableSet<String> {
         val favorites: MutableSet<String> =
             getApplication<Application>().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
