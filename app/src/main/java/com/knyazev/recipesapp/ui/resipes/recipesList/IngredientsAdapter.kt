@@ -8,7 +8,7 @@ import com.knyazev.recipesapp.databinding.ItemIngredientsBinding
 import com.knyazev.recipesapp.model.Ingredient
 import java.math.BigDecimal
 
-class IngredientsAdapter(private val dataSet: List<Ingredient>) :
+class IngredientsAdapter(var dataSet: List<Ingredient>) :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
 
     private var quantity: Int = 1
