@@ -70,12 +70,16 @@ class RecipeFragment : Fragment() {
             binding.countPortions.text = countPortion.toString()
             ingredientAdapter.updateIngredients(recipe?.ingredients ?: emptyList(), countPortion)
             methodAdapter.updateMethod(recipe?.method ?: emptyList())
+
+            binding.ibHeaderHeart.setOnClickListener {
+                viewModel.onFavoritesClicked(
+                    recipe?.id ?: 0
+                )
+            }
         }
 
         binding.rvIngredients.adapter = ingredientAdapter
         binding.rvMethod.adapter = methodAdapter
-
-        binding.ibHeaderHeart.setOnClickListener { viewModel.onFavoritesClicked(recipe?.id ?: 0) }
 
         val portionSeekBar = PortionSeekBarListener(onChangeIngredients = { portion ->
             viewModel.setCountPortions(portion)
