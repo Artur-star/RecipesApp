@@ -20,6 +20,8 @@ import com.knyazev.recipesapp.ui.resipes.recipesList.IngredientsAdapter
 import com.knyazev.recipesapp.ui.resipes.recipesList.MethodAdapter
 
 class RecipeFragment : Fragment() {
+    private var ingredientAdapter = IngredientsAdapter(emptyList())
+    private var methodAdapter = MethodAdapter(emptyList())
     private val viewModel: RecipeViewModel by viewModels()
     private var recipe: Recipe? = null
     private var _binding: FragmentRecipeBinding? = null
@@ -45,8 +47,6 @@ class RecipeFragment : Fragment() {
     }
 
     private fun initUI() {
-        val ingredientAdapter = IngredientsAdapter(recipe?.ingredients ?: emptyList())
-        val methodAdapter = MethodAdapter(recipe?.method ?: emptyList())
         viewModel.recipeStateLD.observe(viewLifecycleOwner) { (flag, countPortion, recipe, recipeImage) ->
             if (flag) {
                 binding.ibHeaderHeart.setImageDrawable(
@@ -67,12 +67,13 @@ class RecipeFragment : Fragment() {
             binding.ivHeaderRecipe.setImageDrawable(recipeImage)
             binding.tvHeaderRecipe.text = recipe?.title
 
-            binding.rvIngredients.adapter = ingredientAdapter
-            binding.rvMethod.adapter = methodAdapter
-
             binding.countPortions.text = countPortion.toString()
-            ingredientAdapter.updateIngredients(countPortion)
+            ingredientAdapter.updateIngredients(recipe?.ingredients ?: emptyList(), countPortion)
+            methodAdapter.updateMethod(recipe?.method ?: emptyList())
         }
+
+        binding.rvIngredients.adapter = ingredientAdapter
+        binding.rvMethod.adapter = methodAdapter
 
         binding.ibHeaderHeart.setOnClickListener { viewModel.onFavoritesClicked(recipe?.id ?: 0) }
 
@@ -99,8 +100,8 @@ class RecipeFragment : Fragment() {
 }
 
 class PortionSeekBarListener(val onChangeIngredients: (Int) -> Unit) : OnSeekBarChangeListener {
-    override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-        onChangeIngredients(p1)
+    override fun onProgressChanged(p0: SeekBar?, position: Int, p2: Boolean) {
+        onChangeIngredients(position)
     }
 
     override fun onStartTrackingTouch(p0: SeekBar?) {

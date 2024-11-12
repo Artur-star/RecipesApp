@@ -31,4 +31,8 @@ class MethodAdapter(var dataSet: List<String>) :
             R.string.position_in_method, numberPosition, methodPoint
         )
     }
+
+    fun updateMethod(dataSet: List<String>) {
+        this.dataSet = dataSet
+    }
 }
