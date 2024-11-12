@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -19,6 +20,8 @@ import com.knyazev.recipesapp.ui.resipes.recipesList.IngredientsAdapter
 import com.knyazev.recipesapp.ui.resipes.recipesList.MethodAdapter
 
 class RecipeFragment : Fragment() {
+    private var ingredientAdapter = IngredientsAdapter(emptyList())
+    private var methodAdapter = MethodAdapter(emptyList())
     private val viewModel: RecipeViewModel by viewModels()
     private var recipe: Recipe? = null
     private var _binding: FragmentRecipeBinding? = null
@@ -28,7 +31,7 @@ class RecipeFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentRecipeBinding.inflate(inflater, container, false)
         return binding.root
@@ -64,34 +67,24 @@ class RecipeFragment : Fragment() {
             binding.ivHeaderRecipe.setImageDrawable(recipeImage)
             binding.tvHeaderRecipe.text = recipe?.title
 
-            val ingredientAdapter = IngredientsAdapter(recipe?.ingredients ?: emptyList())
-            val methodAdapter = MethodAdapter(recipe?.method ?: emptyList())
-            binding.rvIngredients.adapter = ingredientAdapter
-            binding.rvMethod.adapter = methodAdapter
-
             binding.countPortions.text = countPortion.toString()
-            ingredientAdapter.updateIngredients(countPortion)
+            ingredientAdapter.updateIngredients(recipe?.ingredients ?: emptyList(), countPortion)
+            methodAdapter.updateMethod(recipe?.method ?: emptyList())
 
-            binding.sbPortions.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(
-                    seekBar: SeekBar?,
-                    progress: Int,
-                    fromUser: Boolean
-                ) {
-                    viewModel.setCountPortions(progress)
-                }
-
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                }
-
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                }
-            })
+            binding.ibHeaderHeart.setOnClickListener {
+                viewModel.onFavoritesClicked(
+                    recipe?.id ?: 0
+                )
+            }
         }
 
-        binding.ibHeaderHeart.setOnClickListener {
-            viewModel.onFavoritesClicked(recipe?.id ?: 0)
-        }
+        binding.rvIngredients.adapter = ingredientAdapter
+        binding.rvMethod.adapter = methodAdapter
+
+        val portionSeekBar = PortionSeekBarListener(onChangeIngredients = { portion ->
+            viewModel.setCountPortions(portion)
+        })
+        binding.sbPortions.setOnSeekBarChangeListener(portionSeekBar)
 
         val divider =
             MaterialDividerItemDecoration(requireContext(), MaterialDividerItemDecoration.VERTICAL)
@@ -107,5 +100,17 @@ class RecipeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+}
+
+class PortionSeekBarListener(val onChangeIngredients: (Int) -> Unit) : OnSeekBarChangeListener {
+    override fun onProgressChanged(p0: SeekBar?, position: Int, p2: Boolean) {
+        onChangeIngredients(position)
+    }
+
+    override fun onStartTrackingTouch(p0: SeekBar?) {
+    }
+
+    override fun onStopTrackingTouch(p0: SeekBar?) {
     }
 }

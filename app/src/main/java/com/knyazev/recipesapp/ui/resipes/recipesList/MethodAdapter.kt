@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.databinding.ItemMethodBinding
 
-class MethodAdapter(private val dataSet: List<String>) :
+class MethodAdapter(var dataSet: List<String>) :
     RecyclerView.Adapter<MethodAdapter.ViewHolder>() {
 
     class ViewHolder(binding: ItemMethodBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -30,5 +30,9 @@ class MethodAdapter(private val dataSet: List<String>) :
         holder.methodPoint.text = holder.methodPoint.context.resources.getString(
             R.string.position_in_method, numberPosition, methodPoint
         )
+    }
+
+    fun updateMethod(dataSet: List<String>) {
+        this.dataSet = dataSet
     }
 }
