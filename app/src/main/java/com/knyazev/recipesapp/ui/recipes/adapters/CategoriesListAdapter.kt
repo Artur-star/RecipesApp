@@ -1,4 +1,4 @@
-package com.knyazev.recipesapp.ui
+package com.knyazev.recipesapp.ui.recipes.adapters
 
 import android.graphics.drawable.Drawable
 import android.util.Log

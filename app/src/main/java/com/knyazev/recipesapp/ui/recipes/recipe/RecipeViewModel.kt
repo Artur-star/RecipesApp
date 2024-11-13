@@ -1,4 +1,4 @@
-package com.knyazev.recipesapp.ui.resipes.recipe
+package com.knyazev.recipesapp.ui.recipes.recipe
 
 import android.app.Application
 import android.content.Context

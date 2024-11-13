@@ -7,7 +7,8 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.databinding.ActivityMainBinding
-import com.knyazev.recipesapp.ui.resipes.favorites.FavoritesListFragment
+import com.knyazev.recipesapp.ui.recipes.categoryList.CategoriesListFragment
+import com.knyazev.recipesapp.ui.recipes.favorites.FavoritesListFragment
 
 class MainActivity : AppCompatActivity() {
 
