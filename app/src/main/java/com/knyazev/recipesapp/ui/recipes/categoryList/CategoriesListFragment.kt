@@ -19,6 +19,7 @@ import com.knyazev.recipesapp.ui.recipes.adapters.CategoriesListAdapter
 import com.knyazev.recipesapp.ui.recipes.recipesList.RecipesListFragment
 
 class CategoriesListFragment : Fragment() {
+    private val categoriesListAdapter = CategoriesListAdapter(emptyList())
     private val viewModel: CategoriesListViewModel by viewModels()
     private var _binding: FragmentListCategoriesBinding? = null
     private val binding
@@ -41,14 +42,15 @@ class CategoriesListFragment : Fragment() {
 
     private fun initRecycler() {
         viewModel.categoriesListStateLD.observe(viewLifecycleOwner) { (categoriesList) ->
-            val listAdapter = CategoriesListAdapter(categoriesList)
-            binding.rvCategories.adapter = listAdapter
-            listAdapter.setOnItemClickListener(object : CategoriesListAdapter.OnItemClickListener {
-                override fun onItemClick(categoryId: Int) {
-                    openRecipesByCategoryId(categoryId)
-                }
-            })
+            categoriesListAdapter.updateCategoriesList(categoriesList)
         }
+        binding.rvCategories.adapter = categoriesListAdapter
+        categoriesListAdapter.setOnItemClickListener(object :
+            CategoriesListAdapter.OnItemClickListener {
+            override fun onItemClick(categoryId: Int) {
+                openRecipesByCategoryId(categoryId)
+            }
+        })
     }
 
     fun openRecipesByCategoryId(categoryId: Int) {

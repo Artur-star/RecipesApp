@@ -16,13 +16,15 @@ data class FavoritesListState(
 class FavoritesListViewModel(application: Application) : AndroidViewModel(application) {
     private val _favoritesListStateLD = MutableLiveData<FavoritesListState>()
     val favoritesListStateLD get() = _favoritesListStateLD
+    private val sharedPreferences = getFavorites()
 
     fun loadFavoritesList() {
         //TODO(): load from network
-        val favorites = STUB.getRecipesByIds(getFavorites().map { it.toInt() }.toSet())
+        val favorites = STUB.getRecipesByIds(sharedPreferences.map { it.toInt() }.toSet())
         val favoritesListState =
             _favoritesListStateLD.value?.copy(favoritesList = favorites) ?: FavoritesListState(
-                favoritesList = favorites)
+                favoritesList = favorites
+            )
         _favoritesListStateLD.value = favoritesListState
     }
 

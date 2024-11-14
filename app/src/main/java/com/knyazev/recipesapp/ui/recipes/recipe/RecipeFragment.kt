@@ -63,7 +63,6 @@ class RecipeFragment : Fragment() {
                     )
                 )
             }
-            binding.countPortions.text = MIN_PORTIONS
             binding.ivHeaderRecipe.setImageDrawable(recipeImage)
             binding.tvHeaderRecipe.text = recipe?.title
 
@@ -77,6 +76,7 @@ class RecipeFragment : Fragment() {
                 )
             }
         }
+        binding.countPortions.text = MIN_PORTIONS
 
         binding.rvIngredients.adapter = ingredientAdapter
         binding.rvMethod.adapter = methodAdapter

@@ -18,6 +18,7 @@ import com.knyazev.recipesapp.ui.recipes.recipe.RecipeFragment
 
 class FavoritesListFragment : Fragment() {
     private val viewModel: FavoritesListViewModel by viewModels()
+    private val recipesListAdapter = RecipesListAdapter(emptyList())
 
     private var _binding: FragmentFavoritesListBinding? = null
     private val binding
@@ -40,21 +41,22 @@ class FavoritesListFragment : Fragment() {
 
     private fun initRecycler() {
         viewModel.favoritesListStateLD.observe(viewLifecycleOwner) { (favorites) ->
-            val adapter = RecipesListAdapter(favorites)
-            binding.rvFavorites.adapter = adapter
+            recipesListAdapter.updateRecipeList(favorites)
             if (favorites.isEmpty()) {
                 binding.tvPlug.visibility = View.VISIBLE
                 binding.rvFavorites.visibility = View.GONE
             } else {
                 binding.tvPlug.visibility = View.GONE
                 binding.rvFavorites.visibility = View.VISIBLE
-                adapter.setOnItemClickListener(object : RecipesListAdapter.OnItemClickListener {
-                    override fun onItemClick(recipeId: Int) {
-                        openRecipeByRecipeId(recipeId)
-                    }
-                })
             }
         }
+        binding.rvFavorites.adapter = recipesListAdapter
+        recipesListAdapter.setOnItemClickListener(object : RecipesListAdapter.OnItemClickListener {
+            override fun onItemClick(recipeId: Int) {
+                openRecipeByRecipeId(recipeId)
+            }
+        })
+
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {

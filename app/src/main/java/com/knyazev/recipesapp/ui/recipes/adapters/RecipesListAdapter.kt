@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.knyazev.recipesapp.databinding.ItemRecipeBinding
 import com.knyazev.recipesapp.model.Recipe
 
-class RecipesListAdapter(private val dataSet: List<Recipe>) :
+class RecipesListAdapter(var dataSet: List<Recipe>) :
     RecyclerView.Adapter<RecipesListAdapter.ViewHolder>() {
 
     private var itemClickListener: OnItemClickListener? = null
@@ -53,5 +53,9 @@ class RecipesListAdapter(private val dataSet: List<Recipe>) :
         holder.imageView.setImageDrawable(drawable)
 
         holder.itemView.setOnClickListener { itemClickListener?.onItemClick(recipe.id) }
+    }
+
+    fun updateRecipeList(dataSet: List<Recipe>) {
+        this.dataSet = dataSet
     }
 }
