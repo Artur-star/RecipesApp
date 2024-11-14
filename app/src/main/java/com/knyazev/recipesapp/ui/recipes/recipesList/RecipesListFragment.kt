@@ -13,7 +13,7 @@ import com.knyazev.recipesapp.Constants.ARG_RECIPE
 import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.data.STUB
 import com.knyazev.recipesapp.databinding.FragmentRecipesListBinding
-import com.knyazev.recipesapp.ui.recipes.adapters.RecipesListAdapter
+import com.knyazev.recipesapp.ui.recipes.adaptersRecipes.RecipesListAdapter
 import com.knyazev.recipesapp.ui.recipes.recipe.RecipeFragment
 
 class RecipesListFragment : Fragment() {
@@ -38,9 +38,9 @@ class RecipesListFragment : Fragment() {
 
 
         viewModel.loadRecipesList()
-        viewModel.recipesListStateLD.observe(viewLifecycleOwner) { (recipeList, recipeListImage, categoryName) ->
+        viewModel.recipesListStateLD.observe(viewLifecycleOwner) { (recipeList, recipeListImage, category) ->
             binding.ivHeaderRecipesList.setImageDrawable(recipeListImage)
-            binding.tvHeaderRecipes.text = categoryName
+            binding.tvHeaderRecipes.text = category?.title
             recipesListAdapter.updateRecipeList(recipeList)
         }
         binding.rvRecipes.adapter = recipesListAdapter

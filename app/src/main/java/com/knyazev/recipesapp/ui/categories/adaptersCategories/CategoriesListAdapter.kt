@@ -1,4 +1,4 @@
-package com.knyazev.recipesapp.ui.recipes.adapters
+package com.knyazev.recipesapp.ui.categories.adaptersCategories
 
 import android.graphics.drawable.Drawable
 import android.util.Log
@@ -61,5 +61,6 @@ class CategoriesListAdapter(var dataSet: List<Category>) :
 
     fun updateCategoriesList(dataSet: List<Category>) {
         this.dataSet = dataSet
+        notifyDataSetChanged()
     }
 }

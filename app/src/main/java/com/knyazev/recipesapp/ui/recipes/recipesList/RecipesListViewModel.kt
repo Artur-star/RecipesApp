@@ -6,16 +6,15 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import com.knyazev.recipesapp.Constants.ARG_CATEGORY_ID
-import com.knyazev.recipesapp.Constants.ARG_CATEGORY_IMAGE_URL
-import com.knyazev.recipesapp.Constants.ARG_CATEGORY_NAME
+import com.knyazev.recipesapp.Constants.ARG_CATEGORY
 import com.knyazev.recipesapp.data.STUB
+import com.knyazev.recipesapp.model.Category
 import com.knyazev.recipesapp.model.Recipe
 
 data class RecipeListState(
     val recipeList: List<Recipe> = emptyList(),
     val recipeListImage: Drawable? = null,
-    val categoryName: String? = null,
+    val category: Category? = null,
 )
 
 class RecipeListViewModel(
@@ -28,26 +27,23 @@ class RecipeListViewModel(
 
     fun loadRecipesList() {
         //TODO(): load from network
-        val categoryImageUrl = savedStateHandle.get<String>(ARG_CATEGORY_IMAGE_URL)
-        val categoryId = savedStateHandle.get<Int>(ARG_CATEGORY_ID)
-        val categoryName = savedStateHandle.get<String>(ARG_CATEGORY_NAME)
-
-        val recipeList: List<Recipe> = STUB.getRecipesByCategoryId(categoryId)
+        val category = savedStateHandle.get<Category>(ARG_CATEGORY)
+        val recipeList: List<Recipe> = STUB.getRecipesByCategoryId(category?.id)
         val recipeListImage = try {
             Drawable.createFromStream(
                 getApplication<Application>()
-                    .applicationContext.assets.open(categoryImageUrl!!), null
+                    .applicationContext.assets.open(category!!.imageUrl), null
             )
         } catch (e: NullPointerException) {
-            Log.d("logTag", "Image not found $categoryImageUrl")
+            Log.d("logTag", "Image not found $category")
             null
         }
         val recipeListState =
-            recipesListStateLD.value?.copy(recipeList, recipeListImage, categoryName)
+            recipesListStateLD.value?.copy(recipeList, recipeListImage, category)
                 ?: RecipeListState(
                     recipeList,
                     recipeListImage,
-                    categoryName
+                    category
                 )
         recipesListStateLD.value = recipeListState
     }

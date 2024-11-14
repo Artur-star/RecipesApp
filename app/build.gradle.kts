@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId = "com.knyazev.recipesapp"
         minSdk = 28
-        targetSdk = 34
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 

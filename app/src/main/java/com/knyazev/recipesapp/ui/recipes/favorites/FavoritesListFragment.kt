@@ -13,7 +13,7 @@ import com.knyazev.recipesapp.Constants.ARG_RECIPE
 import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.data.STUB
 import com.knyazev.recipesapp.databinding.FragmentFavoritesListBinding
-import com.knyazev.recipesapp.ui.recipes.adapters.RecipesListAdapter
+import com.knyazev.recipesapp.ui.recipes.adaptersRecipes.RecipesListAdapter
 import com.knyazev.recipesapp.ui.recipes.recipe.RecipeFragment
 
 class FavoritesListFragment : Fragment() {

@@ -1,4 +1,4 @@
-package com.knyazev.recipesapp.ui.recipes.adapters
+package com.knyazev.recipesapp.ui.recipes.adaptersRecipes
 
 import android.graphics.drawable.Drawable
 import android.util.Log
@@ -57,5 +57,6 @@ class RecipesListAdapter(var dataSet: List<Recipe>) :
 
     fun updateRecipeList(dataSet: List<Recipe>) {
         this.dataSet = dataSet
+        notifyDataSetChanged()
     }
 }

@@ -1,4 +1,4 @@
-package com.knyazev.recipesapp.ui.recipes.categoryList
+package com.knyazev.recipesapp.ui.categories.categoryList
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,13 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
-import com.knyazev.recipesapp.Constants.ARG_CATEGORY_ID
-import com.knyazev.recipesapp.Constants.ARG_CATEGORY_IMAGE_URL
-import com.knyazev.recipesapp.Constants.ARG_CATEGORY_NAME
+import com.knyazev.recipesapp.Constants.ARG_CATEGORY
 import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.data.STUB
 import com.knyazev.recipesapp.databinding.FragmentListCategoriesBinding
-import com.knyazev.recipesapp.ui.recipes.adapters.CategoriesListAdapter
+import com.knyazev.recipesapp.ui.categories.adaptersCategories.CategoriesListAdapter
 import com.knyazev.recipesapp.ui.recipes.recipesList.RecipesListFragment
 
 class CategoriesListFragment : Fragment() {
@@ -55,13 +53,9 @@ class CategoriesListFragment : Fragment() {
 
     fun openRecipesByCategoryId(categoryId: Int) {
         val category = STUB.getCategories()[categoryId]
-        val categoryName = category.title
-        val categoryImageUrl = category.imageUrl
 
         val bundle = bundleOf(
-            ARG_CATEGORY_ID to categoryId,
-            ARG_CATEGORY_NAME to categoryName,
-            ARG_CATEGORY_IMAGE_URL to categoryImageUrl
+            ARG_CATEGORY to category
         )
 
         parentFragmentManager.commit {

@@ -1,4 +1,4 @@
-package com.knyazev.recipesapp.ui.recipes.categoryList
+package com.knyazev.recipesapp.ui.categories.categoryList
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -18,9 +18,10 @@ class CategoriesListViewModel : ViewModel() {
         //TODO(): load from network
         val categoriesList = STUB.getCategories().toMutableList()
         val categoriesListState =
-            _categoriesListStateLD.value?.copy(categoriesList = categoriesList) ?: CategoriesListState(
-                categoriesList = categoriesList
-            )
+            _categoriesListStateLD.value?.copy(categoriesList = categoriesList)
+                ?: CategoriesListState(
+                    categoriesList = categoriesList
+                )
         _categoriesListStateLD.value = categoriesListState
     }
 }

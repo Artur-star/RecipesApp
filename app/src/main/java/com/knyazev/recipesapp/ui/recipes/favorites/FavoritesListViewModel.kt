@@ -16,11 +16,12 @@ data class FavoritesListState(
 class FavoritesListViewModel(application: Application) : AndroidViewModel(application) {
     private val _favoritesListStateLD = MutableLiveData<FavoritesListState>()
     val favoritesListStateLD get() = _favoritesListStateLD
-    private val sharedPreferences = getFavorites()
+    private val sharedPreferences = getApplication<Application>()
+        .getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE)
 
     fun loadFavoritesList() {
         //TODO(): load from network
-        val favorites = STUB.getRecipesByIds(sharedPreferences.map { it.toInt() }.toSet())
+        val favorites = STUB.getRecipesByIds(getFavorites().map { it.toInt() }.toSet())
         val favoritesListState =
             _favoritesListStateLD.value?.copy(favoritesList = favorites) ?: FavoritesListState(
                 favoritesList = favorites
@@ -30,8 +31,7 @@ class FavoritesListViewModel(application: Application) : AndroidViewModel(applic
 
     private fun getFavorites(): MutableSet<String> {
         val favorites =
-            getApplication<Application>()
-                .getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE)
+            sharedPreferences
                 .getStringSet(PREFS_KEY_FAVORITES_CATEGORY, mutableSetOf()) ?: mutableSetOf()
         return HashSet(favorites)
     }
