@@ -1,4 +1,4 @@
-package com.knyazev.recipesapp.ui.resipes.recipe
+package com.knyazev.recipesapp.ui.recipes.recipe
 
 import android.os.Build
 import android.os.Bundle
@@ -16,8 +16,8 @@ import com.knyazev.recipesapp.Constants.MIN_PORTIONS
 import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.databinding.FragmentRecipeBinding
 import com.knyazev.recipesapp.model.Recipe
-import com.knyazev.recipesapp.ui.resipes.recipesList.IngredientsAdapter
-import com.knyazev.recipesapp.ui.resipes.recipesList.MethodAdapter
+import com.knyazev.recipesapp.ui.recipes.adaptersRecipes.IngredientsAdapter
+import com.knyazev.recipesapp.ui.recipes.adaptersRecipes.MethodAdapter
 
 class RecipeFragment : Fragment() {
     private var ingredientAdapter = IngredientsAdapter(emptyList())
@@ -63,7 +63,6 @@ class RecipeFragment : Fragment() {
                     )
                 )
             }
-            binding.countPortions.text = MIN_PORTIONS
             binding.ivHeaderRecipe.setImageDrawable(recipeImage)
             binding.tvHeaderRecipe.text = recipe?.title
 
@@ -77,6 +76,7 @@ class RecipeFragment : Fragment() {
                 )
             }
         }
+        binding.countPortions.text = MIN_PORTIONS
 
         binding.rvIngredients.adapter = ingredientAdapter
         binding.rvMethod.adapter = methodAdapter

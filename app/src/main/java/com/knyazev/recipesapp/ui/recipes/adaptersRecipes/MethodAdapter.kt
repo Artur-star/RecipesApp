@@ -1,4 +1,4 @@
-package com.knyazev.recipesapp.ui.resipes.recipesList
+package com.knyazev.recipesapp.ui.recipes.adaptersRecipes
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -34,5 +34,6 @@ class MethodAdapter(var dataSet: List<String>) :
 
     fun updateMethod(dataSet: List<String>) {
         this.dataSet = dataSet
+        notifyDataSetChanged()
     }
 }

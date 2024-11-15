@@ -1,4 +1,4 @@
-package com.knyazev.recipesapp.ui
+package com.knyazev.recipesapp.ui.categories.adaptersCategories
 
 import android.graphics.drawable.Drawable
 import android.util.Log
@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.knyazev.recipesapp.databinding.ItemCategoryBinding
 import com.knyazev.recipesapp.model.Category
 
-class CategoriesListAdapter(private val dataSet: List<Category>) :
+class CategoriesListAdapter(var dataSet: List<Category>) :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
 
     private var itemClickListener: OnItemClickListener? = null
@@ -57,6 +57,10 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
         viewHolder.imageView.setImageDrawable(drawable)
 
         viewHolder.itemView.setOnClickListener { itemClickListener?.onItemClick(category.id) }
+    }
 
+    fun updateCategoriesList(dataSet: List<Category>) {
+        this.dataSet = dataSet
+        notifyDataSetChanged()
     }
 }
