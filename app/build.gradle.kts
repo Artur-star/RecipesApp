@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId = "com.knyazev.recipesapp"
         minSdk = 28
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -42,7 +42,8 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
