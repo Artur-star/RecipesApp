@@ -6,15 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.knyazev.recipesapp.Constants.ARG_CATEGORY
 import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.data.STUB
 import com.knyazev.recipesapp.databinding.FragmentListCategoriesBinding
 import com.knyazev.recipesapp.ui.categories.adaptersCategories.CategoriesListAdapter
-import com.knyazev.recipesapp.ui.recipes.recipesList.RecipesListFragment
 
 class CategoriesListFragment : Fragment() {
     private val categoriesListAdapter = CategoriesListAdapter(emptyList())
@@ -58,10 +56,10 @@ class CategoriesListFragment : Fragment() {
             ARG_CATEGORY to category
         )
 
-        parentFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace<RecipesListFragment>(R.id.mainContainer, args = bundle)
-        }
+        findNavController().navigate(
+            R.id.action_categoriesListFragment_to_recipesListFragment2,
+            bundle
+        )
     }
 
     override fun onDestroyView() {
