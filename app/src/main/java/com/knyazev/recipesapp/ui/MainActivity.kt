@@ -3,6 +3,7 @@ package com.knyazev.recipesapp.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
+import androidx.navigation.navOptions
 import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.databinding.ActivityMainBinding
 
@@ -18,13 +19,20 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
         binding.binFavourites.setOnClickListener {
-            findNavController(R.id.mainContainer).navigate(R.id.favoritesListFragment)
+            findNavController(R.id.mainContainer).navigate(
+                R.id.favoritesListFragment,
+                null,
+                navOptions {
+                    launchSingleTop = true
+                })
         }
+
         binding.binCategories.setOnClickListener {
-            findNavController(R.id.mainContainer).navigate(R.id.categoriesListFragment)
+            findNavController(R.id.mainContainer)
+                .navigate(R.id.categoriesListFragment, null, navOptions {
+                    launchSingleTop = true
+                })
         }
     }
 }

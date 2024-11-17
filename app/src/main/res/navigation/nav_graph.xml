@@ -9,12 +9,20 @@
         android:id="@+id/favoritesListFragment"
         android:name="com.knyazev.recipesapp.ui.recipes.favorites.FavoritesListFragment"
         android:label="fragment_favorites_list"
-        tools:layout="@layout/fragment_favorites_list" />
+        tools:layout="@layout/fragment_favorites_list">
+        <action
+            android:id="@+id/action_favoritesListFragment_to_recipeFragment"
+            app:destination="@id/recipeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/categoriesListFragment"
         android:name="com.knyazev.recipesapp.ui.categories.categoryList.CategoriesListFragment"
         android:label="fragment_list_categories"
-        tools:layout="@layout/fragment_list_categories" />
+        tools:layout="@layout/fragment_list_categories">
+        <action
+            android:id="@+id/action_categoriesListFragment_to_recipesListFragment2"
+            app:destination="@id/recipesListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/recipeFragment"
         android:name="com.knyazev.recipesapp.ui.recipes.recipe.RecipeFragment"
@@ -24,5 +32,9 @@
         android:id="@+id/recipesListFragment"
         android:name="com.knyazev.recipesapp.ui.recipes.recipesList.RecipesListFragment"
         android:label="fragment_recipes_list"
-        tools:layout="@layout/fragment_recipes_list" />
+        tools:layout="@layout/fragment_recipes_list">
+        <action
+            android:id="@+id/action_recipesListFragment_to_recipeFragment"
+            app:destination="@id/recipeFragment" />
+    </fragment>
 </navigation>

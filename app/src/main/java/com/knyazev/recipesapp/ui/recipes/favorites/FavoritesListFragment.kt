@@ -63,7 +63,7 @@ class FavoritesListFragment : Fragment() {
             ARG_RECIPE to recipe
         )
 
-        findNavController().navigate(R.id.recipesListFragment, bundle)
+        findNavController().navigate(R.id.action_favoritesListFragment_to_recipeFragment, bundle)
     }
 
     override fun onDestroyView() {

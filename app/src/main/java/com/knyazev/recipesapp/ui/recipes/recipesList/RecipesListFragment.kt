@@ -55,6 +55,6 @@ class RecipesListFragment : Fragment() {
             ARG_RECIPE to recipe
         )
 
-        findNavController().navigate(R.id.recipeFragment, bundle)
+        findNavController().navigate(R.id.action_recipesListFragment_to_recipeFragment, bundle)
     }
 }
