@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id(libs.plugins.kotlin.parcelize.get().pluginId)
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -38,7 +39,6 @@ android {
     buildFeatures {
         viewBinding = true
     }
-
 }
 
 dependencies {
