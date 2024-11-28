@@ -1,6 +1,5 @@
 package com.knyazev.recipesapp.ui.recipes.recipe
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,20 +9,19 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.divider.MaterialDividerItemDecoration
-import com.knyazev.recipesapp.Constants.ARG_RECIPE
 import com.knyazev.recipesapp.Constants.MIN_PORTIONS
 import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.databinding.FragmentRecipeBinding
-import com.knyazev.recipesapp.model.Recipe
 import com.knyazev.recipesapp.ui.recipes.adaptersRecipes.IngredientsAdapter
 import com.knyazev.recipesapp.ui.recipes.adaptersRecipes.MethodAdapter
 
 class RecipeFragment : Fragment() {
+    private val recipeFragmentArgs: RecipeFragmentArgs by navArgs()
     private var ingredientAdapter = IngredientsAdapter(emptyList())
     private var methodAdapter = MethodAdapter(emptyList())
     private val viewModel: RecipeViewModel by viewModels()
-    private var recipe: Recipe? = null
     private var _binding: FragmentRecipeBinding? = null
     private val binding
         get() = _binding
@@ -39,10 +37,8 @@ class RecipeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java)
-        } else requireArguments().getParcelable(ARG_RECIPE)
-        viewModel.loadRecipe(recipeId = recipe?.id ?: 10)
+        val recipeId = recipeFragmentArgs.recipeId
+        viewModel.loadRecipe(recipeId = recipeId)
         initUI()
     }
 
