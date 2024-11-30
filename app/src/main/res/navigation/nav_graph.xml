@@ -24,7 +24,7 @@
         android:label="fragment_list_categories"
         tools:layout="@layout/fragment_list_categories">
         <action
-            android:id="@+id/action_categoriesListFragment_to_recipesListFragment2"
+            android:id="@+id/action_categoriesListFragment_to_recipesListFragment"
             app:destination="@id/recipesListFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"
