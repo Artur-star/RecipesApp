@@ -16,7 +16,7 @@ class CategoriesListAdapter(var dataSet: List<Category>) :
     private var itemClickListener: OnItemClickListener? = null
 
     interface OnItemClickListener {
-        fun onItemClick(categoryId: Int)
+        fun onItemClick(category: Category)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -56,7 +56,7 @@ class CategoriesListAdapter(var dataSet: List<Category>) :
         }
         viewHolder.imageView.setImageDrawable(drawable)
 
-        viewHolder.itemView.setOnClickListener { itemClickListener?.onItemClick(category.id) }
+        viewHolder.itemView.setOnClickListener { itemClickListener?.onItemClick(category) }
     }
 
     fun updateCategoriesList(dataSet: List<Category>) {

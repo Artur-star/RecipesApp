@@ -6,11 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.R
 import com.knyazev.recipesapp.databinding.FragmentRecipesListBinding
 import com.knyazev.recipesapp.ui.recipes.adaptersRecipes.RecipesListAdapter
 
 class RecipesListFragment : Fragment() {
+    private val recipeListFragmentArgs: RecipesListFragmentArgs by navArgs()
     private var recipesListAdapter = RecipesListAdapter(emptyList())
     private val viewModel: RecipeListViewModel by viewModels()
 
@@ -29,9 +33,8 @@ class RecipesListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-        viewModel.loadRecipesList()
+        val category = recipeListFragmentArgs.categoryId
+        viewModel.loadRecipesList(category)
         viewModel.recipesListStateLD.observe(viewLifecycleOwner) { (recipeList, recipeListImage, category) ->
             binding.ivHeaderRecipesList.setImageDrawable(recipeListImage)
             binding.tvHeaderRecipes.text = category?.title
@@ -47,9 +50,15 @@ class RecipesListFragment : Fragment() {
 
     private fun openRecipeByRecipeId(recipeId: Int) {
         findNavController().navigate(
-            RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(
+            directions = RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(
                 recipeId
-            )
+            ),
+            navOptions = NavOptions.Builder()
+                .setEnterAnim(R.anim.nav_default_enter_anim)
+                .setExitAnim(R.anim.nav_default_exit_anim)
+                .setPopEnterAnim(R.anim.nav_default_pop_enter_anim)
+                .setPopExitAnim(R.anim.nav_default_pop_exit_anim)
+                .build()
         )
     }
 }

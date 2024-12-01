@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_favorites_list">
         <action
             android:id="@+id/action_favoritesListFragment_to_recipeFragment"
-            app:destination="@id/recipeFragment" />
+            app:destination="@id/recipeFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/categoriesListFragment"
@@ -20,8 +24,12 @@
         android:label="fragment_list_categories"
         tools:layout="@layout/fragment_list_categories">
         <action
-            android:id="@+id/action_categoriesListFragment_to_recipesListFragment2"
-            app:destination="@id/recipesListFragment" />
+            android:id="@+id/action_categoriesListFragment_to_recipesListFragment"
+            app:destination="@id/recipesListFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/recipeFragment"
@@ -39,6 +47,14 @@
         tools:layout="@layout/fragment_recipes_list">
         <action
             android:id="@+id/action_recipesListFragment_to_recipeFragment"
-            app:destination="@id/recipeFragment" />
+            app:destination="@id/recipeFragment"
+            app:enterAnim="@animator/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <argument
+            android:name="categoryId"
+            app:argType="com.knyazev.recipesapp.model.Category" />
+
     </fragment>
 </navigation>

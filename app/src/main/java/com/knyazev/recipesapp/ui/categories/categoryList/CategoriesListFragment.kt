@@ -4,14 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import com.knyazev.recipesapp.Constants.ARG_CATEGORY
-import com.knyazev.recipesapp.R
-import com.knyazev.recipesapp.data.STUB
+import androidx.navigation.ui.R.anim
 import com.knyazev.recipesapp.databinding.FragmentListCategoriesBinding
+import com.knyazev.recipesapp.model.Category
 import com.knyazev.recipesapp.ui.categories.adaptersCategories.CategoriesListAdapter
 
 class CategoriesListFragment : Fragment() {
@@ -43,22 +42,23 @@ class CategoriesListFragment : Fragment() {
         binding.rvCategories.adapter = categoriesListAdapter
         categoriesListAdapter.setOnItemClickListener(object :
             CategoriesListAdapter.OnItemClickListener {
-            override fun onItemClick(categoryId: Int) {
-                openRecipesByCategoryId(categoryId)
+            override fun onItemClick(category: Category) {
+                openRecipesByCategoryId(category)
             }
         })
     }
 
-    fun openRecipesByCategoryId(categoryId: Int) {
-        val category = STUB.getCategories()[categoryId]
-
-        val bundle = bundleOf(
-            ARG_CATEGORY to category
-        )
-
+    fun openRecipesByCategoryId(category: Category) {
         findNavController().navigate(
-            R.id.action_categoriesListFragment_to_recipesListFragment2,
-            bundle
+            CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(
+                category
+            ),
+            navOptions = NavOptions.Builder()
+                .setEnterAnim(anim.nav_default_enter_anim)
+                .setExitAnim(anim.nav_default_exit_anim)
+                .setPopEnterAnim(anim.nav_default_pop_enter_anim)
+                .setPopExitAnim(anim.nav_default_pop_exit_anim)
+                .build()
         )
     }
 
