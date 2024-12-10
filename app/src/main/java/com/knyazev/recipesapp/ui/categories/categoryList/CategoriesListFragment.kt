@@ -6,9 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.R.anim
 import com.knyazev.recipesapp.databinding.FragmentListCategoriesBinding
 import com.knyazev.recipesapp.model.Category
 import com.knyazev.recipesapp.ui.categories.adaptersCategories.CategoriesListAdapter
@@ -43,22 +41,16 @@ class CategoriesListFragment : Fragment() {
         categoriesListAdapter.setOnItemClickListener(object :
             CategoriesListAdapter.OnItemClickListener {
             override fun onItemClick(category: Category) {
-                openRecipesByCategoryId(category)
+                openRecipesByCategory(category)
             }
         })
     }
 
-    fun openRecipesByCategoryId(category: Category) {
+    fun openRecipesByCategory(category: Category) {
         findNavController().navigate(
             CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(
                 category
-            ),
-            navOptions = NavOptions.Builder()
-                .setEnterAnim(anim.nav_default_enter_anim)
-                .setExitAnim(anim.nav_default_exit_anim)
-                .setPopEnterAnim(anim.nav_default_pop_enter_anim)
-                .setPopExitAnim(anim.nav_default_pop_exit_anim)
-                .build()
+            )
         )
     }
 
