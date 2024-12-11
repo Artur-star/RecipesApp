@@ -1,11 +1,16 @@
 package com.knyazev.recipesapp.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.navOptions
 import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.databinding.ActivityMainBinding
+import com.knyazev.recipesapp.model.Category
+import kotlinx.serialization.json.Json
+import java.net.HttpURLConnection
+import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,10 +19,30 @@ class MainActivity : AppCompatActivity() {
         get() = _binding
             ?: throw IllegalArgumentException("Binding for ActivityMainBinding must not be null")
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        Thread {
+            val url = URL("https://recipes.androidsprint.ru/api/category")
+            val connection = url.openConnection() as HttpURLConnection
+            connection.connect()
+
+            val deserializationString: String =
+                connection.inputStream.bufferedReader().readLine()
+
+            Log.i("!!!", "Выполняю запрос в потоке ${Thread.currentThread().name}")
+            Log.i("!!!", "Body $deserializationString")
+
+            val json = Json.decodeFromString<List<Category>>(deserializationString.trimIndent())
+            Log.i("!!!", "deserialization: $json")
+        }.start()
+
+        Log.i("!!!", "Метод onCreate() выполняется на потоке ${Thread.currentThread().name}")
+
+
 
         binding.binFavourites.setOnClickListener {
             findNavController(R.id.mainContainer).navigate(
@@ -25,6 +50,12 @@ class MainActivity : AppCompatActivity() {
                 null,
                 navOptions {
                     launchSingleTop = true
+                    anim {
+                        enter = androidx.navigation.ui.R.anim.nav_default_enter_anim
+                        exit = androidx.navigation.ui.R.anim.nav_default_exit_anim
+                        popEnter = androidx.navigation.ui.R.anim.nav_default_pop_enter_anim
+                        popExit = androidx.navigation.ui.R.anim.nav_default_pop_exit_anim
+                    }
                 })
         }
 
@@ -32,6 +63,12 @@ class MainActivity : AppCompatActivity() {
             findNavController(R.id.mainContainer)
                 .navigate(R.id.categoriesListFragment, null, navOptions {
                     launchSingleTop = true
+                    anim {
+                        enter = androidx.navigation.ui.R.anim.nav_default_enter_anim
+                        exit = androidx.navigation.ui.R.anim.nav_default_exit_anim
+                        popEnter = androidx.navigation.ui.R.anim.nav_default_pop_enter_anim
+                        popExit = androidx.navigation.ui.R.anim.nav_default_pop_exit_anim
+                    }
                 })
         }
     }
