@@ -11,6 +11,7 @@ import com.knyazev.recipesapp.model.Category
 import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding
         get() = _binding
             ?: throw IllegalArgumentException("Binding for ActivityMainBinding must not be null")
-
+    private val threadPool = Executors.newFixedThreadPool(10)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +37,11 @@ class MainActivity : AppCompatActivity() {
             Log.i("!!!", "Выполняю запрос в потоке ${Thread.currentThread().name}")
             Log.i("!!!", "Body $deserializationString")
 
-            val json = Json.decodeFromString<List<Category>>(deserializationString.trimIndent())
+            val json: List<Int> =
+                Json.decodeFromString<List<Category>>(deserializationString.trimIndent())
+                    .map { category: Category ->
+                        category.id
+                    }
             Log.i("!!!", "deserialization: $json")
         }.start()
 
