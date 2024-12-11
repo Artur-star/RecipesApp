@@ -30,10 +30,13 @@ class MainActivity : AppCompatActivity() {
             val connection = url.openConnection() as HttpURLConnection
             connection.connect()
 
-            Log.i("!!!", "Выполняю запрос в потоке ${Thread.currentThread().name}")
-            Log.i("!!!", "Body ${connection.inputStream.bufferedReader().readLine()}")
+            val deserializationString: String =
+                connection.inputStream.bufferedReader().readLine()
 
-            val json: Category = Json.decodeFromString<Category>(connection.inputStream.bufferedReader().readText())
+            Log.i("!!!", "Выполняю запрос в потоке ${Thread.currentThread().name}")
+            Log.i("!!!", "Body $deserializationString")
+
+            val json = Json.decodeFromString<List<Category>>(deserializationString.trimIndent())
             Log.i("!!!", "deserialization: $json")
         }.start()
 

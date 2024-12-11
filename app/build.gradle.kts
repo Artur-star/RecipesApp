@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id(libs.plugins.kotlin.parcelize.get().pluginId)
     alias(libs.plugins.androidx.navigation.safeargs)
-    kotlin("plugin.serialization") version "1.7.0"
+    kotlin("plugin.serialization") version "1.9.0"
 }
 
 android {
@@ -52,7 +52,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.kotlinx.serialization.json.jvm)
+    implementation(libs.kotlinx.serialization.json)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
