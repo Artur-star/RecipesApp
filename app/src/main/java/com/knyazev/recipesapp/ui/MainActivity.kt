@@ -28,43 +28,44 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         Thread {
-            val urlCategories = URL("https://recipes.androidsprint.ru/api/category")
-            val connectionCategory = urlCategories.openConnection() as HttpURLConnection
-            connectionCategory.connect()
+            try {
+                val urlCategories = URL("https://recipes.androidsprint.ru/api/category")
+                val connectionCategory = urlCategories.openConnection() as HttpURLConnection
+                connectionCategory.connect()
 
-            val deserializationString: String =
-                connectionCategory.inputStream.bufferedReader().readLine()
+                val deserializationString: String =
+                    connectionCategory.inputStream.bufferedReader().readLine()
 
-            Log.i("!!!", "Выполняю запрос в потоке ${Thread.currentThread().name}")
-            Log.i("!!!", "Body $deserializationString")
+                Log.i("!!!", "Выполняю запрос в потоке ${Thread.currentThread().name}")
+                Log.i("!!!", "Body $deserializationString")
 
-            val jsonCategory: List<Int> =
                 Json.decodeFromString<List<Category>>(deserializationString.trimIndent())
-                    .map { category: Category ->
-                        category.id
+                    .map { category: Category -> category.id }
+                    .forEach { categoryId ->
+                        threadPool.submit {
+                            val urlRecipes =
+                                URL("https://recipes.androidsprint.ru/api/category/${categoryId}/recipes")
+                            val connectionRecipes = urlRecipes.openConnection() as HttpURLConnection
+                            connectionRecipes.connect()
+
+                            val deserializationRecipes =
+                                connectionRecipes.inputStream.bufferedReader().readLine()
+                            val jsonRecipes: List<Recipe> =
+                                Json.decodeFromString<List<Recipe>>(deserializationRecipes.trimIndent())
+                            Log.i("!!!", "Resipes: $jsonRecipes")
+                        }
                     }
-            threadPool.submit {
-                for (i in jsonCategory) {
-                    val urlRecipes =
-                        URL("https://recipes.androidsprint.ru/api/category/${i}/recipes")
-                    val connectionRecipes = urlRecipes.openConnection() as HttpURLConnection
-                    connectionRecipes.connect()
-
-                    val deserializationRecipes =
-                        connectionRecipes.inputStream.bufferedReader().readLine()
-                    val jsonRecipes: List<Recipe> =
-                        Json.decodeFromString<List<Recipe>>(deserializationRecipes.trimIndent())
-                    Log.i("!!!", "Resipes: $jsonRecipes")
-                }
+            } catch (e: Exception) {
+                Log.e("!!!", "Exception network ${e.message}")
+            } finally {
+                threadPool.shutdown()
             }
-            threadPool.shutdown()
-
-            Log.i("!!!", "Categories id: $jsonCategory")
         }.start()
 
         Log.i("!!!", "Метод onCreate() выполняется на потоке ${Thread.currentThread().name}")
 
         binding.binFavourites.setOnClickListener {
+
             findNavController(R.id.mainContainer).navigate(
                 R.id.favoritesListFragment,
                 null,
