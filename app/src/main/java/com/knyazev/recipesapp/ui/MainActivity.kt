@@ -8,6 +8,7 @@ import androidx.navigation.navOptions
 import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.databinding.ActivityMainBinding
 import com.knyazev.recipesapp.model.Category
+import com.knyazev.recipesapp.model.Recipe
 import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection
 import java.net.URL
@@ -27,27 +28,41 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         Thread {
-            val url = URL("https://recipes.androidsprint.ru/api/category")
-            val connection = url.openConnection() as HttpURLConnection
-            connection.connect()
+            val urlCategories = URL("https://recipes.androidsprint.ru/api/category")
+            val connectionCategory = urlCategories.openConnection() as HttpURLConnection
+            connectionCategory.connect()
 
             val deserializationString: String =
-                connection.inputStream.bufferedReader().readLine()
+                connectionCategory.inputStream.bufferedReader().readLine()
 
             Log.i("!!!", "Выполняю запрос в потоке ${Thread.currentThread().name}")
             Log.i("!!!", "Body $deserializationString")
 
-            val json: List<Int> =
+            val jsonCategory: List<Int> =
                 Json.decodeFromString<List<Category>>(deserializationString.trimIndent())
                     .map { category: Category ->
                         category.id
                     }
-            Log.i("!!!", "deserialization: $json")
+            threadPool.submit {
+                for (i in jsonCategory) {
+                    val urlRecipes =
+                        URL("https://recipes.androidsprint.ru/api/category/${i}/recipes")
+                    val connectionRecipes = urlRecipes.openConnection() as HttpURLConnection
+                    connectionRecipes.connect()
+
+                    val deserializationRecipes =
+                        connectionRecipes.inputStream.bufferedReader().readLine()
+                    val jsonRecipes: List<Recipe> =
+                        Json.decodeFromString<List<Recipe>>(deserializationRecipes.trimIndent())
+                    Log.i("!!!", "Resipes: $jsonRecipes")
+                }
+            }
+            threadPool.shutdown()
+
+            Log.i("!!!", "Categories id: $jsonCategory")
         }.start()
 
         Log.i("!!!", "Метод onCreate() выполняется на потоке ${Thread.currentThread().name}")
-
-
 
         binding.binFavourites.setOnClickListener {
             findNavController(R.id.mainContainer).navigate(
