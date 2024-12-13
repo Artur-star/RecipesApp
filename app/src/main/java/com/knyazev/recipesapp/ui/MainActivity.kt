@@ -8,9 +8,11 @@ import androidx.navigation.navOptions
 import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.databinding.ActivityMainBinding
 import com.knyazev.recipesapp.model.Category
+import com.knyazev.recipesapp.model.Recipe
 import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding
         get() = _binding
             ?: throw IllegalArgumentException("Binding for ActivityMainBinding must not be null")
-
+    private val threadPool = Executors.newFixedThreadPool(10)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,25 +28,44 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         Thread {
-            val url = URL("https://recipes.androidsprint.ru/api/category")
-            val connection = url.openConnection() as HttpURLConnection
-            connection.connect()
+            try {
+                val urlCategories = URL("https://recipes.androidsprint.ru/api/category")
+                val connectionCategory = urlCategories.openConnection() as HttpURLConnection
+                connectionCategory.connect()
 
-            val deserializationString: String =
-                connection.inputStream.bufferedReader().readLine()
+                val deserializationString: String =
+                    connectionCategory.inputStream.bufferedReader().readLine()
 
-            Log.i("!!!", "Выполняю запрос в потоке ${Thread.currentThread().name}")
-            Log.i("!!!", "Body $deserializationString")
+                Log.i("!!!", "Выполняю запрос в потоке ${Thread.currentThread().name}")
+                Log.i("!!!", "Body $deserializationString")
 
-            val json = Json.decodeFromString<List<Category>>(deserializationString.trimIndent())
-            Log.i("!!!", "deserialization: $json")
+                Json.decodeFromString<List<Category>>(deserializationString.trimIndent())
+                    .map { category: Category -> category.id }
+                    .forEach { categoryId ->
+                        threadPool.submit {
+                            val urlRecipes =
+                                URL("https://recipes.androidsprint.ru/api/category/${categoryId}/recipes")
+                            val connectionRecipes = urlRecipes.openConnection() as HttpURLConnection
+                            connectionRecipes.connect()
+
+                            val deserializationRecipes =
+                                connectionRecipes.inputStream.bufferedReader().readLine()
+                            val jsonRecipes: List<Recipe> =
+                                Json.decodeFromString<List<Recipe>>(deserializationRecipes.trimIndent())
+                            Log.i("!!!", "Resipes: $jsonRecipes")
+                        }
+                    }
+            } catch (e: Exception) {
+                Log.e("!!!", "Exception network ${e.message}")
+            } finally {
+                threadPool.shutdown()
+            }
         }.start()
 
         Log.i("!!!", "Метод onCreate() выполняется на потоке ${Thread.currentThread().name}")
 
-
-
         binding.binFavourites.setOnClickListener {
+
             findNavController(R.id.mainContainer).navigate(
                 R.id.favoritesListFragment,
                 null,
