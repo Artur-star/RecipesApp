@@ -10,8 +10,9 @@ import com.knyazev.recipesapp.databinding.ActivityMainBinding
 import com.knyazev.recipesapp.model.Category
 import com.knyazev.recipesapp.model.Recipe
 import kotlinx.serialization.json.Json
-import java.net.HttpURLConnection
-import java.net.URL
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
@@ -26,43 +27,39 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val logger = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        val client = OkHttpClient.Builder()
+            .addInterceptor(logger)
+            .build()
 
-        Thread {
-            try {
-                val urlCategories = URL("https://recipes.androidsprint.ru/api/category")
-                val connectionCategory = urlCategories.openConnection() as HttpURLConnection
-                connectionCategory.connect()
+        try {
+            threadPool.submit {
+                val requestCategory = Request.Builder()
+                    .url("https://recipes.androidsprint.ru/api/category")
+                    .build()
+                client.newCall(requestCategory).execute().use { response ->
+                    val deserializationString: String = response.body?.string() ?: ""
 
-                val deserializationString: String =
-                    connectionCategory.inputStream.bufferedReader().readLine()
-
-                Log.i("!!!", "Выполняю запрос в потоке ${Thread.currentThread().name}")
-                Log.i("!!!", "Body $deserializationString")
-
-                Json.decodeFromString<List<Category>>(deserializationString.trimIndent())
-                    .map { category: Category -> category.id }
-                    .forEach { categoryId ->
-                        threadPool.submit {
-                            val urlRecipes =
-                                URL("https://recipes.androidsprint.ru/api/category/${categoryId}/recipes")
-                            val connectionRecipes = urlRecipes.openConnection() as HttpURLConnection
-                            connectionRecipes.connect()
-
-                            val deserializationRecipes =
-                                connectionRecipes.inputStream.bufferedReader().readLine()
-                            val jsonRecipes: List<Recipe> =
-                                Json.decodeFromString<List<Recipe>>(deserializationRecipes.trimIndent())
-                            Log.i("!!!", "Resipes: $jsonRecipes")
+                    Json.decodeFromString<List<Category>>(deserializationString.trimIndent())
+                        .map { category: Category -> category.id }
+                        .forEach { categoryId ->
+                            threadPool.submit {
+                                val requestRecipes = Request.Builder()
+                                    .url("https://recipes.androidsprint.ru/api/category/${categoryId}/recipes")
+                                    .build()
+                                client.newCall(requestRecipes).execute().use { response ->
+                                    val deserializationRecipes = response.body?.string() ?: ""
+                                    Json.decodeFromString<List<Recipe>>(deserializationRecipes.trimIndent())
+                                }
+                            }
                         }
-                    }
-            } catch (e: Exception) {
-                Log.e("!!!", "Exception network ${e.message}")
-            } finally {
-                threadPool.shutdown()
+                }
             }
-        }.start()
-
-        Log.i("!!!", "Метод onCreate() выполняется на потоке ${Thread.currentThread().name}")
+        } catch (e: Exception) {
+            Log.e("!!!", "Exception network ${e.message}")
+        } finally {
+            threadPool.shutdown()
+        }
 
         binding.binFavourites.setOnClickListener {
 
