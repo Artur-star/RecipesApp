@@ -5,7 +5,10 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.navOptions
+import com.knyazev.recipesapp.Constants.REQUEST_URL
 import com.knyazev.recipesapp.R
+import com.knyazev.recipesapp.data.RecipeApiService
+import com.knyazev.recipesapp.data.RecipesRepository
 import com.knyazev.recipesapp.databinding.ActivityMainBinding
 import com.knyazev.recipesapp.model.Category
 import com.knyazev.recipesapp.model.Recipe
@@ -13,6 +16,9 @@ import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Call
+import retrofit2.Response
+import retrofit2.Retrofit
 import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
@@ -34,8 +40,25 @@ class MainActivity : AppCompatActivity() {
 
         try {
             threadPool.submit {
+
+                val retrofit: Retrofit = Retrofit.Builder()
+                    .baseUrl(REQUEST_URL)
+                    .build()
+
+                val service: RecipeApiService = retrofit.create(RecipeApiService::class.java)
+
+                val categoriesCall: Call<List<Category>> = service.getCategories()
+
+                val categoriesResponse: Response<List<Category>> = categoriesCall.execute()
+                val categories: List<Category>? = categoriesResponse.body()
+                Log.i("!!!", "categories: ${categories.toString()}")
+
+
+
+
+
                 val requestCategory = Request.Builder()
-                    .url("https://recipes.androidsprint.ru/api/category")
+                    .url(REQUEST_URL)
                     .build()
                 client.newCall(requestCategory).execute().use { response ->
                     val deserializationString: String = response.body?.string() ?: ""
