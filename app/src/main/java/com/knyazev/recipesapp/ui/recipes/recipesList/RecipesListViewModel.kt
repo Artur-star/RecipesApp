@@ -3,10 +3,10 @@ package com.knyazev.recipesapp.ui.recipes.recipesList
 import android.app.Application
 import android.graphics.drawable.Drawable
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.knyazev.recipesapp.data.RecipesRepository
-import com.knyazev.recipesapp.data.STUB
 import com.knyazev.recipesapp.model.Category
 import com.knyazev.recipesapp.model.Recipe
 
@@ -24,8 +24,23 @@ class RecipeListViewModel(
     val recipesListStateLD get() = _recipesListStateLD
 
     fun loadRecipesList(category: Category) {
-        //TODO(): load from network
-        val recipeList: List<Recipe> = RecipesRepository().getRecipesByCategoryId(category.id)
+        val recipeList = try {
+            RecipesRepository().getRecipesByCategoryId(category.id).get()
+        } catch (e: Exception) {
+            Log.e("!!!", "Exception network ${e.message}")
+            null
+        } finally {
+            RecipesRepository().shutdown()
+        }
+
+        if (recipeList == null) {
+            Toast.makeText(
+                Application().applicationContext,
+                "Ошибка получения данных",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+
         val recipeListImage = try {
             Drawable.createFromStream(
                 getApplication<Application>()
@@ -36,9 +51,9 @@ class RecipeListViewModel(
             null
         }
         val recipeListState =
-            recipesListStateLD.value?.copy(recipeList, recipeListImage, category)
+            recipesListStateLD.value?.copy(recipeList!!, recipeListImage, category)
                 ?: RecipeListState(
-                    recipeList,
+                    recipeList!!,
                     recipeListImage,
                     category
                 )

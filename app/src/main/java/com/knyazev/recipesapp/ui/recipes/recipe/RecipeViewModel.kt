@@ -4,13 +4,13 @@ import android.app.Application
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.knyazev.recipesapp.Constants.PREFS_KEY_FAVORITES_CATEGORY
 import com.knyazev.recipesapp.Constants.PREFS_NAME
 import com.knyazev.recipesapp.data.RecipesRepository
-import com.knyazev.recipesapp.data.STUB
 import com.knyazev.recipesapp.model.Recipe
 
 data class RecipeState(
@@ -29,10 +29,27 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun loadRecipe(recipeId: Int) {
-        //TODO(): load from network
-        val recipe = RecipesRepository().getRecipeById(recipeId)
+        val recipe = try {
+            RecipesRepository().getRecipeById(recipeId).get()
+        } catch (e: Exception) {
+            Log.e("!!!", "Exception network ${e.message}")
+            null
+        } finally {
+            RecipesRepository().shutdown()
+        }
+
+        if (recipe == null) {
+            Toast.makeText(
+                Application().applicationContext,
+                "Ошибка получения данных",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+
         val isFavorite = getFavorites().contains(recipeId.toString())
-        val recipeImageUrl = recipe.imageUrl
+
+        val recipeImageUrl = recipe!!.imageUrl
+
         val recipeImage = try {
             Drawable.createFromStream(
                 getApplication<Application>().applicationContext.assets.open(recipeImageUrl), null

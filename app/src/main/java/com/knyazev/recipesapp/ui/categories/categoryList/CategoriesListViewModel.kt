@@ -1,6 +1,8 @@
 package com.knyazev.recipesapp.ui.categories.categoryList
 
+import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,20 +18,28 @@ class CategoriesListViewModel : ViewModel() {
     val categoriesListStateLD: LiveData<CategoriesListState> get() = _categoriesListStateLD
 
     fun loadCategoryList() {
-        //TODO(): load from network
-        try {
-            val categoriesList = RecipesRepository().getCategories().get().toMutableList()
-            val categoriesListState =
-                _categoriesListStateLD.value?.copy(categoriesList = categoriesList)
-                    ?: CategoriesListState(
-                        categoriesList = categoriesList
-                    )
-            _categoriesListStateLD.value = categoriesListState
+        val categoriesList: MutableList<Category>? = try {
+            RecipesRepository().getCategories().get().toMutableList()
         } catch (e: Exception) {
             Log.e("!!!", "Exception network ${e.message}")
+            null
         } finally {
             RecipesRepository().shutdown()
         }
 
+        if (categoriesList == null) {
+            Toast.makeText(
+                Application().applicationContext,
+                "Ошибка получения данных",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+
+        val categoriesListState =
+            _categoriesListStateLD.value?.copy(categoriesList = categoriesList!!)
+                ?: CategoriesListState(
+                    categoriesList = categoriesList!!
+                )
+        _categoriesListStateLD.value = categoriesListState
     }
 }
