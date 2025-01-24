@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.knyazev.recipesapp.data.RecipesRepository
 import com.knyazev.recipesapp.data.STUB
 import com.knyazev.recipesapp.model.Category
 import com.knyazev.recipesapp.model.Recipe
@@ -24,7 +25,7 @@ class RecipeListViewModel(
 
     fun loadRecipesList(category: Category) {
         //TODO(): load from network
-        val recipeList: List<Recipe> = STUB.getRecipesByCategoryId(category.id)
+        val recipeList: List<Recipe> = RecipesRepository().getRecipesByCategoryId(category.id)
         val recipeListImage = try {
             Drawable.createFromStream(
                 getApplication<Application>()

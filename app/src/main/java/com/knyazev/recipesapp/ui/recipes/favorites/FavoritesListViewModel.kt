@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.knyazev.recipesapp.Constants
 import com.knyazev.recipesapp.Constants.PREFS_KEY_FAVORITES_CATEGORY
+import com.knyazev.recipesapp.data.RecipesRepository
 import com.knyazev.recipesapp.data.STUB
 import com.knyazev.recipesapp.model.Recipe
 
@@ -21,7 +22,7 @@ class FavoritesListViewModel(application: Application) : AndroidViewModel(applic
 
     fun loadFavoritesList() {
         //TODO(): load from network
-        val favorites = STUB.getRecipesByIds(getFavorites().map { it.toInt() }.toSet())
+        val favorites = RecipesRepository().getRecipesByIds(getFavorites().map { it.toInt() }.toSet())
         val favoritesListState =
             _favoritesListStateLD.value?.copy(favoritesList = favorites) ?: FavoritesListState(
                 favoritesList = favorites

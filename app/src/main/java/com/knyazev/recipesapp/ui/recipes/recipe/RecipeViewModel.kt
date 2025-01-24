@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.knyazev.recipesapp.Constants.PREFS_KEY_FAVORITES_CATEGORY
 import com.knyazev.recipesapp.Constants.PREFS_NAME
+import com.knyazev.recipesapp.data.RecipesRepository
 import com.knyazev.recipesapp.data.STUB
 import com.knyazev.recipesapp.model.Recipe
 
@@ -29,7 +30,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
 
     fun loadRecipe(recipeId: Int) {
         //TODO(): load from network
-        val recipe = STUB.getRecipeById(recipeId)
+        val recipe = RecipesRepository().getRecipeById(recipeId)
         val isFavorite = getFavorites().contains(recipeId.toString())
         val recipeImageUrl = recipe.imageUrl
         val recipeImage = try {

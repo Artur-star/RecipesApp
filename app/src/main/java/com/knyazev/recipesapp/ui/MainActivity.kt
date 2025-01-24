@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding
         get() = _binding
             ?: throw IllegalArgumentException("Binding for ActivityMainBinding must not be null")
-    private val threadPool = Executors.newFixedThreadPool(10)
+//    private val threadPool = Executors.newFixedThreadPool(10)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,24 +41,8 @@ class MainActivity : AppCompatActivity() {
 //            .addInterceptor(logger)
 //            .build()
 
-        try {
-            threadPool.submit {
-
-                val contentType: MediaType = "application/json".toMediaType()
-
-                val retrofit: Retrofit = Retrofit.Builder()
-                    .baseUrl(REQUEST_URL)
-                    .addConverterFactory(Json.asConverterFactory(contentType))
-                    .build()
-
-                val service: RecipeApiService = retrofit.create(RecipeApiService::class.java)
-
-                val categoriesCall: Call<List<Category>> = service.getCategories()
-
-                val categoriesResponse: Response<List<Category>> = categoriesCall.execute()
-                val categories: List<Category>? = categoriesResponse.body()
-                Log.d("!!!", "categories: ${categories.toString()}")
-
+//        try {
+//            threadPool.submit {
 
 
 //                val requestCategory = Request.Builder()
@@ -81,12 +65,12 @@ class MainActivity : AppCompatActivity() {
 //                            }
 //                        }
 //                }
-            }
-        } catch (e: Exception) {
-            Log.e("!!!", "Exception network ${e.message}")
-        } finally {
-            threadPool.shutdown()
-        }
+//            }
+//        } catch (e: Exception) {
+//            Log.e("!!!", "Exception network ${e.message}")
+//        } finally {
+//            threadPool.shutdown()
+//        }
 
         binding.binFavourites.setOnClickListener {
 
