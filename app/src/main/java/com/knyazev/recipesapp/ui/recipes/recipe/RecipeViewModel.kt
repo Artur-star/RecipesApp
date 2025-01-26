@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -29,47 +28,37 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun loadRecipe(recipeId: Int) {
-        val recipe = try {
-            RecipesRepository().getRecipeById(recipeId).get()
-        } catch (e: Exception) {
-            Log.e("!!!", "Exception network ${e.message}")
-            null
-        } finally {
-            RecipesRepository().shutdown()
+        RecipesRepository().getRecipeById(recipeId) { recipe ->
+            _recipeStateLD.postValue(_recipeStateLD.value?.copy(recipe = recipe))
+
+            val isFavorite = getFavorites().contains(recipeId.toString())
+
+            val recipeImageUrl = recipe!!.imageUrl
+
+            val recipeImage = try {
+                Drawable.createFromStream(
+                    getApplication<Application>().applicationContext.assets.open(recipeImageUrl),
+                    null
+                )
+            } catch (e: NullPointerException) {
+                Log.e("!!!", "Image not found $recipeImageUrl")
+                null
+            }
+
+            val recipeState: RecipeState =
+                _recipeStateLD.value?.copy(
+                    isFavorite = isFavorite,
+                    recipe = recipe,
+                    recipeImage = recipeImage
+                ) ?: RecipeState(
+                    isFavorite = isFavorite,
+                    recipe = recipe,
+                    recipeImage = recipeImage
+                )
+            _recipeStateLD.value = recipeState
         }
 
-        if (recipe == null) {
-            Toast.makeText(
-                Application().applicationContext,
-                "Ошибка получения данных",
-                Toast.LENGTH_LONG
-            ).show()
-        }
 
-        val isFavorite = getFavorites().contains(recipeId.toString())
-
-        val recipeImageUrl = recipe!!.imageUrl
-
-        val recipeImage = try {
-            Drawable.createFromStream(
-                getApplication<Application>().applicationContext.assets.open(recipeImageUrl), null
-            )
-        } catch (e: NullPointerException) {
-            Log.e("!!!", "Image not found $recipeImageUrl")
-            null
-        }
-
-        val recipeState: RecipeState =
-            _recipeStateLD.value?.copy(
-                isFavorite = isFavorite,
-                recipe = recipe,
-                recipeImage = recipeImage
-            ) ?: RecipeState(
-                isFavorite = isFavorite,
-                recipe = recipe,
-                recipeImage = recipeImage
-            )
-        _recipeStateLD.value = recipeState
     }
 
     fun setCountPortions(count: Int) {

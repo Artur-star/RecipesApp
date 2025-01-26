@@ -2,8 +2,6 @@ package com.knyazev.recipesapp.ui.recipes.favorites
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.knyazev.recipesapp.Constants
@@ -22,28 +20,16 @@ class FavoritesListViewModel(application: Application) : AndroidViewModel(applic
         .getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE)
 
     fun loadFavoritesList() {
-        val favorites = try {
-            RecipesRepository().getRecipesByIds(getFavorites().map { it.toInt() }.toSet()).get()
-        } catch (e: Exception) {
-            Log.e("!!!", "Exception network ${e.message}")
-            null
-        } finally {
-            RecipesRepository().shutdown()
-        }
+        RecipesRepository().getRecipesByIds(getFavorites().map { it.toInt() }
+            .toSet()) { favorites ->
+            _favoritesListStateLD.postValue(_favoritesListStateLD.value?.copy(favoritesList = favorites!!))
 
-        if (favorites == null) {
-            Toast.makeText(
-                Application().applicationContext,
-                "Ошибка получения данных",
-                Toast.LENGTH_LONG
-            ).show()
+//            val favoritesListState =
+//                _favoritesListStateLD.value?.copy(favoritesList = favorites!!) ?: FavoritesListState(
+//                    favoritesList = favorites!!
+//                )
+//            _favoritesListStateLD.value = favoritesListState
         }
-
-        val favoritesListState =
-            _favoritesListStateLD.value?.copy(favoritesList = favorites!!) ?: FavoritesListState(
-                favoritesList = favorites!!
-            )
-        _favoritesListStateLD.value = favoritesListState
     }
 
     private fun getFavorites(): MutableSet<String> {
