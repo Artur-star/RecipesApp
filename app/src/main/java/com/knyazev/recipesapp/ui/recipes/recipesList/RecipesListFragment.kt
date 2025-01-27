@@ -35,18 +35,21 @@ class RecipesListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val category = recipeListFragmentArgs.categoryId
         viewModel.loadRecipesList(category)
+
         viewModel.recipesListStateLD.observe(viewLifecycleOwner) { (recipeList, recipeListImage, category) ->
-            if (recipeList.isEmpty()) {
+            try {
+                binding.ivHeaderRecipesList.setImageDrawable(recipeListImage)
+                binding.tvHeaderRecipes.text = category?.title
+                recipesListAdapter.updateRecipeList(recipeList)
+            } catch (e: Exception) {
                 Toast.makeText(
                     Application().applicationContext,
                     "Ошибка получения данных",
                     Toast.LENGTH_LONG
                 ).show()
             }
-            binding.ivHeaderRecipesList.setImageDrawable(recipeListImage)
-            binding.tvHeaderRecipes.text = category?.title
-            recipesListAdapter.updateRecipeList(recipeList)
         }
+
         binding.rvRecipes.adapter = recipesListAdapter
         recipesListAdapter.setOnItemClickListener(object : RecipesListAdapter.OnItemClickListener {
             override fun onItemClick(recipeId: Int) {

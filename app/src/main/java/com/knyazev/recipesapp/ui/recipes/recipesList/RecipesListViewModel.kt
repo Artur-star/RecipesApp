@@ -23,8 +23,10 @@ class RecipeListViewModel(
     val recipesListStateLD get() = _recipesListStateLD
 
     fun loadRecipesList(category: Category) {
-        RecipesRepository().getRecipesByCategoryId(category.id) { recipeList ->
-            _recipesListStateLD.postValue(_recipesListStateLD.value?.copy(recipeList = recipeList!!))
+        RecipesRepository().getRecipesByCategoryId(category.id) { recipeListIsNull ->
+            val recipeList = recipeListIsNull ?: emptyList()
+            Log.d("!!!", "recipeList ${recipeList.size}")
+            _recipesListStateLD.postValue(_recipesListStateLD.value?.copy(recipeList = recipeList))
 
             val recipeListImage = try {
                 Drawable.createFromStream(
@@ -36,9 +38,9 @@ class RecipeListViewModel(
                 null
             }
             val recipeListState =
-                recipesListStateLD.value?.copy(recipeList!!, recipeListImage, category)
+                recipesListStateLD.value?.copy(recipeList, recipeListImage, category)
                     ?: RecipeListState(
-                        recipeList!!,
+                        recipeList,
                         recipeListImage,
                         category
                     )
