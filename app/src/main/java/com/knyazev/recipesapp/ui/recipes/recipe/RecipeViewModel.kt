@@ -20,7 +20,7 @@ data class RecipeState(
 )
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application) {
-    private val _recipeStateLD = MutableLiveData<RecipeState>()
+    private val _recipeStateLD = MutableLiveData<RecipeState>().apply { value = RecipeState() }
     val recipeStateLD: LiveData<RecipeState> get() = _recipeStateLD
 
     init {
@@ -45,7 +45,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
                 null
             }
 
-            val recipeState: RecipeState =
+            _recipeStateLD.postValue(
                 _recipeStateLD.value?.copy(
                     isFavorite = isFavorite,
                     recipe = recipe,
@@ -55,10 +55,8 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
                     recipe = recipe,
                     recipeImage = recipeImage
                 )
-            _recipeStateLD.value = recipeState
+            )
         }
-
-
     }
 
     fun setCountPortions(count: Int) {

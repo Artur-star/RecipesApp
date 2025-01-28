@@ -14,7 +14,8 @@ data class FavoritesListState(
 )
 
 class FavoritesListViewModel(application: Application) : AndroidViewModel(application) {
-    private val _favoritesListStateLD = MutableLiveData<FavoritesListState>()
+    private val _favoritesListStateLD =
+        MutableLiveData<FavoritesListState>().apply { value = FavoritesListState() }
     val favoritesListStateLD get() = _favoritesListStateLD
     private val sharedPreferences = getApplication<Application>()
         .getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE)
@@ -23,12 +24,6 @@ class FavoritesListViewModel(application: Application) : AndroidViewModel(applic
         RecipesRepository().getRecipesByIds(getFavorites().map { it.toInt() }
             .toSet()) { favorites ->
             _favoritesListStateLD.postValue(_favoritesListStateLD.value?.copy(favoritesList = favorites!!))
-
-//            val favoritesListState =
-//                _favoritesListStateLD.value?.copy(favoritesList = favorites!!) ?: FavoritesListState(
-//                    favoritesList = favorites!!
-//                )
-//            _favoritesListStateLD.value = favoritesListState
         }
     }
 

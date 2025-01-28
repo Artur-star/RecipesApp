@@ -1,6 +1,5 @@
 package com.knyazev.recipesapp.ui.recipes.favorites
 
-import android.app.Application
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -40,7 +39,7 @@ class FavoritesListFragment : Fragment() {
             recipesListAdapter.updateRecipeList(favorites)
             if (favorites.isEmpty()) {
                 Toast.makeText(
-                    Application().applicationContext,
+                    context,
                     "Ошибка получения данных",
                     Toast.LENGTH_LONG
                 ).show()

@@ -19,13 +19,13 @@ class RecipeListViewModel(
     application: Application,
 ) :
     AndroidViewModel(application) {
-    private val _recipesListStateLD = MutableLiveData<RecipeListState>()
+    private val _recipesListStateLD =
+        MutableLiveData<RecipeListState>().apply { value = RecipeListState() }
     val recipesListStateLD get() = _recipesListStateLD
 
     fun loadRecipesList(category: Category) {
         RecipesRepository().getRecipesByCategoryId(category.id) { recipeListIsNull ->
             val recipeList = recipeListIsNull ?: emptyList()
-            Log.d("!!!", "recipeList ${recipeList.size}")
             _recipesListStateLD.postValue(_recipesListStateLD.value?.copy(recipeList = recipeList))
 
             val recipeListImage = try {
@@ -37,14 +37,14 @@ class RecipeListViewModel(
                 Log.d("logTag", "Image not found $category")
                 null
             }
-            val recipeListState =
+            recipesListStateLD.postValue(
                 recipesListStateLD.value?.copy(recipeList, recipeListImage, category)
                     ?: RecipeListState(
                         recipeList,
                         recipeListImage,
                         category
                     )
-            recipesListStateLD.value = recipeListState
+            )
         }
     }
 }
