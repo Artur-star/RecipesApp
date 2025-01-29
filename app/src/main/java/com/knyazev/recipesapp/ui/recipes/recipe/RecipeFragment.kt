@@ -52,6 +52,7 @@ class RecipeFragment : Fragment() {
                     Toast.LENGTH_LONG
                 ).show()
             }
+
             if (flag) {
                 binding.ibHeaderHeart.setImageDrawable(
                     AppCompatResources.getDrawable(

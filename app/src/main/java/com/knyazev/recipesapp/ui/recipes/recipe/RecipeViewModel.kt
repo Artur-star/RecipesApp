@@ -11,6 +11,7 @@ import com.knyazev.recipesapp.Constants.PREFS_KEY_FAVORITES_CATEGORY
 import com.knyazev.recipesapp.Constants.PREFS_NAME
 import com.knyazev.recipesapp.data.RecipesRepository
 import com.knyazev.recipesapp.model.Recipe
+import okio.FileNotFoundException
 
 data class RecipeState(
     val isFavorite: Boolean = false,
@@ -41,6 +42,9 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
                     null
                 )
             } catch (e: NullPointerException) {
+                Log.e("!!!", "Image not found $recipeImageUrl")
+                null
+            } catch (e: FileNotFoundException) {
                 Log.e("!!!", "Image not found $recipeImageUrl")
                 null
             }

@@ -3,6 +3,7 @@ package com.knyazev.recipesapp.ui.recipes.adaptersRecipes
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.databinding.ItemIngredientsBinding
 import com.knyazev.recipesapp.model.Ingredient
 import java.math.BigDecimal
@@ -32,11 +33,18 @@ class IngredientsAdapter(var dataSet: List<Ingredient>) :
         val ingredient: Ingredient = dataSet[position]
         holder.nameIngredient.text = ingredient.description
 
-        val totalQuantity = BigDecimal(ingredient.quantity) * BigDecimal(quantity)
-        val formatCountIngr = totalQuantity.setScale(3).stripTrailingZeros().toPlainString()
-
-        holder.countIngredient.text = formatCountIngr
-        holder.unitOfMeasure.text = ingredient.unitOfMeasure
+        if (ingredient.quantity.toBigDecimalOrNull() != null) {
+            val totalQuantity = BigDecimal(ingredient.quantity) * BigDecimal(quantity)
+            val formatCountIngr = totalQuantity.setScale(3).stripTrailingZeros().toPlainString()
+            holder.countIngredient.text = formatCountIngr
+            holder.unitOfMeasure.text = ingredient.unitOfMeasure
+        } else if (ingredient.quantity.lowercase() == "по вкусу") {
+            holder.unitOfMeasure.text = holder.unitOfMeasure.context.resources.getString(
+                R.string.ingredient_quantity, ingredient.quantity)
+        } else {
+            holder.unitOfMeasure.text = holder.unitOfMeasure.context.resources.getString(
+                R.string.ingredient_quantity_unitOfMeasure, ingredient.quantity, ingredient.unitOfMeasure)
+        }
     }
 
     fun updateIngredients(dataSet: List<Ingredient>, progress: Int) {

@@ -23,7 +23,8 @@ class FavoritesListViewModel(application: Application) : AndroidViewModel(applic
     fun loadFavoritesList() {
         RecipesRepository().getRecipesByIds(getFavorites().map { it.toInt() }
             .toSet()) { favorites ->
-            _favoritesListStateLD.postValue(_favoritesListStateLD.value?.copy(favoritesList = favorites!!))
+            val resultFavorites = favorites ?: emptyList()
+            _favoritesListStateLD.postValue(_favoritesListStateLD.value?.copy(favoritesList = resultFavorites))
         }
     }
 

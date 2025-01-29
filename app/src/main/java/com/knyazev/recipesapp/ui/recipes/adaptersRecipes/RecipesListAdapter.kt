@@ -39,8 +39,11 @@ class RecipesListAdapter(var dataSet: List<Recipe>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         val recipe: Recipe = dataSet[position]
+
         holder.textView.text = recipe.title
+
         val drawable = try {
             Drawable.createFromStream(
                 holder.imageView.context.assets.open(recipe.imageUrl),

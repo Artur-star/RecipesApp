@@ -16,10 +16,11 @@ class CategoriesListViewModel : ViewModel() {
 
     fun loadCategoryList() {
         RecipesRepository().getCategories { resultCategory ->
+            val result = resultCategory ?: emptyList()
             _categoriesListStateLD.postValue(
-                _categoriesListStateLD.value?.copy(categoriesList = resultCategory!!)
+                _categoriesListStateLD.value?.copy(categoriesList = result)
                     ?: CategoriesListState(
-                        categoriesList = resultCategory!!
+                        categoriesList = result
                     )
             )
         }

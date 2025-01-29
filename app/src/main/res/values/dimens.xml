@@ -13,8 +13,9 @@
     <dimen name="height_thumb_30">30dp</dimen>
     <dimen name="max_width_50">50dp</dimen>
     <dimen name="height_and_width_100">100dp</dimen>
+    <dimen name="max_width_120">120dp</dimen>
     <dimen name="height_icon_in_item_130">130dp</dimen>
-    <dimen name="max_width_200">200dp</dimen>
+    <dimen name="max_width_180">180dp</dimen>
     <dimen name="height_header_224">224dp</dimen>
     <dimen name="max_width_250">250dp</dimen>
 
