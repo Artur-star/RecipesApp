@@ -1,17 +1,16 @@
 package com.knyazev.recipesapp.ui.recipes.recipesList
 
 import android.app.Application
-import android.graphics.drawable.Drawable
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.knyazev.recipesapp.Constants
 import com.knyazev.recipesapp.data.RecipesRepository
 import com.knyazev.recipesapp.model.Category
 import com.knyazev.recipesapp.model.Recipe
 
 data class RecipeListState(
     val recipeList: List<Recipe> = emptyList(),
-    val recipeListImage: Drawable? = null,
+    val recipeListImageUrl: String? = null,
     val category: Category? = null,
 )
 
@@ -28,20 +27,21 @@ class RecipeListViewModel(
             val recipeList = recipeListIsNull ?: emptyList()
             _recipesListStateLD.postValue(_recipesListStateLD.value?.copy(recipeList = recipeList))
 
-            val recipeListImage = try {
-                Drawable.createFromStream(
-                    getApplication<Application>()
-                        .applicationContext.assets.open(category.imageUrl), null
-                )
-            } catch (e: NullPointerException) {
-                Log.d("logTag", "Image not found $category")
-                null
-            }
+            val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${category.imageUrl}"
+//            val recipeListImage = try {
+//                Drawable.createFromStream(
+//                    getApplication<Application>()
+//                        .applicationContext.assets.open(category.imageUrl), null
+//                )
+//            } catch (e: NullPointerException) {
+//                Log.d("logTag", "Image not found $category")
+//                null
+//            }
             recipesListStateLD.postValue(
-                recipesListStateLD.value?.copy(recipeList, recipeListImage, category)
+                recipesListStateLD.value?.copy(recipeList, recipeImageUrl, category)
                     ?: RecipeListState(
                         recipeList,
-                        recipeListImage,
+                        recipeImageUrl,
                         category
                     )
             )

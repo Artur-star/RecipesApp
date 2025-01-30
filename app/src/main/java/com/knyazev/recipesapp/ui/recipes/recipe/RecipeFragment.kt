@@ -1,6 +1,7 @@
 package com.knyazev.recipesapp.ui.recipes.recipe
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.knyazev.recipesapp.Constants.MIN_PORTIONS
 import com.knyazev.recipesapp.R
@@ -45,6 +47,7 @@ class RecipeFragment : Fragment() {
 
     private fun initUI() {
         viewModel.recipeStateLD.observe(viewLifecycleOwner) { (flag, countPortion, recipe, recipeImage) ->
+            Log.d("!!", "$recipe")
             if (recipe == null) {
                 Toast.makeText(
                     context,
@@ -68,7 +71,12 @@ class RecipeFragment : Fragment() {
                     )
                 )
             }
-            binding.ivHeaderRecipe.setImageDrawable(recipeImage)
+            Glide
+                .with(this)
+                .load(recipeImage)
+                .into(binding.ivHeaderRecipe)
+
+            //binding.ivHeaderRecipe.setImageDrawable(recipeImage)
             binding.tvHeaderRecipe.text = recipe?.title
 
             binding.countPortions.text = countPortion.toString()

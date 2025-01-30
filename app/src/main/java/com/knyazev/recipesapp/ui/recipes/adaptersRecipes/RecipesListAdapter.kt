@@ -1,12 +1,11 @@
 package com.knyazev.recipesapp.ui.recipes.adaptersRecipes
 
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.knyazev.recipesapp.databinding.ItemRecipeBinding
 import com.knyazev.recipesapp.model.Recipe
 
@@ -44,16 +43,19 @@ class RecipesListAdapter(var dataSet: List<Recipe>) :
 
         holder.textView.text = recipe.title
 
-        val drawable = try {
-            Drawable.createFromStream(
-                holder.imageView.context.assets.open(recipe.imageUrl),
-                null
-            )
-        } catch (e: Exception) {
-            Log.d("logTag", "Image not found: ${recipe.imageUrl}")
-            null
-        }
-        holder.imageView.setImageDrawable(drawable)
+        Glide.with(holder.itemView.context)
+            .load(recipe.imageUrl)
+            .into(holder.imageView)
+//        val drawable = try {
+//            Drawable.createFromStream(
+//                holder.imageView.context.assets.open(recipe.imageUrl),
+//                null
+//            )
+//        } catch (e: Exception) {
+//            Log.d("logTag", "Image not found: ${recipe.imageUrl}")
+//            null
+//        }
+//        holder.imageView.setImageDrawable(drawable)
 
         holder.itemView.setOnClickListener { itemClickListener?.onItemClick(recipe.id) }
     }
