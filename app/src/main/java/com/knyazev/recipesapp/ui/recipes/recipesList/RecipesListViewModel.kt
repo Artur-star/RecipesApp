@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.knyazev.recipesapp.data.STUB
+import com.knyazev.recipesapp.data.RecipesRepository
 import com.knyazev.recipesapp.model.Category
 import com.knyazev.recipesapp.model.Recipe
 
@@ -19,28 +19,32 @@ class RecipeListViewModel(
     application: Application,
 ) :
     AndroidViewModel(application) {
-    private val _recipesListStateLD = MutableLiveData<RecipeListState>()
+    private val _recipesListStateLD =
+        MutableLiveData<RecipeListState>().apply { value = RecipeListState() }
     val recipesListStateLD get() = _recipesListStateLD
 
     fun loadRecipesList(category: Category) {
-        //TODO(): load from network
-        val recipeList: List<Recipe> = STUB.getRecipesByCategoryId(category.id)
-        val recipeListImage = try {
-            Drawable.createFromStream(
-                getApplication<Application>()
-                    .applicationContext.assets.open(category.imageUrl), null
-            )
-        } catch (e: NullPointerException) {
-            Log.d("logTag", "Image not found $category")
-            null
-        }
-        val recipeListState =
-            recipesListStateLD.value?.copy(recipeList, recipeListImage, category)
-                ?: RecipeListState(
-                    recipeList,
-                    recipeListImage,
-                    category
+        RecipesRepository().getRecipesByCategoryId(category.id) { recipeListIsNull ->
+            val recipeList = recipeListIsNull ?: emptyList()
+            _recipesListStateLD.postValue(_recipesListStateLD.value?.copy(recipeList = recipeList))
+
+            val recipeListImage = try {
+                Drawable.createFromStream(
+                    getApplication<Application>()
+                        .applicationContext.assets.open(category.imageUrl), null
                 )
-        recipesListStateLD.value = recipeListState
+            } catch (e: NullPointerException) {
+                Log.d("logTag", "Image not found $category")
+                null
+            }
+            recipesListStateLD.postValue(
+                recipesListStateLD.value?.copy(recipeList, recipeListImage, category)
+                    ?: RecipeListState(
+                        recipeList,
+                        recipeListImage,
+                        category
+                    )
+            )
+        }
     }
 }

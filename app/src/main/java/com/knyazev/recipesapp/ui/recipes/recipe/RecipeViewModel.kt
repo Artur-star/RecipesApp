@@ -9,8 +9,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.knyazev.recipesapp.Constants.PREFS_KEY_FAVORITES_CATEGORY
 import com.knyazev.recipesapp.Constants.PREFS_NAME
-import com.knyazev.recipesapp.data.STUB
+import com.knyazev.recipesapp.data.RecipesRepository
 import com.knyazev.recipesapp.model.Recipe
+import okio.FileNotFoundException
 
 data class RecipeState(
     val isFavorite: Boolean = false,
@@ -20,7 +21,7 @@ data class RecipeState(
 )
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application) {
-    private val _recipeStateLD = MutableLiveData<RecipeState>()
+    private val _recipeStateLD = MutableLiveData<RecipeState>().apply { value = RecipeState() }
     val recipeStateLD: LiveData<RecipeState> get() = _recipeStateLD
 
     init {
@@ -28,30 +29,38 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun loadRecipe(recipeId: Int) {
-        //TODO(): load from network
-        val recipe = STUB.getRecipeById(recipeId)
-        val isFavorite = getFavorites().contains(recipeId.toString())
-        val recipeImageUrl = recipe.imageUrl
-        val recipeImage = try {
-            Drawable.createFromStream(
-                getApplication<Application>().applicationContext.assets.open(recipeImageUrl), null
-            )
-        } catch (e: NullPointerException) {
-            Log.e("!!!", "Image not found $recipeImageUrl")
-            null
-        }
+        RecipesRepository().getRecipeById(recipeId) { recipe ->
+            _recipeStateLD.postValue(_recipeStateLD.value?.copy(recipe = recipe))
 
-        val recipeState: RecipeState =
-            _recipeStateLD.value?.copy(
-                isFavorite = isFavorite,
-                recipe = recipe,
-                recipeImage = recipeImage
-            ) ?: RecipeState(
-                isFavorite = isFavorite,
-                recipe = recipe,
-                recipeImage = recipeImage
+            val isFavorite = getFavorites().contains(recipeId.toString())
+
+            val recipeImageUrl = recipe!!.imageUrl
+
+            val recipeImage = try {
+                Drawable.createFromStream(
+                    getApplication<Application>().applicationContext.assets.open(recipeImageUrl),
+                    null
+                )
+            } catch (e: NullPointerException) {
+                Log.e("!!!", "Image not found $recipeImageUrl")
+                null
+            } catch (e: FileNotFoundException) {
+                Log.e("!!!", "Image not found $recipeImageUrl")
+                null
+            }
+
+            _recipeStateLD.postValue(
+                _recipeStateLD.value?.copy(
+                    isFavorite = isFavorite,
+                    recipe = recipe,
+                    recipeImage = recipeImage
+                ) ?: RecipeState(
+                    isFavorite = isFavorite,
+                    recipe = recipe,
+                    recipeImage = recipeImage
+                )
             )
-        _recipeStateLD.value = recipeState
+        }
     }
 
     fun setCountPortions(count: Int) {

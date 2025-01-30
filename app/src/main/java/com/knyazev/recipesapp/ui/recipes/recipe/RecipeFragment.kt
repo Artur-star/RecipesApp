@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -44,6 +45,14 @@ class RecipeFragment : Fragment() {
 
     private fun initUI() {
         viewModel.recipeStateLD.observe(viewLifecycleOwner) { (flag, countPortion, recipe, recipeImage) ->
+            if (recipe == null) {
+                Toast.makeText(
+                    context,
+                    "Ошибка получения данных",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+
             if (flag) {
                 binding.ibHeaderHeart.setImageDrawable(
                     AppCompatResources.getDrawable(

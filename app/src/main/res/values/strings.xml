@@ -8,6 +8,8 @@
     <string name="title_ingredients">Ingredients</string>
     <string name="title_cooking_method">Cooking method</string>
     <string name="position_in_method" translatable="false">%1$d. %2$s</string>
+    <string name="ingredient_quantity" translatable="false">%1$s</string>
+    <string name="ingredient_quantity_unitOfMeasure" translatable="false">%1$s %2$s</string>
     <string name="subtitle_portions">Portions:</string>
     <string name="image_of_favorites">Image of favorites</string>
     <string name="title_favorites">Favorites</string>

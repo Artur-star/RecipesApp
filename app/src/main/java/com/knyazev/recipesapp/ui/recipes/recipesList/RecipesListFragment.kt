@@ -1,9 +1,11 @@
 package com.knyazev.recipesapp.ui.recipes.recipesList
 
+import android.app.Application
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -33,11 +35,21 @@ class RecipesListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val category = recipeListFragmentArgs.categoryId
         viewModel.loadRecipesList(category)
+
         viewModel.recipesListStateLD.observe(viewLifecycleOwner) { (recipeList, recipeListImage, category) ->
-            binding.ivHeaderRecipesList.setImageDrawable(recipeListImage)
-            binding.tvHeaderRecipes.text = category?.title
-            recipesListAdapter.updateRecipeList(recipeList)
+            try {
+                binding.ivHeaderRecipesList.setImageDrawable(recipeListImage)
+                binding.tvHeaderRecipes.text = category?.title
+                recipesListAdapter.updateRecipeList(recipeList)
+            } catch (e: Exception) {
+                Toast.makeText(
+                    Application().applicationContext,
+                    "Ошибка получения данных",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
+
         binding.rvRecipes.adapter = recipesListAdapter
         recipesListAdapter.setOnItemClickListener(object : RecipesListAdapter.OnItemClickListener {
             override fun onItemClick(recipeId: Int) {
