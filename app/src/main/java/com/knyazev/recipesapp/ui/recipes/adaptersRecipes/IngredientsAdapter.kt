@@ -40,10 +40,14 @@ class IngredientsAdapter(var dataSet: List<Ingredient>) :
             holder.unitOfMeasure.text = ingredient.unitOfMeasure
         } else if (ingredient.quantity.lowercase() == "по вкусу") {
             holder.unitOfMeasure.text = holder.unitOfMeasure.context.resources.getString(
-                R.string.ingredient_quantity, ingredient.quantity)
+                R.string.ingredient_quantity, ingredient.quantity
+            )
         } else {
             holder.unitOfMeasure.text = holder.unitOfMeasure.context.resources.getString(
-                R.string.ingredient_quantity_unitOfMeasure, ingredient.quantity, ingredient.unitOfMeasure)
+                R.string.ingredient_quantity_unitOfMeasure,
+                ingredient.quantity,
+                ingredient.unitOfMeasure
+            )
         }
     }
 

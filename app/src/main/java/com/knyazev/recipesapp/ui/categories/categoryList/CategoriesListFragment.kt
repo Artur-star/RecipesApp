@@ -35,8 +35,8 @@ class CategoriesListFragment : Fragment() {
     }
 
     private fun initRecycler() {
-        viewModel.categoriesListStateLD.observe(viewLifecycleOwner) { (categoriesList) ->
-            if (categoriesList.isEmpty()) {
+        viewModel.categoriesListStateLD.observe(viewLifecycleOwner) { (categoriesList, error) ->
+            if (error) {
                 Toast.makeText(
                     context,
                     "Ошибка получения данных",

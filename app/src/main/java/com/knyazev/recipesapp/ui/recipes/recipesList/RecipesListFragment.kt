@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
+import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.databinding.FragmentRecipesListBinding
 import com.knyazev.recipesapp.ui.recipes.adaptersRecipes.RecipesListAdapter
 
@@ -36,18 +38,21 @@ class RecipesListFragment : Fragment() {
         val category = recipeListFragmentArgs.categoryId
         viewModel.loadRecipesList(category)
 
-        viewModel.recipesListStateLD.observe(viewLifecycleOwner) { (recipeList, recipeListImage, category) ->
-            try {
-                binding.ivHeaderRecipesList.setImageDrawable(recipeListImage)
-                binding.tvHeaderRecipes.text = category?.title
-                recipesListAdapter.updateRecipeList(recipeList)
-            } catch (e: Exception) {
+        viewModel.recipesListStateLD.observe(viewLifecycleOwner) { (recipeList, recipeListImage, category, error) ->
+            if (error) {
                 Toast.makeText(
                     Application().applicationContext,
                     "Ошибка получения данных",
                     Toast.LENGTH_LONG
                 ).show()
             }
+            Glide.with(this)
+                .load(recipeListImage)
+                .error(R.drawable.img_error)
+                .placeholder(R.drawable.img_placeholder)
+                .into(binding.ivHeaderRecipesList)
+            binding.tvHeaderRecipes.text = category?.title
+            recipesListAdapter.updateRecipeList(recipeList)
         }
 
         binding.rvRecipes.adapter = recipesListAdapter

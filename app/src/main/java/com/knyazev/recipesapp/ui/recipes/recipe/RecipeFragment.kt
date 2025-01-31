@@ -11,6 +11,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.knyazev.recipesapp.Constants.MIN_PORTIONS
 import com.knyazev.recipesapp.R
@@ -44,8 +45,8 @@ class RecipeFragment : Fragment() {
     }
 
     private fun initUI() {
-        viewModel.recipeStateLD.observe(viewLifecycleOwner) { (flag, countPortion, recipe, recipeImage) ->
-            if (recipe == null) {
+        viewModel.recipeStateLD.observe(viewLifecycleOwner) { (flag, countPortion, recipe, recipeImage, error) ->
+            if (error) {
                 Toast.makeText(
                     context,
                     "Ошибка получения данных",
@@ -68,7 +69,13 @@ class RecipeFragment : Fragment() {
                     )
                 )
             }
-            binding.ivHeaderRecipe.setImageDrawable(recipeImage)
+            Glide
+                .with(this)
+                .load(recipeImage)
+                .error(R.drawable.img_error)
+                .placeholder(R.drawable.img_placeholder)
+                .into(binding.ivHeaderRecipe)
+
             binding.tvHeaderRecipe.text = recipe?.title
 
             binding.countPortions.text = countPortion.toString()

@@ -2,22 +2,22 @@ package com.knyazev.recipesapp.ui.recipes.recipe
 
 import android.app.Application
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.knyazev.recipesapp.Constants
 import com.knyazev.recipesapp.Constants.PREFS_KEY_FAVORITES_CATEGORY
 import com.knyazev.recipesapp.Constants.PREFS_NAME
 import com.knyazev.recipesapp.data.RecipesRepository
 import com.knyazev.recipesapp.model.Recipe
-import okio.FileNotFoundException
 
 data class RecipeState(
     val isFavorite: Boolean = false,
     val countPortions: Int = 1,
     val recipe: Recipe? = null,
-    val recipeImage: Drawable? = null,
+    val recipeImageUrl: String? = null,
+    val error: Boolean = false
 )
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application) {
@@ -30,34 +30,22 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
 
     fun loadRecipe(recipeId: Int) {
         RecipesRepository().getRecipeById(recipeId) { recipe ->
-            _recipeStateLD.postValue(_recipeStateLD.value?.copy(recipe = recipe))
 
             val isFavorite = getFavorites().contains(recipeId.toString())
 
-            val recipeImageUrl = recipe!!.imageUrl
-
-            val recipeImage = try {
-                Drawable.createFromStream(
-                    getApplication<Application>().applicationContext.assets.open(recipeImageUrl),
-                    null
-                )
-            } catch (e: NullPointerException) {
-                Log.e("!!!", "Image not found $recipeImageUrl")
-                null
-            } catch (e: FileNotFoundException) {
-                Log.e("!!!", "Image not found $recipeImageUrl")
-                null
-            }
+            val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${recipe!!.imageUrl}"
 
             _recipeStateLD.postValue(
                 _recipeStateLD.value?.copy(
                     isFavorite = isFavorite,
                     recipe = recipe,
-                    recipeImage = recipeImage
+                    recipeImageUrl = recipeImageUrl,
+                    error = false
                 ) ?: RecipeState(
                     isFavorite = isFavorite,
                     recipe = recipe,
-                    recipeImage = recipeImage
+                    recipeImageUrl = recipeImageUrl,
+                    error = true
                 )
             )
         }
