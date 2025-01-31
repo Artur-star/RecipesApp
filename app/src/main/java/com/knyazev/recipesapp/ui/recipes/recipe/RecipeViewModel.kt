@@ -6,18 +6,20 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.knyazev.recipesapp.Constants
 import com.knyazev.recipesapp.Constants.PREFS_KEY_FAVORITES_CATEGORY
 import com.knyazev.recipesapp.Constants.PREFS_NAME
 import com.knyazev.recipesapp.data.RecipesRepository
 import com.knyazev.recipesapp.model.Recipe
+import kotlinx.coroutines.launch
 
 data class RecipeState(
     val isFavorite: Boolean = false,
     val countPortions: Int = 1,
     val recipe: Recipe? = null,
     val recipeImageUrl: String? = null,
-    val error: Boolean = false
+    val error: Boolean = false,
 )
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application) {
@@ -29,25 +31,27 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun loadRecipe(recipeId: Int) {
-        RecipesRepository().getRecipeById(recipeId) { recipe ->
+        viewModelScope.launch {
+            RecipesRepository().getRecipeById(recipeId) { recipe ->
 
-            val isFavorite = getFavorites().contains(recipeId.toString())
+                val isFavorite = getFavorites().contains(recipeId.toString())
 
-            val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${recipe!!.imageUrl}"
+                val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${recipe!!.imageUrl}"
 
-            _recipeStateLD.postValue(
-                _recipeStateLD.value?.copy(
-                    isFavorite = isFavorite,
-                    recipe = recipe,
-                    recipeImageUrl = recipeImageUrl,
-                    error = false
-                ) ?: RecipeState(
-                    isFavorite = isFavorite,
-                    recipe = recipe,
-                    recipeImageUrl = recipeImageUrl,
-                    error = true
+                _recipeStateLD.postValue(
+                    _recipeStateLD.value?.copy(
+                        isFavorite = isFavorite,
+                        recipe = recipe,
+                        recipeImageUrl = recipeImageUrl,
+                        error = false
+                    ) ?: RecipeState(
+                        isFavorite = isFavorite,
+                        recipe = recipe,
+                        recipeImageUrl = recipeImageUrl,
+                        error = true
+                    )
                 )
-            )
+            }
         }
     }
 
