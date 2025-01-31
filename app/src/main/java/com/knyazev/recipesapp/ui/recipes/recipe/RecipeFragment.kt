@@ -1,7 +1,6 @@
 package com.knyazev.recipesapp.ui.recipes.recipe
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,9 +45,8 @@ class RecipeFragment : Fragment() {
     }
 
     private fun initUI() {
-        viewModel.recipeStateLD.observe(viewLifecycleOwner) { (flag, countPortion, recipe, recipeImage) ->
-            Log.d("!!", "$recipe")
-            if (recipe == null) {
+        viewModel.recipeStateLD.observe(viewLifecycleOwner) { (flag, countPortion, recipe, recipeImage, error) ->
+            if (error) {
                 Toast.makeText(
                     context,
                     "Ошибка получения данных",
@@ -74,9 +72,10 @@ class RecipeFragment : Fragment() {
             Glide
                 .with(this)
                 .load(recipeImage)
+                .error(R.drawable.img_error)
+                .placeholder(R.drawable.img_placeholder)
                 .into(binding.ivHeaderRecipe)
 
-            //binding.ivHeaderRecipe.setImageDrawable(recipeImage)
             binding.tvHeaderRecipe.text = recipe?.title
 
             binding.countPortions.text = countPortion.toString()

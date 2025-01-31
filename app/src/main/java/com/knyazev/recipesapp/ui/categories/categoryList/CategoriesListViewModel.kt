@@ -8,6 +8,7 @@ import com.knyazev.recipesapp.model.Category
 
 data class CategoriesListState(
     val categoriesList: List<Category> = emptyList(),
+    val error: Boolean = false,
 )
 
 class CategoriesListViewModel : ViewModel() {
@@ -18,9 +19,10 @@ class CategoriesListViewModel : ViewModel() {
         RecipesRepository().getCategories { resultCategory ->
             val result = resultCategory ?: emptyList()
             _categoriesListStateLD.postValue(
-                _categoriesListStateLD.value?.copy(categoriesList = result)
+                _categoriesListStateLD.value?.copy(categoriesList = result, error = false)
                     ?: CategoriesListState(
-                        categoriesList = result
+                        categoriesList = result,
+                        error = true
                     )
             )
         }

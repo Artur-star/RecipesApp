@@ -17,6 +17,7 @@ data class RecipeState(
     val countPortions: Int = 1,
     val recipe: Recipe? = null,
     val recipeImageUrl: String? = null,
+    val error: Boolean = false
 )
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application) {
@@ -29,36 +30,22 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
 
     fun loadRecipe(recipeId: Int) {
         RecipesRepository().getRecipeById(recipeId) { recipe ->
-            _recipeStateLD.postValue(_recipeStateLD.value?.copy(recipe = recipe))
 
             val isFavorite = getFavorites().contains(recipeId.toString())
 
             val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${recipe!!.imageUrl}"
 
-
-//            val recipeImage = try {
-//                Drawable.createFromStream(
-//                    getApplication<Application>().applicationContext.assets.open(recipeImageUrl),
-//                    null
-//                )
-//
-//            } catch (e: NullPointerException) {
-//                Log.e("!!!", "Image not found $recipeImageUrl")
-//                null
-//            } catch (e: FileNotFoundException) {
-//                Log.e("!!!", "Image not found $recipeImageUrl")
-//                null
-//            }
-
             _recipeStateLD.postValue(
                 _recipeStateLD.value?.copy(
                     isFavorite = isFavorite,
                     recipe = recipe,
-                    recipeImageUrl = recipeImageUrl
+                    recipeImageUrl = recipeImageUrl,
+                    error = false
                 ) ?: RecipeState(
                     isFavorite = isFavorite,
                     recipe = recipe,
-                    recipeImageUrl = recipeImageUrl
+                    recipeImageUrl = recipeImageUrl,
+                    error = true
                 )
             )
         }

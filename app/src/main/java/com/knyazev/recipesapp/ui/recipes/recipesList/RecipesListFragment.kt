@@ -2,7 +2,6 @@ package com.knyazev.recipesapp.ui.recipes.recipesList
 
 import android.app.Application
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.databinding.FragmentRecipesListBinding
 import com.knyazev.recipesapp.ui.recipes.adaptersRecipes.RecipesListAdapter
 
@@ -38,22 +38,21 @@ class RecipesListFragment : Fragment() {
         val category = recipeListFragmentArgs.categoryId
         viewModel.loadRecipesList(category)
 
-        viewModel.recipesListStateLD.observe(viewLifecycleOwner) { (recipeList, recipeListImage, category) ->
-            Log.d("!!", "$recipeList")
-            try {
-//                binding.ivHeaderRecipesList.setImageDrawable(recipeListImage)
-                Glide.with(this)
-                    .load(recipeListImage)
-                    .into(binding.ivHeaderRecipesList)
-                binding.tvHeaderRecipes.text = category?.title
-                recipesListAdapter.updateRecipeList(recipeList)
-            } catch (e: Exception) {
+        viewModel.recipesListStateLD.observe(viewLifecycleOwner) { (recipeList, recipeListImage, category, error) ->
+            if (error) {
                 Toast.makeText(
                     Application().applicationContext,
                     "Ошибка получения данных",
                     Toast.LENGTH_LONG
                 ).show()
             }
+            Glide.with(this)
+                .load(recipeListImage)
+                .error(R.drawable.img_error)
+                .placeholder(R.drawable.img_placeholder)
+                .into(binding.ivHeaderRecipesList)
+            binding.tvHeaderRecipes.text = category?.title
+            recipesListAdapter.updateRecipeList(recipeList)
         }
 
         binding.rvRecipes.adapter = recipesListAdapter

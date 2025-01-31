@@ -6,6 +6,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.knyazev.recipesapp.Constants
+import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.databinding.ItemRecipeBinding
 import com.knyazev.recipesapp.model.Recipe
 
@@ -44,18 +46,10 @@ class RecipesListAdapter(var dataSet: List<Recipe>) :
         holder.textView.text = recipe.title
 
         Glide.with(holder.itemView.context)
-            .load(recipe.imageUrl)
+            .load("${Constants.REQUEST_IMAGE_URL}${recipe.imageUrl}")
+            .error(R.drawable.img_error)
+            .placeholder(R.drawable.img_placeholder)
             .into(holder.imageView)
-//        val drawable = try {
-//            Drawable.createFromStream(
-//                holder.imageView.context.assets.open(recipe.imageUrl),
-//                null
-//            )
-//        } catch (e: Exception) {
-//            Log.d("logTag", "Image not found: ${recipe.imageUrl}")
-//            null
-//        }
-//        holder.imageView.setImageDrawable(drawable)
 
         holder.itemView.setOnClickListener { itemClickListener?.onItemClick(recipe.id) }
     }
