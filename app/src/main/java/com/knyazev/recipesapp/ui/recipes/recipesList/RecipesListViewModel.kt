@@ -3,10 +3,12 @@ package com.knyazev.recipesapp.ui.recipes.recipesList
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.knyazev.recipesapp.Constants
 import com.knyazev.recipesapp.data.RecipesRepository
 import com.knyazev.recipesapp.model.Category
 import com.knyazev.recipesapp.model.Recipe
+import kotlinx.coroutines.launch
 
 data class RecipeListState(
     val recipeList: List<Recipe> = emptyList(),
@@ -24,13 +26,19 @@ class RecipeListViewModel(
     val recipesListStateLD get() = _recipesListStateLD
 
     fun loadRecipesList(category: Category) {
-        RecipesRepository().getRecipesByCategoryId(category.id) { recipeListIsNull ->
-            val recipeList = recipeListIsNull ?: emptyList()
+        viewModelScope.launch {
+            val recipeList: List<Recipe> =
+                RecipesRepository().getRecipesByCategoryId(category.id) ?: emptyList()
 
             val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${category.imageUrl}"
 
             recipesListStateLD.postValue(
-                recipesListStateLD.value?.copy(recipeList, recipeImageUrl, category, error = false)
+                recipesListStateLD.value?.copy(
+                    recipeList,
+                    recipeImageUrl,
+                    category,
+                    error = false
+                )
                     ?: RecipeListState(
                         recipeList,
                         recipeImageUrl,

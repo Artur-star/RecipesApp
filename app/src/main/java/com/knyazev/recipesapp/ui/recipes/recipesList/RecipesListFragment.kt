@@ -1,6 +1,5 @@
 package com.knyazev.recipesapp.ui.recipes.recipesList
 
-import android.app.Application
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,8 +40,8 @@ class RecipesListFragment : Fragment() {
         viewModel.recipesListStateLD.observe(viewLifecycleOwner) { (recipeList, recipeListImage, category, error) ->
             if (error) {
                 Toast.makeText(
-                    Application().applicationContext,
-                    "Ошибка получения данных",
+                    context,
+                    R.string.error_receiving_data,
                     Toast.LENGTH_LONG
                 ).show()
             }

@@ -3,8 +3,10 @@ package com.knyazev.recipesapp.ui.categories.categoryList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.knyazev.recipesapp.data.RecipesRepository
 import com.knyazev.recipesapp.model.Category
+import kotlinx.coroutines.launch
 
 data class CategoriesListState(
     val categoriesList: List<Category> = emptyList(),
@@ -12,18 +14,19 @@ data class CategoriesListState(
 )
 
 class CategoriesListViewModel : ViewModel() {
-    private val _categoriesListStateLD = MutableLiveData<CategoriesListState>()
+    private val _categoriesListStateLD =
+        MutableLiveData<CategoriesListState>().apply { value = CategoriesListState() }
     val categoriesListStateLD: LiveData<CategoriesListState> get() = _categoriesListStateLD
 
     fun loadCategoryList() {
-        RecipesRepository().getCategories { resultCategory ->
-            val result = resultCategory ?: emptyList()
+        viewModelScope.launch {
+            val result: List<Category> = RecipesRepository().getCategories() ?: emptyList()
+
             _categoriesListStateLD.postValue(
-                _categoriesListStateLD.value?.copy(categoriesList = result, error = false)
-                    ?: CategoriesListState(
-                        categoriesList = result,
-                        error = true
-                    )
+                _categoriesListStateLD.value?.copy(
+                    categoriesList = result,
+                    error = false
+                ) ?: CategoriesListState(categoriesList = result, error = true)
             )
         }
     }
