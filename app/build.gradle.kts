@@ -4,6 +4,7 @@ plugins {
     id(libs.plugins.kotlin.parcelize.get().pluginId)
     alias(libs.plugins.androidx.navigation.safeargs)
     kotlin("plugin.serialization") version "1.9.0"
+    id("com.google.devtools.ksp") version "1.9.0-1.0.13"
 }
 
 android {
@@ -58,6 +59,7 @@ dependencies {
     implementation (libs.retrofit)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation (libs.github.glide)
+    implementation(libs.room)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
