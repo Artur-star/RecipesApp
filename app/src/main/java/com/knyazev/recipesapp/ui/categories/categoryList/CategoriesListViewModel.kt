@@ -14,21 +14,20 @@ data class CategoriesListState(
 )
 
 class CategoriesListViewModel : ViewModel() {
-    private val _categoriesListStateLD = MutableLiveData<CategoriesListState>()
+    private val _categoriesListStateLD =
+        MutableLiveData<CategoriesListState>().apply { value = CategoriesListState() }
     val categoriesListStateLD: LiveData<CategoriesListState> get() = _categoriesListStateLD
 
     fun loadCategoryList() {
         viewModelScope.launch {
-            RecipesRepository().getCategories { resultCategory ->
-                val result = resultCategory ?: emptyList()
-                _categoriesListStateLD.postValue(
-                    _categoriesListStateLD.value?.copy(categoriesList = result, error = false)
-                        ?: CategoriesListState(
-                            categoriesList = result,
-                            error = true
-                        )
-                )
-            }
+            val result: List<Category> = RecipesRepository().getCategories() ?: emptyList()
+
+            _categoriesListStateLD.postValue(
+                _categoriesListStateLD.value?.copy(
+                    categoriesList = result,
+                    error = false
+                ) ?: CategoriesListState(categoriesList = result, error = true)
+            )
         }
     }
 }

@@ -27,26 +27,25 @@ class RecipeListViewModel(
 
     fun loadRecipesList(category: Category) {
         viewModelScope.launch {
-            RecipesRepository().getRecipesByCategoryId(category.id) { recipeListIsNull ->
-                val recipeList = recipeListIsNull ?: emptyList()
+            val recipeList: List<Recipe> =
+                RecipesRepository().getRecipesByCategoryId(category.id) ?: emptyList()
 
-                val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${category.imageUrl}"
+            val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${category.imageUrl}"
 
-                recipesListStateLD.postValue(
-                    recipesListStateLD.value?.copy(
+            recipesListStateLD.postValue(
+                recipesListStateLD.value?.copy(
+                    recipeList,
+                    recipeImageUrl,
+                    category,
+                    error = false
+                )
+                    ?: RecipeListState(
                         recipeList,
                         recipeImageUrl,
                         category,
-                        error = false
+                        error = true
                     )
-                        ?: RecipeListState(
-                            recipeList,
-                            recipeImageUrl,
-                            category,
-                            error = true
-                        )
-                )
-            }
+            )
         }
     }
 }

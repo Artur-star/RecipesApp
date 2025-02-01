@@ -32,26 +32,25 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
 
     fun loadRecipe(recipeId: Int) {
         viewModelScope.launch {
-            RecipesRepository().getRecipeById(recipeId) { recipe ->
+            val recipe: Recipe? = RecipesRepository().getRecipeById(recipeId)
 
-                val isFavorite = getFavorites().contains(recipeId.toString())
+            val isFavorite = getFavorites().contains(recipeId.toString())
 
-                val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${recipe!!.imageUrl}"
+            val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${recipe!!.imageUrl}"
 
-                _recipeStateLD.postValue(
-                    _recipeStateLD.value?.copy(
-                        isFavorite = isFavorite,
-                        recipe = recipe,
-                        recipeImageUrl = recipeImageUrl,
-                        error = false
-                    ) ?: RecipeState(
-                        isFavorite = isFavorite,
-                        recipe = recipe,
-                        recipeImageUrl = recipeImageUrl,
-                        error = true
-                    )
+            _recipeStateLD.postValue(
+                _recipeStateLD.value?.copy(
+                    isFavorite = isFavorite,
+                    recipe = recipe,
+                    recipeImageUrl = recipeImageUrl,
+                    error = false
+                ) ?: RecipeState(
+                    isFavorite = isFavorite,
+                    recipe = recipe,
+                    recipeImageUrl = recipeImageUrl,
+                    error = true
                 )
-            }
+            )
         }
     }
 

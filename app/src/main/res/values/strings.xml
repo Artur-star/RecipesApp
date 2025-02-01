@@ -14,4 +14,5 @@
     <string name="image_of_favorites">Image of favorites</string>
     <string name="title_favorites">Favorites</string>
     <string name="empty_recycler_favorites">You have not added any recipes to your favorites yet</string>
+    <string name="error_receiving_data">Error receiving data</string>
 </resources>

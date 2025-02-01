@@ -49,7 +49,7 @@ class RecipeFragment : Fragment() {
             if (error) {
                 Toast.makeText(
                     context,
-                    "Ошибка получения данных",
+                    R.string.error_receiving_data,
                     Toast.LENGTH_LONG
                 ).show()
             }

@@ -11,4 +11,5 @@
     <string name="image_of_favorites">Картинка с избранным</string>
     <string name="title_favorites">Избранное</string>
     <string name="empty_recycler_favorites">Вы еще не добавили ни одного рецепта в избранное</string>
+    <string name="error_receiving_data">"Ошибка получения данных"</string>
 </resources>

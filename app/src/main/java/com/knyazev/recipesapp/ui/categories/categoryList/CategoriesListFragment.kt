@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.databinding.FragmentListCategoriesBinding
 import com.knyazev.recipesapp.model.Category
 import com.knyazev.recipesapp.ui.categories.adaptersCategories.CategoriesListAdapter
@@ -39,7 +40,7 @@ class CategoriesListFragment : Fragment() {
             if (error) {
                 Toast.makeText(
                     context,
-                    "Ошибка получения данных",
+                    R.string.error_receiving_data,
                     Toast.LENGTH_LONG
                 ).show()
             }

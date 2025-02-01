@@ -24,11 +24,13 @@ class FavoritesListViewModel(application: Application) : AndroidViewModel(applic
 
     fun loadFavoritesList() {
         viewModelScope.launch {
-            RecipesRepository().getRecipesByIds(getFavorites().map { it.toInt() }
-                .toSet()) { favorites ->
-                val resultFavorites = favorites ?: emptyList()
-                _favoritesListStateLD.postValue(_favoritesListStateLD.value?.copy(favoritesList = resultFavorites))
-            }
+            val favorites: List<Recipe> =
+                RecipesRepository().getRecipesByIds(getFavorites().map { it.toInt() }.toSet())
+                    ?: emptyList()
+
+            _favoritesListStateLD.postValue(
+                _favoritesListStateLD.value?.copy(favoritesList = favorites) ?: FavoritesListState()
+            )
         }
     }
 
