@@ -22,7 +22,7 @@ class RecipeListViewModel(
 ) :
     AndroidViewModel(application) {
     private val _recipesListStateLD =
-        MutableLiveData<RecipeListState>().apply { value = RecipeListState() }
+        MutableLiveData(RecipeListState())
     val recipesListStateLD get() = _recipesListStateLD
 
     fun loadRecipesList(category: Category) {

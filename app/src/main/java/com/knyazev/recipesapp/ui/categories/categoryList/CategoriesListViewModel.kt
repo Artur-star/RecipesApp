@@ -15,7 +15,7 @@ data class CategoriesListState(
 
 class CategoriesListViewModel : ViewModel() {
     private val _categoriesListStateLD =
-        MutableLiveData<CategoriesListState>().apply { value = CategoriesListState() }
+        MutableLiveData(CategoriesListState())
     val categoriesListStateLD: LiveData<CategoriesListState> get() = _categoriesListStateLD
 
     fun loadCategoryList() {

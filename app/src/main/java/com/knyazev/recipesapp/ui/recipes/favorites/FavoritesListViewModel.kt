@@ -17,7 +17,7 @@ data class FavoritesListState(
 
 class FavoritesListViewModel(application: Application) : AndroidViewModel(application) {
     private val _favoritesListStateLD =
-        MutableLiveData<FavoritesListState>().apply { value = FavoritesListState() }
+        MutableLiveData(FavoritesListState())
     val favoritesListStateLD get() = _favoritesListStateLD
     private val sharedPreferences = getApplication<Application>()
         .getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE)

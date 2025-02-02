@@ -23,7 +23,7 @@ data class RecipeState(
 )
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application) {
-    private val _recipeStateLD = MutableLiveData<RecipeState>().apply { value = RecipeState() }
+    private val _recipeStateLD = MutableLiveData(RecipeState())
     val recipeStateLD: LiveData<RecipeState> get() = _recipeStateLD
 
     init {
