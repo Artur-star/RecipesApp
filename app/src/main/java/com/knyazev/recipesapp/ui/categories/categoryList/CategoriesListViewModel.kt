@@ -20,14 +20,26 @@ class CategoriesListViewModel : ViewModel() {
 
     fun loadCategoryList() {
         viewModelScope.launch {
-            val result: List<Category> = RecipesRepository().getCategories() ?: emptyList()
+            val resultFromCache: List<Category> = RecipesRepository().getCategoryFromCache()
+            if (resultFromCache.isNotEmpty()) {
+                _categoriesListStateLD.postValue(
+                    _categoriesListStateLD.value?.copy(
+                        categoriesList = resultFromCache,
+                        error = false
+                    ) ?: CategoriesListState(categoriesList = resultFromCache, error = true)
+                )
+            }
 
-            _categoriesListStateLD.postValue(
-                _categoriesListStateLD.value?.copy(
-                    categoriesList = result,
-                    error = false
-                ) ?: CategoriesListState(categoriesList = result, error = true)
-            )
+            val resultFromAPI: List<Category> = RecipesRepository().getCategories() ?: emptyList()
+            if (resultFromAPI.isNotEmpty()) {
+                _categoriesListStateLD.postValue(
+                    _categoriesListStateLD.value?.copy(
+                        categoriesList = resultFromAPI,
+                        error = false
+                    ) ?: CategoriesListState(categoriesList = resultFromAPI, error = true)
+                )
+            }
+            RecipesRepository().addCategoriesToCache(resultFromAPI)
         }
     }
 }
