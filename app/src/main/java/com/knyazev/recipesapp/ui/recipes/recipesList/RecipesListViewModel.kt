@@ -18,7 +18,7 @@ data class RecipeListState(
 )
 
 class RecipeListViewModel(
-    application: Application,
+    private val application: Application,
 ) :
     AndroidViewModel(application) {
     private val _recipesListStateLD =
@@ -28,7 +28,7 @@ class RecipeListViewModel(
     fun loadRecipesList(category: Category) {
         viewModelScope.launch {
             val recipeList: List<Recipe> =
-                RecipesRepository(context = getApplication<Application>().applicationContext).getRecipesByCategoryId(category.id) ?: emptyList()
+                RecipesRepository(context = application.applicationContext).getRecipesByCategoryId(category.id) ?: emptyList()
 
             val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${category.imageUrl}"
 

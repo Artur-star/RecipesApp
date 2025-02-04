@@ -14,7 +14,7 @@ data class CategoriesListState(
     val error: Boolean = false,
 )
 
-class CategoriesListViewModel(application: Application) : AndroidViewModel(application) {
+class CategoriesListViewModel(private val application: Application) : AndroidViewModel(application) {
     private val _categoriesListStateLD =
         MutableLiveData(CategoriesListState())
     val categoriesListStateLD: LiveData<CategoriesListState> get() = _categoriesListStateLD
@@ -22,7 +22,7 @@ class CategoriesListViewModel(application: Application) : AndroidViewModel(appli
     fun loadCategoryList() {
         viewModelScope.launch {
             val resultFromCache: List<Category> =
-                RecipesRepository(context = getApplication<Application>().applicationContext).getCategoryFromCache()
+                RecipesRepository(context = application.applicationContext).getCategoryFromCache()
             if (resultFromCache.isNotEmpty()) {
                 _categoriesListStateLD.postValue(
                     _categoriesListStateLD.value?.copy(
@@ -33,7 +33,7 @@ class CategoriesListViewModel(application: Application) : AndroidViewModel(appli
             }
 
             val resultFromAPI: List<Category> =
-                RecipesRepository(context = getApplication<Application>().applicationContext).getCategories()
+                RecipesRepository(context = application.applicationContext).getCategories()
                     ?: emptyList()
             if (resultFromAPI.isNotEmpty()) {
                 _categoriesListStateLD.postValue(
@@ -42,7 +42,7 @@ class CategoriesListViewModel(application: Application) : AndroidViewModel(appli
                         error = false
                     ) ?: CategoriesListState(categoriesList = resultFromAPI, error = true)
                 )
-                RecipesRepository(context = getApplication<Application>().applicationContext).addCategoriesToCache(
+                RecipesRepository(context = application.applicationContext).addCategoriesToCache(
                     resultFromAPI
                 )
             }
