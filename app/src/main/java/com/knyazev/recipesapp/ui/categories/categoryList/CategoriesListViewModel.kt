@@ -1,8 +1,9 @@
 package com.knyazev.recipesapp.ui.categories.categoryList
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.knyazev.recipesapp.data.RecipesRepository
 import com.knyazev.recipesapp.model.Category
@@ -13,14 +14,15 @@ data class CategoriesListState(
     val error: Boolean = false,
 )
 
-class CategoriesListViewModel : ViewModel() {
+class CategoriesListViewModel(application: Application) : AndroidViewModel(application) {
     private val _categoriesListStateLD =
         MutableLiveData(CategoriesListState())
     val categoriesListStateLD: LiveData<CategoriesListState> get() = _categoriesListStateLD
 
     fun loadCategoryList() {
         viewModelScope.launch {
-            val resultFromCache: List<Category> = RecipesRepository().getCategoryFromCache()
+            val resultFromCache: List<Category> =
+                RecipesRepository(context = getApplication<Application>().applicationContext).getCategoryFromCache()
             if (resultFromCache.isNotEmpty()) {
                 _categoriesListStateLD.postValue(
                     _categoriesListStateLD.value?.copy(
@@ -30,7 +32,9 @@ class CategoriesListViewModel : ViewModel() {
                 )
             }
 
-            val resultFromAPI: List<Category> = RecipesRepository().getCategories() ?: emptyList()
+            val resultFromAPI: List<Category> =
+                RecipesRepository(context = getApplication<Application>().applicationContext).getCategories()
+                    ?: emptyList()
             if (resultFromAPI.isNotEmpty()) {
                 _categoriesListStateLD.postValue(
                     _categoriesListStateLD.value?.copy(
@@ -38,8 +42,10 @@ class CategoriesListViewModel : ViewModel() {
                         error = false
                     ) ?: CategoriesListState(categoriesList = resultFromAPI, error = true)
                 )
+                RecipesRepository(context = getApplication<Application>().applicationContext).addCategoriesToCache(
+                    resultFromAPI
+                )
             }
-            RecipesRepository().addCategoriesToCache(resultFromAPI)
         }
     }
 }

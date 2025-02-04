@@ -1,6 +1,6 @@
 package com.knyazev.recipesapp.data
 
-import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -18,12 +18,15 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 
-class RecipesRepository(private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO) {
+class RecipesRepository(
+    private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO,
+    val context: Context,
+) {
 
     private val service: RecipeApiService by lazy { createService() }
     private val db: RecipeDatabase by lazy {
         Room.databaseBuilder(
-            Application().applicationContext,
+            context,
             RecipeDatabase::class.java,
             "database-users"
         ).build()

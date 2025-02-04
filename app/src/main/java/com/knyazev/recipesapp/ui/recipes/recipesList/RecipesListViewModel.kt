@@ -28,7 +28,7 @@ class RecipeListViewModel(
     fun loadRecipesList(category: Category) {
         viewModelScope.launch {
             val recipeList: List<Recipe> =
-                RecipesRepository().getRecipesByCategoryId(category.id) ?: emptyList()
+                RecipesRepository(context = getApplication<Application>().applicationContext).getRecipesByCategoryId(category.id) ?: emptyList()
 
             val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${category.imageUrl}"
 

@@ -32,7 +32,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
 
     fun loadRecipe(recipeId: Int) {
         viewModelScope.launch {
-            val recipe: Recipe? = RecipesRepository().getRecipeById(recipeId)
+            val recipe: Recipe? = RecipesRepository(context = getApplication<Application>().applicationContext).getRecipeById(recipeId)
 
             val isFavorite = getFavorites().contains(recipeId.toString())
 
