@@ -50,11 +50,11 @@ class RecipesRepository(
         return retrofit.create(RecipeApiService::class.java)
     }
 
-    fun getCategoryFromCache(): List<Category> {
+    suspend fun getCategoryFromCache(): List<Category> {
         return categoryDao.getAllCategories()
     }
 
-    fun addCategoriesToCache(categories: List<Category>) {
+    suspend fun addCategoriesToCache(categories: List<Category>) {
         categoryDao.addCategories(categories)
     }
 
