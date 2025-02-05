@@ -27,25 +27,54 @@ class RecipeListViewModel(
 
     fun loadRecipesList(category: Category) {
         viewModelScope.launch {
-            val recipeList: List<Recipe> =
-                RecipesRepository(context = application.applicationContext).getRecipesByCategoryId(category.id) ?: emptyList()
+            val resultFromCache: List<Recipe> =
+                RecipesRepository(context = application.applicationContext).getRecipeFromCache()
+            if (resultFromCache.isNotEmpty()) {
+                val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${category.imageUrl}"
 
-            val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${category.imageUrl}"
-
-            recipesListStateLD.postValue(
-                recipesListStateLD.value?.copy(
-                    recipeList,
-                    recipeImageUrl,
-                    category,
-                    error = false
-                )
-                    ?: RecipeListState(
-                        recipeList,
+                recipesListStateLD.postValue(
+                    recipesListStateLD.value?.copy(
+                        resultFromCache,
                         recipeImageUrl,
                         category,
-                        error = true
+                        error = false
                     )
-            )
+                        ?: RecipeListState(
+                            resultFromCache,
+                            recipeImageUrl,
+                            category,
+                            error = true
+                        )
+                )
+            }
+
+            val resultFromApi: List<Recipe> =
+                RecipesRepository(context = application.applicationContext).getRecipesByCategoryId(
+                    category.id
+                ) ?: emptyList()
+
+            if (resultFromApi.isNotEmpty()) {
+                val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${category.imageUrl}"
+
+                recipesListStateLD.postValue(
+                    recipesListStateLD.value?.copy(
+                        resultFromApi,
+                        recipeImageUrl,
+                        category,
+                        error = false
+                    )
+                        ?: RecipeListState(
+                            resultFromApi,
+                            recipeImageUrl,
+                            category,
+                            error = true
+                        )
+                )
+
+                RecipesRepository(context = application.applicationContext).addRecipesToCache(
+                    resultFromApi
+                )
+            }
         }
     }
 }

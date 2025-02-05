@@ -32,6 +32,7 @@ class RecipesRepository(
         ).build()
     }
     private val categoryDao: CategoryDao = db.categoryDao()
+    private val recipeDao: RecipeDao = db.recipeDao()
 
     private fun createService(): RecipeApiService {
 
@@ -56,6 +57,14 @@ class RecipesRepository(
 
     suspend fun addCategoriesToCache(categories: List<Category>) {
         categoryDao.addCategories(categories)
+    }
+
+    suspend fun getRecipeFromCache() : List<Recipe> {
+        return recipeDao.getAllRecipes()
+    }
+
+    suspend fun addRecipesToCache(recipes: List<Recipe>) {
+        recipeDao.addRecipes(recipes)
     }
 
     suspend fun getCategories(): List<Category>? {
