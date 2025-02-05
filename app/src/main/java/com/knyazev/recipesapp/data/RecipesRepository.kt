@@ -1,6 +1,8 @@
 package com.knyazev.recipesapp.data
 
+import android.content.Context
 import android.util.Log
+import androidx.room.Room
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.knyazev.recipesapp.Constants.REQUEST_URL
 import com.knyazev.recipesapp.model.Category
@@ -16,9 +18,20 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 
-class RecipesRepository(private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO) {
+class RecipesRepository(
+    private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO,
+    val context: Context,
+) {
 
     private val service: RecipeApiService by lazy { createService() }
+    private val db: RecipeDatabase by lazy {
+        Room.databaseBuilder(
+            context,
+            RecipeDatabase::class.java,
+            "database-users"
+        ).build()
+    }
+    private val categoryDao: CategoryDao = db.categoryDao()
 
     private fun createService(): RecipeApiService {
 
@@ -37,7 +50,15 @@ class RecipesRepository(private val dispatcherIO: CoroutineDispatcher = Dispatch
         return retrofit.create(RecipeApiService::class.java)
     }
 
-    suspend fun getCategories() : List<Category>? {
+    suspend fun getCategoryFromCache(): List<Category> {
+        return categoryDao.getAllCategories()
+    }
+
+    suspend fun addCategoriesToCache(categories: List<Category>) {
+        categoryDao.addCategories(categories)
+    }
+
+    suspend fun getCategories(): List<Category>? {
         try {
             val categoryCall: Call<List<Category>> = service.getCategories()
             val categoryResponse = withContext(dispatcherIO) {
@@ -52,7 +73,7 @@ class RecipesRepository(private val dispatcherIO: CoroutineDispatcher = Dispatch
         }
     }
 
-    suspend fun getRecipesByCategoryId(categoryId: Int) : List<Recipe>? {
+    suspend fun getRecipesByCategoryId(categoryId: Int): List<Recipe>? {
         try {
             val recipeByCategoryIdCall = service.getRecipesByCategoryId(categoryId)
             val recipeByCategoryIdResponse =
@@ -64,7 +85,7 @@ class RecipesRepository(private val dispatcherIO: CoroutineDispatcher = Dispatch
         }
     }
 
-    suspend fun getRecipeById(recipeId: Int) : Recipe? {
+    suspend fun getRecipeById(recipeId: Int): Recipe? {
         try {
             val recipeIdCall: Call<Recipe> = service.getRecipeId(recipeId)
             val recipeResponse = withContext(dispatcherIO) { recipeIdCall.execute() }
@@ -75,7 +96,7 @@ class RecipesRepository(private val dispatcherIO: CoroutineDispatcher = Dispatch
         }
     }
 
-    suspend fun getRecipesByIds(setRecipesId: Set<Int>) : List<Recipe>? {
+    suspend fun getRecipesByIds(setRecipesId: Set<Int>): List<Recipe>? {
         try {
             val recipesByIdsCall: Call<List<Recipe>> =
                 service.getRecipes(setRecipesId.joinToString(separator = ","))

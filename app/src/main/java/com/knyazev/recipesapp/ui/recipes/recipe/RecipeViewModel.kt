@@ -22,7 +22,7 @@ data class RecipeState(
     val error: Boolean = false,
 )
 
-class RecipeViewModel(application: Application) : AndroidViewModel(application) {
+class RecipeViewModel(private val application: Application) : AndroidViewModel(application) {
     private val _recipeStateLD = MutableLiveData(RecipeState())
     val recipeStateLD: LiveData<RecipeState> get() = _recipeStateLD
 
@@ -32,7 +32,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
 
     fun loadRecipe(recipeId: Int) {
         viewModelScope.launch {
-            val recipe: Recipe? = RecipesRepository().getRecipeById(recipeId)
+            val recipe: Recipe? = RecipesRepository(context = application.applicationContext).getRecipeById(recipeId)
 
             val isFavorite = getFavorites().contains(recipeId.toString())
 

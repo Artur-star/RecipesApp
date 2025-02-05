@@ -15,7 +15,7 @@ data class FavoritesListState(
     val favoritesList: List<Recipe> = emptyList(),
 )
 
-class FavoritesListViewModel(application: Application) : AndroidViewModel(application) {
+class FavoritesListViewModel(private val application: Application) : AndroidViewModel(application) {
     private val _favoritesListStateLD =
         MutableLiveData(FavoritesListState())
     val favoritesListStateLD get() = _favoritesListStateLD
@@ -25,7 +25,7 @@ class FavoritesListViewModel(application: Application) : AndroidViewModel(applic
     fun loadFavoritesList() {
         viewModelScope.launch {
             val favorites: List<Recipe> =
-                RecipesRepository().getRecipesByIds(getFavorites().map { it.toInt() }.toSet())
+                RecipesRepository(context = application.applicationContext).getRecipesByIds(getFavorites().map { it.toInt() }.toSet())
                     ?: emptyList()
 
             _favoritesListStateLD.postValue(
