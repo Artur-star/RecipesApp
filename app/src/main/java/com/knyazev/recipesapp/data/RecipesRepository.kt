@@ -29,7 +29,7 @@ class RecipesRepository(
             context,
             RecipeDatabase::class.java,
             "database-users"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
     private val categoryDao: CategoryDao = db.categoryDao()
     private val recipeDao: RecipeDao = db.recipeDao()
@@ -59,7 +59,7 @@ class RecipesRepository(
         categoryDao.addCategories(categories)
     }
 
-    suspend fun getRecipeFromCache() : List<Recipe> {
+    suspend fun getRecipeFromCache(): List<Recipe> {
         return recipeDao.getAllRecipes()
     }
 
