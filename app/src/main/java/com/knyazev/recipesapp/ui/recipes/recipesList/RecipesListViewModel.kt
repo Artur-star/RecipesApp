@@ -28,7 +28,7 @@ class RecipeListViewModel(
     fun loadRecipesList(category: Category) {
         viewModelScope.launch {
             val resultFromCache: List<Recipe> =
-                RecipesRepository(context = application.applicationContext).getRecipeFromCache()
+                RecipesRepository(context = application.applicationContext).getRecipesByCategoryIdFromCache(category.id)
             if (resultFromCache.isNotEmpty()) {
                 val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${category.imageUrl}"
 
@@ -49,22 +49,24 @@ class RecipeListViewModel(
             }
 
             val resultFromApi: List<Recipe> =
-                RecipesRepository(context = application.applicationContext).getRecipesByCategoryId(
+                RecipesRepository(context = application.applicationContext).getRecipesByCategoryIdFromAPI(
                     category.id
                 ) ?: emptyList()
 
             if (resultFromApi.isNotEmpty()) {
+                val result: List<Recipe> = resultFromApi.map { recipe: Recipe -> recipe.copy(categoryId = category.id) }
+
                 val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${category.imageUrl}"
 
                 recipesListStateLD.postValue(
                     recipesListStateLD.value?.copy(
-                        resultFromApi,
+                        result,
                         recipeImageUrl,
                         category,
                         error = false
                     )
                         ?: RecipeListState(
-                            resultFromApi,
+                            result,
                             recipeImageUrl,
                             category,
                             error = true
@@ -72,7 +74,7 @@ class RecipeListViewModel(
                 )
 
                 RecipesRepository(context = application.applicationContext).addRecipesToCache(
-                    resultFromApi
+                    result
                 )
             }
         }
