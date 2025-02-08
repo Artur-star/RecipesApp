@@ -25,7 +25,9 @@ class FavoritesListViewModel(private val application: Application) : AndroidView
     fun loadFavoritesList() {
         viewModelScope.launch {
             val favorites: List<Recipe> =
-                RecipesRepository(context = application.applicationContext).getRecipesByIds(getFavorites().map { it.toInt() }.toSet())
+                RecipesRepository(context = application.applicationContext).getRecipesByIdsFromApi(
+                    getFavorites().map { it.toInt() }.toSet()
+                )
                     ?: emptyList()
 
             _favoritesListStateLD.postValue(

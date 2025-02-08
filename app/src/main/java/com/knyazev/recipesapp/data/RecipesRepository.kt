@@ -51,27 +51,31 @@ class RecipesRepository(
         return retrofit.create(RecipeApiService::class.java)
     }
 
-    suspend fun getCategoryFromCache(): List<Category> {
-        return categoryDao.getAllCategories()
+    suspend fun addRecipesToCache(recipes: List<Recipe>) {
+        recipeDao.addRecipes(recipes)
     }
 
     suspend fun addCategoriesToCache(categories: List<Category>) {
         categoryDao.addCategories(categories)
     }
 
+    suspend fun getCategoryFromCache(): List<Category> {
+        return categoryDao.getAllCategories()
+    }
+
     suspend fun getRecipeFromCache(): List<Recipe> {
         return recipeDao.getAllRecipes()
     }
 
-    suspend fun addRecipesToCache(recipes: List<Recipe>) {
-        recipeDao.addRecipes(recipes)
+    suspend fun getRecipeByIdFromCache(recipeId: Int): Recipe? {
+        return recipeDao.getRecipeById(recipeId)
     }
 
     suspend fun getRecipesByCategoryIdFromCache(categoryId: Int): List<Recipe> {
         return recipeDao.getRecipesByCategoryId(categoryId)
     }
 
-    suspend fun getCategories(): List<Category>? {
+    suspend fun getCategoryFromApi(): List<Category>? {
         try {
             val categoryCall: Call<List<Category>> = service.getCategories()
             val categoryResponse = withContext(dispatcherIO) {
@@ -86,7 +90,7 @@ class RecipesRepository(
         }
     }
 
-    suspend fun getRecipesByCategoryIdFromAPI(categoryId: Int): List<Recipe>? {
+    suspend fun getRecipesByCategoryIdFromApi(categoryId: Int): List<Recipe>? {
         try {
             val recipeByCategoryIdCall = service.getRecipesByCategoryId(categoryId)
             val recipeByCategoryIdResponse =
@@ -98,7 +102,7 @@ class RecipesRepository(
         }
     }
 
-    suspend fun getRecipeById(recipeId: Int): Recipe? {
+    suspend fun getRecipeByIdFromApi(recipeId: Int): Recipe? {
         try {
             val recipeIdCall: Call<Recipe> = service.getRecipeId(recipeId)
             val recipeResponse = withContext(dispatcherIO) { recipeIdCall.execute() }
@@ -109,7 +113,7 @@ class RecipesRepository(
         }
     }
 
-    suspend fun getRecipesByIds(setRecipesId: Set<Int>): List<Recipe>? {
+    suspend fun getRecipesByIdsFromApi(setRecipesId: Set<Int>): List<Recipe>? {
         try {
             val recipesByIdsCall: Call<List<Recipe>> =
                 service.getRecipes(setRecipesId.joinToString(separator = ","))

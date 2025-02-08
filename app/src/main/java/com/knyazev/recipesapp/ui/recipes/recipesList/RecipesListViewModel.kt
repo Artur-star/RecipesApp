@@ -28,7 +28,9 @@ class RecipeListViewModel(
     fun loadRecipesList(category: Category) {
         viewModelScope.launch {
             val resultFromCache: List<Recipe> =
-                RecipesRepository(context = application.applicationContext).getRecipesByCategoryIdFromCache(category.id)
+                RecipesRepository(context = application.applicationContext).getRecipesByCategoryIdFromCache(
+                    category.id
+                )
             if (resultFromCache.isNotEmpty()) {
                 val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${category.imageUrl}"
 
@@ -46,36 +48,33 @@ class RecipeListViewModel(
                             error = true
                         )
                 )
-            }
+            } else {
+                val resultFromApi: List<Recipe> =
+                    RecipesRepository(context = application.applicationContext).getRecipesByCategoryIdFromApi(
+                        category.id
+                    )?.map { recipe: Recipe -> recipe.copy(categoryId = category.id) }
+                        ?: emptyList()
 
-            val resultFromApi: List<Recipe> =
-                RecipesRepository(context = application.applicationContext).getRecipesByCategoryIdFromAPI(
-                    category.id
-                ) ?: emptyList()
+                if (resultFromApi.isNotEmpty()) {
+                    val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${category.imageUrl}"
 
-            if (resultFromApi.isNotEmpty()) {
-                val result: List<Recipe> = resultFromApi.map { recipe: Recipe -> recipe.copy(categoryId = category.id) }
-
-                val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${category.imageUrl}"
-
-                recipesListStateLD.postValue(
-                    recipesListStateLD.value?.copy(
-                        result,
-                        recipeImageUrl,
-                        category,
-                        error = false
-                    )
-                        ?: RecipeListState(
-                            result,
+                    recipesListStateLD.postValue(
+                        recipesListStateLD.value?.copy(
+                            resultFromApi,
                             recipeImageUrl,
                             category,
+                        )
+                    )
+                    RecipesRepository(context = application.applicationContext).addRecipesToCache(
+                        resultFromApi
+                    )
+                } else {
+                    recipesListStateLD.postValue(
+                        recipesListStateLD.value?.copy(
                             error = true
                         )
-                )
-
-                RecipesRepository(context = application.applicationContext).addRecipesToCache(
-                    result
-                )
+                    )
+                }
             }
         }
     }
