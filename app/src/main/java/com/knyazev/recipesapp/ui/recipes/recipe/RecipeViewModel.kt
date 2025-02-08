@@ -32,25 +32,57 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
 
     fun loadRecipe(recipeId: Int) {
         viewModelScope.launch {
-            val recipe: Recipe? = RecipesRepository(context = application.applicationContext).getRecipeById(recipeId)
 
-            val isFavorite = getFavorites().contains(recipeId.toString())
-
-            val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${recipe!!.imageUrl}"
-
-            _recipeStateLD.postValue(
-                _recipeStateLD.value?.copy(
-                    isFavorite = isFavorite,
-                    recipe = recipe,
-                    recipeImageUrl = recipeImageUrl,
-                    error = false
-                ) ?: RecipeState(
-                    isFavorite = isFavorite,
-                    recipe = recipe,
-                    recipeImageUrl = recipeImageUrl,
-                    error = true
+            val resultFromCache: Recipe? =
+                RecipesRepository(context = application.applicationContext).getRecipeByIdFromCache(
+                    recipeId
                 )
-            )
+
+            if (resultFromCache != null) {
+                val isFavorite = getFavorites().contains(recipeId.toString())
+
+                val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${resultFromCache.imageUrl}"
+
+                _recipeStateLD.postValue(
+                    _recipeStateLD.value?.copy(
+                        isFavorite = isFavorite,
+                        recipe = resultFromCache,
+                        recipeImageUrl = recipeImageUrl,
+                        error = false
+                    ) ?: RecipeState(
+                        isFavorite = isFavorite,
+                        recipe = resultFromCache,
+                        recipeImageUrl = recipeImageUrl,
+                        error = true
+                    )
+                )
+            } else {
+                val resultFromApi: Recipe? =
+                    RecipesRepository(context = application.applicationContext).getRecipeByIdFromApi(
+                        recipeId
+                    )
+
+                if (resultFromApi != null) {
+                    val isFavorite = getFavorites().contains(recipeId.toString())
+
+                    val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${resultFromApi.imageUrl}"
+
+                    _recipeStateLD.postValue(
+                        _recipeStateLD.value?.copy(
+                            isFavorite = isFavorite,
+                            recipe = resultFromApi,
+                            recipeImageUrl = recipeImageUrl,
+                            error = false
+                        )
+                    )
+                } else {
+                    _recipeStateLD.postValue(
+                        _recipeStateLD.value?.copy(
+                            error = true
+                        )
+                    )
+                }
+            }
         }
     }
 

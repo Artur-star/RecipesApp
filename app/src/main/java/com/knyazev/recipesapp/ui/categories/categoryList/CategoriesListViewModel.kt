@@ -14,7 +14,8 @@ data class CategoriesListState(
     val error: Boolean = false,
 )
 
-class CategoriesListViewModel(private val application: Application) : AndroidViewModel(application) {
+class CategoriesListViewModel(private val application: Application) :
+    AndroidViewModel(application) {
     private val _categoriesListStateLD =
         MutableLiveData(CategoriesListState())
     val categoriesListStateLD: LiveData<CategoriesListState> get() = _categoriesListStateLD
@@ -30,21 +31,26 @@ class CategoriesListViewModel(private val application: Application) : AndroidVie
                         error = false
                     ) ?: CategoriesListState(categoriesList = resultFromCache, error = true)
                 )
-            }
-
-            val resultFromAPI: List<Category> =
-                RecipesRepository(context = application.applicationContext).getCategories()
-                    ?: emptyList()
-            if (resultFromAPI.isNotEmpty()) {
-                _categoriesListStateLD.postValue(
-                    _categoriesListStateLD.value?.copy(
-                        categoriesList = resultFromAPI,
-                        error = false
-                    ) ?: CategoriesListState(categoriesList = resultFromAPI, error = true)
-                )
-                RecipesRepository(context = application.applicationContext).addCategoriesToCache(
-                    resultFromAPI
-                )
+            } else {
+                val resultFromAPI: List<Category> =
+                    RecipesRepository(context = application.applicationContext).getCategoryFromApi()
+                        ?: emptyList()
+                if (resultFromAPI.isNotEmpty()) {
+                    _categoriesListStateLD.postValue(
+                        _categoriesListStateLD.value?.copy(
+                            categoriesList = resultFromAPI
+                        )
+                    )
+                    RecipesRepository(context = application.applicationContext).addCategoriesToCache(
+                        resultFromAPI
+                    )
+                } else {
+                    _categoriesListStateLD.postValue(
+                        _categoriesListStateLD.value?.copy(
+                            error = true
+                        )
+                    )
+                }
             }
         }
     }
