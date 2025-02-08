@@ -24,13 +24,12 @@ class RecipeListViewModel(
     private val _recipesListStateLD =
         MutableLiveData(RecipeListState())
     val recipesListStateLD get() = _recipesListStateLD
+    private val recipesRepository: RecipesRepository by lazy { RecipesRepository(context = application.applicationContext) }
 
     fun loadRecipesList(category: Category) {
         viewModelScope.launch {
             val resultFromCache: List<Recipe> =
-                RecipesRepository(context = application.applicationContext).getRecipesByCategoryIdFromCache(
-                    category.id
-                )
+                recipesRepository.getRecipesByCategoryIdFromCache(category.id)
             if (resultFromCache.isNotEmpty()) {
                 val recipeImageUrl = "${Constants.REQUEST_IMAGE_URL}${category.imageUrl}"
 
@@ -50,7 +49,7 @@ class RecipeListViewModel(
                 )
             } else {
                 val resultFromApi: List<Recipe> =
-                    RecipesRepository(context = application.applicationContext).getRecipesByCategoryIdFromApi(
+                    recipesRepository.getRecipesByCategoryIdFromApi(
                         category.id
                     )?.map { recipe: Recipe -> recipe.copy(categoryId = category.id) }
                         ?: emptyList()
@@ -65,9 +64,7 @@ class RecipeListViewModel(
                             category,
                         )
                     )
-                    RecipesRepository(context = application.applicationContext).addRecipesToCache(
-                        resultFromApi
-                    )
+                    recipesRepository.addRecipesToCache(resultFromApi)
                 } else {
                     recipesListStateLD.postValue(
                         recipesListStateLD.value?.copy(

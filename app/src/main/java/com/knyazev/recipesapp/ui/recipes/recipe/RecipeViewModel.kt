@@ -25,6 +25,7 @@ data class RecipeState(
 class RecipeViewModel(private val application: Application) : AndroidViewModel(application) {
     private val _recipeStateLD = MutableLiveData(RecipeState())
     val recipeStateLD: LiveData<RecipeState> get() = _recipeStateLD
+    private val recipesRepository: RecipesRepository by lazy { RecipesRepository(context = application.applicationContext) }
 
     init {
         Log.i("!!!", "init in RecipeViewModel")
@@ -34,9 +35,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         viewModelScope.launch {
 
             val resultFromCache: Recipe? =
-                RecipesRepository(context = application.applicationContext).getRecipeByIdFromCache(
-                    recipeId
-                )
+                recipesRepository.getRecipeByIdFromCache(recipeId)
 
             if (resultFromCache != null) {
                 val isFavorite = getFavorites().contains(recipeId.toString())
@@ -58,9 +57,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
                 )
             } else {
                 val resultFromApi: Recipe? =
-                    RecipesRepository(context = application.applicationContext).getRecipeByIdFromApi(
-                        recipeId
-                    )
+                    recipesRepository.getRecipeByIdFromApi(recipeId)
 
                 if (resultFromApi != null) {
                     val isFavorite = getFavorites().contains(recipeId.toString())

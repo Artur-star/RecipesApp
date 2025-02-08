@@ -19,11 +19,12 @@ class CategoriesListViewModel(private val application: Application) :
     private val _categoriesListStateLD =
         MutableLiveData(CategoriesListState())
     val categoriesListStateLD: LiveData<CategoriesListState> get() = _categoriesListStateLD
+    private val recipesRepository: RecipesRepository by lazy { RecipesRepository(context = application.applicationContext) }
 
     fun loadCategoryList() {
         viewModelScope.launch {
             val resultFromCache: List<Category> =
-                RecipesRepository(context = application.applicationContext).getCategoryFromCache()
+                recipesRepository.getCategoryFromCache()
             if (resultFromCache.isNotEmpty()) {
                 _categoriesListStateLD.postValue(
                     _categoriesListStateLD.value?.copy(
@@ -33,7 +34,7 @@ class CategoriesListViewModel(private val application: Application) :
                 )
             } else {
                 val resultFromAPI: List<Category> =
-                    RecipesRepository(context = application.applicationContext).getCategoryFromApi()
+                    recipesRepository.getCategoryFromApi()
                         ?: emptyList()
                 if (resultFromAPI.isNotEmpty()) {
                     _categoriesListStateLD.postValue(
@@ -41,7 +42,7 @@ class CategoriesListViewModel(private val application: Application) :
                             categoriesList = resultFromAPI
                         )
                     )
-                    RecipesRepository(context = application.applicationContext).addCategoriesToCache(
+                    recipesRepository.addCategoriesToCache(
                         resultFromAPI
                     )
                 } else {

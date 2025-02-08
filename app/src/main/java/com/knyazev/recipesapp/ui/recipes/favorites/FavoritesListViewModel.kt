@@ -21,14 +21,17 @@ class FavoritesListViewModel(private val application: Application) : AndroidView
     val favoritesListStateLD get() = _favoritesListStateLD
     private val sharedPreferences = getApplication<Application>()
         .getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE)
+    private val recipesRepository: RecipesRepository by lazy { RecipesRepository(context = application.applicationContext) }
 
     fun loadFavoritesList() {
         viewModelScope.launch {
             val favorites: List<Recipe> =
-                RecipesRepository(context = application.applicationContext).getRecipesByIdsFromApi(
+                recipesRepository.getRecipesByIdsFromApi(
                     getFavorites().map { it.toInt() }.toSet()
                 )
                     ?: emptyList()
+
+
 
             _favoritesListStateLD.postValue(
                 _favoritesListStateLD.value?.copy(favoritesList = favorites) ?: FavoritesListState()

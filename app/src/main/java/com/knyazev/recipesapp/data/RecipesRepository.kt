@@ -75,6 +75,10 @@ class RecipesRepository(
         return recipeDao.getRecipesByCategoryId(categoryId)
     }
 
+    suspend fun getRecipesByIdsFromCache(ids: List<Int>): List<Recipe>? {
+        return recipeDao.getRecipesByIds(ids)
+    }
+
     suspend fun getCategoryFromApi(): List<Category>? {
         try {
             val categoryCall: Call<List<Category>> = service.getCategories()
