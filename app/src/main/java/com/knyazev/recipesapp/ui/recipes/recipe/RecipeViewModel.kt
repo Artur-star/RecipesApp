@@ -49,9 +49,6 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
                         recipeImageUrl = recipeImageUrl,
                         error = false
                     ) ?: RecipeState(
-                        isFavorite = isFavorite,
-                        recipe = resultFromCache,
-                        recipeImageUrl = recipeImageUrl,
                         error = true
                     )
                 )
@@ -98,23 +95,12 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         return HashSet(favorites)
     }
 
-    fun onFavoritesClicked(recipeId: Int) {
-        val favorite = getFavorites().contains(recipeId.toString())
-        val favorites = getFavorites()
-
-        if (favorite) favorites.remove(recipeId.toString())
-        else favorites.add(recipeId.toString())
-
-        saveFavorites(favorites)
-        val copy = _recipeStateLD.value?.copy(isFavorite = favorites.contains(recipeId.toString()))
-            ?: RecipeState(isFavorite = favorites.contains(recipeId.toString()))
+    fun onFavoritesClicked(recipe: Recipe?) {
+        viewModelScope.launch {
+            recipesRepository.updateRecipeFromCache(recipe = recipe!!)
+        }
+        val copy = _recipeStateLD.value?.copy(isFavorite = recipe!!.isFavorite)
+            ?: RecipeState(isFavorite = recipe!!.isFavorite)
         _recipeStateLD.value = copy
-    }
-
-    private fun saveFavorites(recipeId: Set<String>) {
-        getApplication<Application>().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            .edit()
-            .putStringSet(PREFS_KEY_FAVORITES_CATEGORY, recipeId)
-            .apply()
     }
 }

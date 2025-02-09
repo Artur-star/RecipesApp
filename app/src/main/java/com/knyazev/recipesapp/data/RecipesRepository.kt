@@ -79,6 +79,11 @@ class RecipesRepository(
         return recipeDao.getRecipesByIds(ids)
     }
 
+    suspend fun updateRecipeFromCache(recipe: Recipe) {
+        recipe.isFavorite = !recipe.isFavorite
+        recipeDao.updateRecipe(recipe)
+    }
+
     suspend fun getCategoryFromApi(): List<Category>? {
         try {
             val categoryCall: Call<List<Category>> = service.getCategories()

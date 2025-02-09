@@ -6,7 +6,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.knyazev.recipesapp.Constants
-import com.knyazev.recipesapp.Constants.PREFS_KEY_FAVORITES_CATEGORY
 import com.knyazev.recipesapp.data.RecipesRepository
 import com.knyazev.recipesapp.model.Recipe
 import kotlinx.coroutines.launch
@@ -25,24 +24,14 @@ class FavoritesListViewModel(private val application: Application) : AndroidView
 
     fun loadFavoritesList() {
         viewModelScope.launch {
-            val favorites: List<Recipe> =
-                recipesRepository.getRecipesByIdsFromApi(
-                    getFavorites().map { it.toInt() }.toSet()
-                )
-                    ?: emptyList()
 
-
+            val favoritesFromCache: List<Recipe> = recipesRepository.getRecipeFromCache()
+                .filter { recipe: Recipe -> recipe.isFavorite }
 
             _favoritesListStateLD.postValue(
-                _favoritesListStateLD.value?.copy(favoritesList = favorites) ?: FavoritesListState()
+                _favoritesListStateLD.value?.copy(favoritesList = favoritesFromCache)
+                    ?: FavoritesListState()
             )
         }
-    }
-
-    private fun getFavorites(): MutableSet<String> {
-        val favorites =
-            sharedPreferences
-                .getStringSet(PREFS_KEY_FAVORITES_CATEGORY, mutableSetOf()) ?: mutableSetOf()
-        return HashSet(favorites)
     }
 }

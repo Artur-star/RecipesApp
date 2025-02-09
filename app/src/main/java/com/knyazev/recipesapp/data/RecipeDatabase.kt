@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.knyazev.recipesapp.model.Category
 import com.knyazev.recipesapp.model.Recipe
 
-@Database(entities = [Category::class, Recipe::class], version = 1)
+@Database(entities = [Category::class, Recipe::class], version = 2)
 @TypeConverters(value = [TypeConverter::class])
 abstract class RecipeDatabase : RoomDatabase() {
 

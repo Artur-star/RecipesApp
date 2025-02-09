@@ -84,7 +84,7 @@ class RecipeFragment : Fragment() {
 
             binding.ibHeaderHeart.setOnClickListener {
                 viewModel.onFavoritesClicked(
-                    recipe?.id ?: 0
+                    recipe
                 )
             }
         }
