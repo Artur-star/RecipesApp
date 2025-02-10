@@ -75,10 +75,6 @@ class RecipesRepository(
         return recipeDao.getRecipesByCategoryId(categoryId)
     }
 
-    suspend fun getRecipesByIdsFromCache(ids: List<Int>): List<Recipe>? {
-        return recipeDao.getRecipesByIds(ids)
-    }
-
     suspend fun updateRecipeFromCache(recipe: Recipe) {
         recipe.isFavorite = !recipe.isFavorite
         recipeDao.updateRecipe(recipe)
