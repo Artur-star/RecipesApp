@@ -36,8 +36,13 @@ class FavoritesListFragment : Fragment() {
     private fun initRecycler() {
         viewModel.favoritesListStateLD.observe(viewLifecycleOwner) { (favorites) ->
             recipesListAdapter.updateRecipeList(favorites)
-            binding.tvPlug.visibility = View.GONE
-            binding.rvFavorites.visibility = View.VISIBLE
+            if (favorites.isEmpty()) {
+                binding.tvPlug.visibility = View.VISIBLE
+                binding.rvFavorites.visibility = View.GONE
+            } else {
+                binding.tvPlug.visibility = View.GONE
+                binding.rvFavorites.visibility = View.VISIBLE
+            }
         }
         binding.rvFavorites.adapter = recipesListAdapter
         recipesListAdapter.setOnItemClickListener(object : RecipesListAdapter.OnItemClickListener {

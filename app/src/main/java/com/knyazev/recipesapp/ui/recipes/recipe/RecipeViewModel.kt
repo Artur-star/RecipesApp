@@ -82,11 +82,13 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
 
     fun onFavoritesClicked(recipe: Recipe?) {
         viewModelScope.launch {
-            recipesRepository.updateRecipeFromCache(recipe = recipe!!)
-            _recipeStateLD.postValue(
-                _recipeStateLD.value?.copy(isFavorite = recipe.isFavorite)
-                    ?: RecipeState(isFavorite = recipe.isFavorite)
-            )
+            if (recipe != null) {
+                recipesRepository.updateRecipeFromCache(recipe = recipe)
+                _recipeStateLD.postValue(
+                    _recipeStateLD.value?.copy(isFavorite = recipe.isFavorite)
+                        ?: RecipeState(isFavorite = recipe.isFavorite)
+                )
+            }
         }
     }
 }
