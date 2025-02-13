@@ -1,8 +1,7 @@
 package com.knyazev.recipesapp.ui.recipes.favorites
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.knyazev.recipesapp.data.RecipesRepository
 import com.knyazev.recipesapp.model.Recipe
@@ -12,15 +11,15 @@ data class FavoritesListState(
     val favoritesList: List<Recipe> = emptyList(),
 )
 
-class FavoritesListViewModel(private val application: Application) : AndroidViewModel(application) {
+class FavoritesListViewModel(
+    private val recipesRepository: RecipesRepository,
+) : ViewModel() {
     private val _favoritesListStateLD =
         MutableLiveData(FavoritesListState())
     val favoritesListStateLD get() = _favoritesListStateLD
-    private val recipesRepository: RecipesRepository by lazy { RecipesRepository(context = application.applicationContext) }
 
     fun loadFavoritesList() {
         viewModelScope.launch {
-
             val favoritesFromCache: List<Recipe> = recipesRepository.getRecipeFromCache()
                 .filter { recipe: Recipe -> recipe.isFavorite }
 

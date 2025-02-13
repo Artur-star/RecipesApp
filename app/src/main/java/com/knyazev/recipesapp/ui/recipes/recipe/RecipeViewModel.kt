@@ -1,10 +1,9 @@
 package com.knyazev.recipesapp.ui.recipes.recipe
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.knyazev.recipesapp.Constants
 import com.knyazev.recipesapp.data.RecipesRepository
@@ -19,10 +18,11 @@ data class RecipeState(
     val error: Boolean = false,
 )
 
-class RecipeViewModel(private val application: Application) : AndroidViewModel(application) {
+class RecipeViewModel(
+    private val recipesRepository: RecipesRepository,
+) : ViewModel() {
     private val _recipeStateLD = MutableLiveData(RecipeState())
     val recipeStateLD: LiveData<RecipeState> get() = _recipeStateLD
-    private val recipesRepository: RecipesRepository by lazy { RecipesRepository(context = application.applicationContext) }
 
     init {
         Log.i("!!!", "init in RecipeViewModel")
