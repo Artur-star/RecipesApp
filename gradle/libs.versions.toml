@@ -2,6 +2,7 @@
 agp = "8.5.0"
 fragmentKtx = "1.8.2"
 githubGlide = "4.16.0"
+hiltCompilerVersion = "2.51.1"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -28,6 +29,8 @@ androidx-navigation-safe-args-gradle-plugin = { module = "androidx.navigation:na
 androidx-navigation-ui = { module = "androidx.navigation:navigation-ui", version.ref = "navigationUi" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltCompilerVersion" }
+dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompilerVersion" }
 github-glide = { module = "com.github.bumptech.glide:glide", version.ref = "githubGlide" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
