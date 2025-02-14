@@ -6,7 +6,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.navOptions
 import com.knyazev.recipesapp.R
 import com.knyazev.recipesapp.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null

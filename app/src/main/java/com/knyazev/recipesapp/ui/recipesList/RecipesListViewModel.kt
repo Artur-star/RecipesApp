@@ -1,4 +1,4 @@
-package com.knyazev.recipesapp.ui.recipes.recipesList
+package com.knyazev.recipesapp.ui.recipesList
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,7 +7,9 @@ import com.knyazev.recipesapp.Constants
 import com.knyazev.recipesapp.data.RecipesRepository
 import com.knyazev.recipesapp.model.Category
 import com.knyazev.recipesapp.model.Recipe
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 data class RecipeListState(
     val recipeList: List<Recipe> = emptyList(),
@@ -16,7 +18,8 @@ data class RecipeListState(
     val error: Boolean = false,
 )
 
-class RecipesListViewModel(
+@HiltViewModel
+class RecipesListViewModel @Inject constructor(
     private val recipesRepository: RecipesRepository,
 ) : ViewModel() {
     private val _recipesListStateLD =

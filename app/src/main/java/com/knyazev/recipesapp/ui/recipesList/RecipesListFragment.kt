@@ -1,4 +1,4 @@
-package com.knyazev.recipesapp.ui.recipes.recipesList
+package com.knyazev.recipesapp.ui.recipesList
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,29 +6,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.knyazev.recipesapp.R
-import com.knyazev.recipesapp.RecipeApplication
 import com.knyazev.recipesapp.databinding.FragmentRecipesListBinding
-import com.knyazev.recipesapp.ui.recipes.adaptersRecipes.RecipesListAdapter
+import com.knyazev.recipesapp.ui.adapters.RecipesListAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RecipesListFragment : Fragment() {
     private val recipeListFragmentArgs: RecipesListFragmentArgs by navArgs()
     private var recipesListAdapter = RecipesListAdapter(emptyList())
-    private lateinit var viewModel: RecipesListViewModel
+    private val viewModel: RecipesListViewModel by viewModels()
 
     private var _binding: FragmentRecipesListBinding? = null
     private val binding
         get() = _binding
             ?: throw IllegalArgumentException("Binding for FragmentRecipesListBinding must not be null")
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val appContainer = (requireActivity().application as RecipeApplication).appContainer
-        viewModel = appContainer.recipesListViewModelFactory.create()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

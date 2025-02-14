@@ -1,4 +1,4 @@
-package com.knyazev.recipesapp.ui.categories.categoryList
+package com.knyazev.recipesapp.ui.categoryList
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,14 +6,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.knyazev.recipesapp.data.RecipesRepository
 import com.knyazev.recipesapp.model.Category
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 data class CategoriesListState(
     val categoriesList: List<Category> = emptyList(),
     val error: Boolean = false,
 )
 
-class CategoriesListViewModel(
+@HiltViewModel
+class CategoriesListViewModel @Inject constructor(
     private val recipesRepository: RecipesRepository,
 ) : ViewModel() {
     private val _categoriesListStateLD =
