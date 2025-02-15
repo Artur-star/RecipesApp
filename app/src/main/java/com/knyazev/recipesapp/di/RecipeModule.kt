@@ -13,24 +13,33 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 class RecipeModule {
 
+    @Singleton
     @Provides
-    fun providesDatabase(@ApplicationContext context: Context): RecipeDatabase =
+    fun provideDatabase(@ApplicationContext context: Context): RecipeDatabase =
         Room.databaseBuilder(
             context,
             RecipeDatabase::class.java,
             "database-users"
         ).fallbackToDestructiveMigration().build()
+
+    @Provides
+    fun provideDispatcherIO(): CoroutineDispatcher {
+        return Dispatchers.IO
+    }
 
     @Provides
     fun provideCategoryDao(recipeDatabase: RecipeDatabase): CategoryDao =
