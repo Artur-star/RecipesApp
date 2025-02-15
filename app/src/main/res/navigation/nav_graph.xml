@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/favoritesListFragment"
-        android:name="com.knyazev.recipesapp.ui.recipes.favorites.FavoritesListFragment"
+        android:name="com.knyazev.recipesapp.ui.favorites.FavoritesListFragment"
         android:label="fragment_favorites_list"
         tools:layout="@layout/fragment_favorites_list">
         <action
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/categoriesListFragment"
-        android:name="com.knyazev.recipesapp.ui.categories.categoryList.CategoriesListFragment"
+        android:name="com.knyazev.recipesapp.ui.categoryList.CategoriesListFragment"
         android:label="fragment_list_categories"
         tools:layout="@layout/fragment_list_categories">
         <action
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/recipeFragment"
-        android:name="com.knyazev.recipesapp.ui.recipes.recipe.RecipeFragment"
+        android:name="com.knyazev.recipesapp.ui.recipe.RecipeFragment"
         android:label="fragment_recipe"
         tools:layout="@layout/fragment_recipe" >
         <argument
@@ -42,7 +42,7 @@
     </fragment>
     <fragment
         android:id="@+id/recipesListFragment"
-        android:name="com.knyazev.recipesapp.ui.recipes.recipesList.RecipesListFragment"
+        android:name="com.knyazev.recipesapp.ui.recipesList.RecipesListFragment"
         android:label="fragment_recipes_list"
         tools:layout="@layout/fragment_recipes_list">
         <action

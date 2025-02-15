@@ -4,7 +4,8 @@ plugins {
     id(libs.plugins.kotlin.parcelize.get().pluginId)
     alias(libs.plugins.androidx.navigation.safeargs)
     kotlin("plugin.serialization") version "1.9.0"
-    id("com.google.devtools.ksp") version "1.9.0-1.0.13"
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -55,13 +56,15 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.okhttp)
-    implementation (libs.logging.interceptor)
-    implementation (libs.retrofit)
+    implementation(libs.logging.interceptor)
+    implementation(libs.retrofit)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
-    implementation (libs.github.glide)
+    implementation(libs.github.glide)
     implementation(libs.room)
     implementation(libs.androidx.room.ktx)
+    implementation (libs.dagger.hilt.android)
     ksp(libs.androidx.room.compiler)
+    ksp(libs.dagger.hilt.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

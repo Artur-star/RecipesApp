@@ -1,4 +1,4 @@
-package com.knyazev.recipesapp.ui.recipes.recipe
+package com.knyazev.recipesapp.ui.recipe
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -8,7 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.knyazev.recipesapp.Constants
 import com.knyazev.recipesapp.data.RecipesRepository
 import com.knyazev.recipesapp.model.Recipe
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 data class RecipeState(
     val isFavorite: Boolean = false,
@@ -18,7 +20,8 @@ data class RecipeState(
     val error: Boolean = false,
 )
 
-class RecipeViewModel(
+@HiltViewModel
+class RecipeViewModel @Inject constructor(
     private val recipesRepository: RecipesRepository,
 ) : ViewModel() {
     private val _recipeStateLD = MutableLiveData(RecipeState())

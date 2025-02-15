@@ -1,29 +1,25 @@
-package com.knyazev.recipesapp.ui.recipes.favorites
+package com.knyazev.recipesapp.ui.favorites
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.knyazev.recipesapp.RecipeApplication
 import com.knyazev.recipesapp.databinding.FragmentFavoritesListBinding
-import com.knyazev.recipesapp.ui.recipes.adaptersRecipes.RecipesListAdapter
+import com.knyazev.recipesapp.ui.adapters.RecipesListAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FavoritesListFragment : Fragment() {
-    private lateinit var viewModel: FavoritesListViewModel
+    private val viewModel: FavoritesListViewModel by viewModels()
     private val recipesListAdapter = RecipesListAdapter(emptyList())
 
     private var _binding: FragmentFavoritesListBinding? = null
     private val binding
         get() = _binding
             ?: throw IllegalArgumentException("Binding for ActivityMainBinding must not be null")
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val appContainer = (requireActivity().application as RecipeApplication).appContainer
-        viewModel = appContainer.favoritesListViewModelFactory.create()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

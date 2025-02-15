@@ -4,16 +4,18 @@ import android.util.Log
 import com.knyazev.recipesapp.model.Category
 import com.knyazev.recipesapp.model.Recipe
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
+import javax.inject.Inject
 
-class RecipesRepository(
+class RecipesRepository @Inject constructor(
     private val recipeDao: RecipeDao,
     private val categoryDao: CategoryDao,
     private val service: RecipeApiService,
-    private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO,
-) {
+    private val dispatcherIO: CoroutineDispatcher,
+    ) {
+
+
     suspend fun addRecipesToCache(recipes: List<Recipe>) {
         recipeDao.addRecipes(recipes)
     }

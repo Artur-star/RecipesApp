@@ -1,4 +1,4 @@
-package com.knyazev.recipesapp.ui.recipes.recipe
+package com.knyazev.recipesapp.ui.recipe
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,33 +9,27 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.knyazev.recipesapp.Constants.MIN_PORTIONS
 import com.knyazev.recipesapp.R
-import com.knyazev.recipesapp.RecipeApplication
 import com.knyazev.recipesapp.databinding.FragmentRecipeBinding
-import com.knyazev.recipesapp.di.AppContainer
-import com.knyazev.recipesapp.ui.recipes.adaptersRecipes.IngredientsAdapter
-import com.knyazev.recipesapp.ui.recipes.adaptersRecipes.MethodAdapter
+import com.knyazev.recipesapp.ui.adapters.IngredientsAdapter
+import com.knyazev.recipesapp.ui.adapters.MethodAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RecipeFragment : Fragment() {
     private val recipeFragmentArgs: RecipeFragmentArgs by navArgs()
     private var ingredientAdapter = IngredientsAdapter(emptyList())
     private var methodAdapter = MethodAdapter(emptyList())
-    private lateinit var viewModel: RecipeViewModel
+    private val viewModel: RecipeViewModel by viewModels()
     private var _binding: FragmentRecipeBinding? = null
     private val binding
         get() = _binding
             ?: throw IllegalArgumentException("Binding for FragmentRecipeBinding must not be null")
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val appContainer: AppContainer =
-            (requireActivity().application as RecipeApplication).appContainer
-        viewModel = appContainer.recipeViewModelFactory.create()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

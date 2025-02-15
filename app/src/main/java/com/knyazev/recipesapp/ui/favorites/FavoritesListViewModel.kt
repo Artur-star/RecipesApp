@@ -1,17 +1,20 @@
-package com.knyazev.recipesapp.ui.recipes.favorites
+package com.knyazev.recipesapp.ui.favorites
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.knyazev.recipesapp.data.RecipesRepository
 import com.knyazev.recipesapp.model.Recipe
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 data class FavoritesListState(
     val favoritesList: List<Recipe> = emptyList(),
 )
 
-class FavoritesListViewModel(
+@HiltViewModel
+class FavoritesListViewModel @Inject constructor(
     private val recipesRepository: RecipesRepository,
 ) : ViewModel() {
     private val _favoritesListStateLD =
